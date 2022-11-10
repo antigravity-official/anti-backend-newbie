@@ -4,24 +4,21 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter @Setter
-public class Product extends BaseEntity {
+public class User extends BaseEntity {
 
     @Id @GeneratedValue
-    @Column(name = "product_id")
+    @Column(name = "user_id")
     private Long id;
 
-    private String sku;
+    private String email;
+
     private String name;
-    private BigDecimal price;
-    private Integer quantity;
 
     @OneToMany(mappedBy = "user")
     private List<WishList> wishLists = new ArrayList<>();
-
 }

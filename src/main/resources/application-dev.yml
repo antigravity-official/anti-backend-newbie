@@ -3,10 +3,24 @@ database: hsqldb
 # Database Settings
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb;MODE=mysql;
+    url: jdbc:h2:tcp://localhost/~/testdb;MODE=mysql;
     username: sa
     password:
     driverClassName: org.h2.Driver
+
+  jpa:
+#    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+#        show_sql: true
+        format_sql: true
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
 
   # H2 Settings
   h2:

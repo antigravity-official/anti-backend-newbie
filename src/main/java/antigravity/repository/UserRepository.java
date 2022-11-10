@@ -1,9 +1,9 @@
 package antigravity.repository;
 
-import antigravity.entity.Product;
+import antigravity.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 }
