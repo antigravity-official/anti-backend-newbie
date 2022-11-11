@@ -4,6 +4,7 @@ import antigravity.enums.Like;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -17,9 +18,6 @@ public class WishList {
     @Enumerated(EnumType.STRING)
     private Like liked;
 
-    private Integer totalLiked;
-    private Integer viewed;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -27,4 +25,18 @@ public class WishList {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
+
+    public void saveWishList(Optional<User> user, Optional<Product> product) {
+        this.liked = Like.TRUE;
+        user.ifPresent(u -> {
+            this.user = u;
+        });
+        product.ifPresent(p -> {
+            this.product = p;
+        });
+    }
+
+    public void cancelWishList() {
+        this.liked = Like.FALSE;
+    }
 }

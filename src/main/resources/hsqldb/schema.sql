@@ -9,6 +9,8 @@ CREATE TABLE `product`
     `name`       varchar(125)   NOT NULL COMMENT '상품명',
     `price`      decimal(12, 2) NOT NULL COMMENT '가격',
     `quantity`   int            NOT NULL COMMENT '재고량',
+    `totalLiked`        int             DEFAULT 0 COMMENT '찜 개수',
+    `viewed`        int              DEFAULT 0 COMMENT '상품 조회 수',
     `created_at` datetime       NOT NULL DEFAULT current_timestamp(),
     `updated_at` datetime                DEFAULT current_timestamp(),
     `deleted_at` datetime                DEFAULT NULL,
@@ -19,8 +21,6 @@ CREATE TABLE `wishlist`
 (
     `id`         bigint(20) NOT NULL AUTO_INCREMENT,
     `liked`        varchar(10)             DEFAULT 'FALSE' COMMENT '찜 여부',
-    `totalLiked`        int             DEFAULT 0 COMMENT '찜 개수',
-    `viewed`        int              DEFAULT 0 COMMENT '상품 조회 수',
     `created_at` datetime       NOT NULL DEFAULT current_timestamp(),
     `deleted_at` datetime                DEFAULT NULL,
     PRIMARY KEY (`id`)

@@ -2,6 +2,7 @@ package antigravity.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -21,7 +22,22 @@ public class Product extends BaseEntity {
     private BigDecimal price;
     private Integer quantity;
 
-    @OneToMany(mappedBy = "user")
+    @ColumnDefault("0")
+    private Integer totalLiked;
+
+    @ColumnDefault("0")
+    private Integer viewed;
+
+    @OneToMany(mappedBy = "product")
     private List<WishList> wishLists = new ArrayList<>();
 
+    public void productViewIncrease() {
+
+        this.viewed += 1;
+    }
+
+    public void productTotalLikedIncrease() {
+
+        this.totalLiked += 1;
+    }
 }
