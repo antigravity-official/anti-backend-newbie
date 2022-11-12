@@ -1,0 +1,26 @@
+= 찜 상품 API
+
+== 찜 상품 등록
+
+=== 요청
+include::{snippets}/post/http-request.adoc[]
+
+=== 응답
+include::{snippets}/post/http-response.adoc[]
+
+=== CURL
+include::{snippets}/post/curl-request.adoc[]
+
+== 찜 상품 조회
+
+=== 요청
+include::{snippets}/get/http-request.adoc[]
+
+=== 요청 파라미터
+include::{snippets}/get/path-parameters.adoc[]
+
+=== 응답
+include::{snippets}/get/http-response.adoc[]
+
+=== 응답 필드
+include::{snippets}/get/response-fields.adoc[]

@@ -1,9 +1,10 @@
 package antigravity.repository;
 
-import antigravity.entity.WishList;
+import antigravity.payload.ProductResponse;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface WishListRepositoryCustom {
 
-    Page<WishList> getPage(int page);
+    Page<ProductResponse> getPage(String userId, Pageable pageable);
 }

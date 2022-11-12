@@ -3,18 +3,21 @@ package antigravity.service;
 import antigravity.entity.Product;
 import antigravity.entity.User;
 import antigravity.entity.WishList;
+import antigravity.enums.Like;
 import antigravity.payload.CreateWishListRequest;
 import antigravity.payload.ProductResponse;
-import antigravity.repository.ProductRepository;
-import antigravity.repository.UserRepository;
-import antigravity.repository.WishListRepository;
+import antigravity.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +29,12 @@ public class WishServiceImpl implements WishListService {
     private final ProductRepository productRepository;
 
     private final UserRepository userRepository;
+
+    private final WishListRepositoryCustom wishListRepositoryCustom;
+
+    private final ProductRepositoryCustom productRepositoryCustom;
+
+
 
     @Override
     @Transactional
@@ -53,8 +62,23 @@ public class WishServiceImpl implements WishListService {
     }
 
     @Override
-    public Page<ProductResponse> getPage() {
-        return null;
+    public Page<ProductResponse> getPage(String userId, boolean liked, Pageable pageable) {
+
+        List<Long> productIds = new ArrayList<>();
+
+        if (liked) {
+            return wishListRepositoryCustom.getPage(userId, pageable);
+        } else {
+            List<WishList> userWishList = wishListRepository.findByUserId(Long.valueOf(userId))
+                    .stream().filter(u -> u.getLiked().equals(Like.TRUE)).collect(Collectors.toList());
+
+            userWishList.forEach(w -> {
+                productIds.add(w.getProduct().getId());
+            });
+
+            return productRepositoryCustom.getPage(productIds, pageable).map(p -> new ProductResponse().make(p));
+
+        }
     }
 
 }

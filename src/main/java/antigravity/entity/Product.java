@@ -4,10 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -27,9 +28,6 @@ public class Product extends BaseEntity {
 
     @ColumnDefault("0")
     private Integer viewed;
-
-    @OneToMany(mappedBy = "product")
-    private List<WishList> wishLists = new ArrayList<>();
 
     public void productViewIncrease() {
 
