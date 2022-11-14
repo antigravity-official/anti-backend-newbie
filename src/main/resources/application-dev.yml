@@ -2,12 +2,16 @@ database: hsqldb
 
 # Database Settings
 spring:
+  redis:
+    host: localhost
+    port: 6379
+    password: eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
   datasource:
     url: jdbc:h2:mem:testdb;MODE=mysql;
     username: sa
     password:
     driverClassName: org.h2.Driver
-
+  # JPA
   # H2 Settings
   h2:
     console:
