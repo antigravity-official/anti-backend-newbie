@@ -1,6 +1,6 @@
+DROP TABLE `wish` IF EXISTS;
 DROP TABLE `product` IF EXISTS;
 DROP TABLE `users` IF EXISTS;
-DROP TABLE `wish` IF EXISTS;
 
 CREATE TABLE `product`
 (
