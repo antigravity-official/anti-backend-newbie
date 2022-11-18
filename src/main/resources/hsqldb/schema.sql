@@ -1,5 +1,6 @@
 DROP TABLE `product` IF EXISTS;
-DROP TABLE `user` IF EXISTS;
+DROP TABLE `users` IF EXISTS;
+DROP TABLE `wish` IF EXISTS;
 
 CREATE TABLE `product`
 (
@@ -8,7 +9,6 @@ CREATE TABLE `product`
     `name`       varchar(125)   NOT NULL COMMENT '상품명',
     `price`      decimal(12, 2) NOT NULL COMMENT '가격',
     `quantity`   int            NOT NULL COMMENT '재고량',
-    `liked`      bigint(20)     UNSIGNED DEFAULT '0' NOT NULL COMMENT '좋아요 총 합',
     `view`       bigint(20)     UNSIGNED DEFAULT '0' NOT NULL COMMENT '조회수',
     `created_at` datetime       NOT NULL DEFAULT current_timestamp(),
     `updated_at` datetime                DEFAULT current_timestamp(),
