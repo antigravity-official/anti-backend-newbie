@@ -14,7 +14,7 @@ public class ProductRepository {
 
     // 예시 메서드입니다.
     public Product findById(Long id) {
-        String query = "SELECT id, sku, name, price, quantity, created_at" +
+        String query = "SELECT id, sku, name, price, quantity, view, created_at" +
                 "       FROM product WHERE id = :id";
         MapSqlParameterSource params = new MapSqlParameterSource("id", id);
 
@@ -25,6 +25,7 @@ public class ProductRepository {
                         .name(rs.getString("name"))
                         .price(rs.getBigDecimal("price"))
                         .quantity(rs.getInt("quantity"))
+                        .view(rs.getLong("view"))
                         .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
                         .build());
     }

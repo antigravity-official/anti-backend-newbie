@@ -19,6 +19,7 @@ public class ProductRepositoryTests {
         Long id = 1L;
         Product product = productRepository.findById(id);
         Assertions.assertNotNull(product);
+        Assertions.assertEquals(0, product.getView());
     }
 
 }
