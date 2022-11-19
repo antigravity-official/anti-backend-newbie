@@ -2,7 +2,7 @@ package antigravity.controller;
 
 import antigravity.entity.Product;
 import antigravity.global.common.Constants;
-import antigravity.global.exception.ErrorCode;
+import antigravity.global.common.ErrorCode;
 import antigravity.global.exception.NotFoundException;
 import antigravity.repository.ProductRepository;
 import org.junit.jupiter.api.Assertions;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindException;
 

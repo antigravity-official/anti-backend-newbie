@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static antigravity.global.common.Constants.USER_ID_HEADER;
-import static antigravity.global.exception.ErrorCode.INVALID_TYPE;
-import static antigravity.global.exception.ErrorCode.NOT_EXISTS_HEADER;
+import static antigravity.global.common.ErrorCode.INVALID_TYPE;
+import static antigravity.global.common.ErrorCode.NOT_EXISTS_HEADER;
 
 @Slf4j
 @RequiredArgsConstructor

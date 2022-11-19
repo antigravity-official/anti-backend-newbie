@@ -2,7 +2,7 @@ package antigravity.service;
 
 import antigravity.entity.Product;
 import antigravity.global.exception.BusinessException;
-import antigravity.global.exception.ErrorCode;
+import antigravity.global.common.ErrorCode;
 import antigravity.global.exception.NotFoundException;
 import antigravity.payload.ProductRequest;
 import antigravity.payload.ProductResponse;

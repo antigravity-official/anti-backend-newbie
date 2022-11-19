@@ -1,5 +1,6 @@
 package antigravity.global.exception;
 
+import antigravity.global.common.ErrorCode;
 import lombok.Getter;
 
 @Getter

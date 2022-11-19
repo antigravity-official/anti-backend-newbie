@@ -1,4 +1,4 @@
-package antigravity.global.exception;
+package antigravity.global.common;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

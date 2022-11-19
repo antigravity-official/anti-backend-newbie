@@ -1,9 +1,8 @@
 package antigravity.repository;
 
 import antigravity.entity.Product;
-import antigravity.global.exception.ErrorCode;
+import antigravity.global.common.ErrorCode;
 import antigravity.global.exception.NotFoundException;
-import antigravity.payload.PagingDto;
 import antigravity.payload.ProductRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
