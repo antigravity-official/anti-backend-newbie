@@ -1,5 +1,5 @@
 DROP TABLE `product` IF EXISTS;
-DROP TABLE `user` IF EXISTS;
+DROP TABLE `member` IF EXISTS;
 
 CREATE TABLE `product`
 (
@@ -11,15 +11,17 @@ CREATE TABLE `product`
     `created_at` datetime       NOT NULL DEFAULT current_timestamp(),
     `updated_at` datetime                DEFAULT current_timestamp(),
     `deleted_at` datetime                DEFAULT NULL,
+    `view`       int                    DEFAULT 0,
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `user`
+CREATE TABLE `member`
 (
     `id`         bigint(20) NOT NULL AUTO_INCREMENT,
     `email`      varchar(120) NOT NULL DEFAULT '',
     `name`       varchar(45)           DEFAULT '',
     `created_at` datetime     NOT NULL DEFAULT current_timestamp(),
     `deleted_at` datetime              DEFAULT NULL,
+    `product_id` long                  DEFAULT NULL,
     PRIMARY KEY (`id`)
 );

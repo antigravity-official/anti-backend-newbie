@@ -1,17 +1,20 @@
 package antigravity.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-@Builder
-@ToString
 @Getter
+@Entity
+@NoArgsConstructor
 public class Product {
 
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String sku;
     private String name;
@@ -20,5 +23,10 @@ public class Product {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
+    private int view;
 
+
+    public void viewCount(int count) {
+        this.view = count;
+    }
 }

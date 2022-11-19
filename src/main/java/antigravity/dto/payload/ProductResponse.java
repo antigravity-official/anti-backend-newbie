@@ -1,8 +1,12 @@
-package antigravity.payload;
+package antigravity.dto.payload;
+
+import lombok.Builder;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Builder @Getter
 public class ProductResponse {
 
     private Long id; // 상품아이디

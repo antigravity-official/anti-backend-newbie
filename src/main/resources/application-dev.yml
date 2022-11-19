@@ -1,5 +1,4 @@
 database: hsqldb
-
 # Database Settings
 spring:
   datasource:
@@ -8,6 +7,9 @@ spring:
     password:
     driverClassName: org.h2.Driver
 
+  jpa:
+    defer-datasource-initialization: true
+    show-sql=true:
   # H2 Settings
   h2:
     console:
