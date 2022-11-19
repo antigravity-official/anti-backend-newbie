@@ -4,6 +4,8 @@ import lombok.Data;
 
 import javax.validation.constraints.Min;
 
+import static antigravity.global.common.Constants.DEFAULT_PAGING_SIZE;
+
 @Data
 public class PagingDto {
 
@@ -21,10 +23,10 @@ public class PagingDto {
     }
 
     public int getPage() {
-        return page * 10;
+        return (page * 10);
     }
 
     public int getSize() {
-        return (this.page + 1) * 10;
+        return DEFAULT_PAGING_SIZE;
     }
 }

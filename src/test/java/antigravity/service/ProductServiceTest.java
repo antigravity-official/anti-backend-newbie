@@ -10,11 +10,15 @@ import antigravity.repository.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @SpringBootTest
 @Transactional
@@ -51,9 +55,21 @@ class ProductServiceTest {
     }
 
     @DisplayName("요청 파라미터의 liked가 null이라면 모든 상품을 조회한다.")
-    @Test
-    void getProductList() {
-        List<ProductResponse> productOrWishList = productService.getProductOrWishList(testerId, new ProductRequest(null, 0, 10));
+    @ParameterizedTest
+    @MethodSource("productRequestParams")
+    void getProductList(Boolean liked, int page, int size, int resultSize) {
+        List<ProductResponse> productOrWishList = productService.getProductOrWishList(testerId, new ProductRequest(liked, page, size));
+        int pagedFirstId = (page * 10) + 1; // 1 ~ 21번 더미 데이터는 liked = 0이고 삭제되지 않은 상품이다.
+        Assertions.assertEquals(pagedFirstId, productOrWishList.get(0).getId());
+        Assertions.assertEquals(resultSize, resultSize);
+    }
+
+    private static Stream<Arguments> productRequestParams() {
+        return Stream.of(
+                Arguments.of(null, 0, 10, 10),
+                Arguments.of(null, 1, 10, 10),
+                Arguments.of(null, 2, 10, 3)
+        );
     }
 
     @DisplayName("요청 파라미터의 liked가 true라면 찜한 상품만 조회한다.")
@@ -68,14 +84,22 @@ class ProductServiceTest {
     }
 
 
-    @DisplayName("요청 파라미터의 liked가 false라면 찜하지 않은 상품만 조회한다.")
-    @Test
-    void getNotWishedProductList() {
-        List<ProductResponse> productOrWishList = productService.getProductOrWishList(testerId, new ProductRequest(false, 0, 10));
-        Assertions.assertEquals(10, productOrWishList.size());
+    @DisplayName("요청 파라미터의 liked가 false라면 찜하지 않은 상품만 조회하며 liked = false여야 한다.")
+    @ParameterizedTest
+    @MethodSource("notWishRequestParams")
+    void getNotWishedProductList(Boolean liked, int page, int size, int resultSize) {
+        List<ProductResponse> productOrWishList = productService.getProductOrWishList(testerId, new ProductRequest(liked, page, size));
+        Assertions.assertEquals(resultSize, productOrWishList.size());
         for (ProductResponse productResponse : productOrWishList) {
-            Assertions.assertEquals(0, productResponse.getViewed());
             Assertions.assertEquals(false, productResponse.getLiked());
         }
+    }
+
+    private static Stream<Arguments> notWishRequestParams() {
+        return Stream.of(
+                Arguments.of(false, 0, 10, 10),
+                Arguments.of(false, 1, 10, 10),
+                Arguments.of(false, 2, 10, 1)
+        );
     }
 }
