@@ -9,4 +9,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class StatusResponseDto {
     private String msg;
+    private Object data;
 }

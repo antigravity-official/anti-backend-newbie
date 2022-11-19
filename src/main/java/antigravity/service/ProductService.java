@@ -8,6 +8,7 @@ import antigravity.repository.LikeProductRepository;
 import antigravity.repository.custom.ProductRepository;
 import antigravity.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,9 +82,14 @@ public class ProductService {
         return "success!";
     }
 
-    public List<ProductResponse> likeGet(Boolean liked, Long userId) {
-        List<Product> products = productRepository.likeGet(liked, userId);
+    public List<ProductResponse> likeGet(Boolean liked, Long userId,Pageable pageable) {
+
+        List<Product> products = productRepository.likeGet(liked, userId, pageable);
         Optional<LikeProduct> targets = likeProductRepository.findByUserId(userId);
+        Optional<User> userTarget = userRepository.findById(userId);
+        if (userTarget.isEmpty()) {
+            return null;
+        }
 
         Long targetId = null;
         if (targets.isPresent()) {

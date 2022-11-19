@@ -1,10 +1,10 @@
 package antigravity.repository.custom;
 
-import antigravity.dto.payload.ProductResponse;
 import antigravity.entity.Product;
-import antigravity.entity.QLikeProduct;
-import antigravity.entity.QUser;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public class ProductRepositoryImpl {
     }
 
 
-    public List<Product> likeGet(Boolean liked, Long userId) {
+    public Slice<Product> likeGet(Boolean liked, Long userId, Pageable pageable) {
 
         List<Product> like = jpaQueryFactory
                 .selectFrom(product)
@@ -30,6 +30,8 @@ public class ProductRepositoryImpl {
                 .where(product.deletedAt.isNull()
                         .and(likeProduct.userId.eq(userId))
                         .and(product.id.eq(likeProduct.productId)))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize() + 1)
                 .fetch();
 
         List<Product> result = new ArrayList<>();
@@ -37,20 +39,37 @@ public class ProductRepositoryImpl {
             result = jpaQueryFactory
                     .selectFrom(product)
                     .where(product.ne(likes))
+                    .offset(pageable.getOffset())
+                    .limit(pageable.getPageSize() + 1)
                     .fetch();
         }
 
         List<Product> empty = jpaQueryFactory
                 .selectFrom(product)
                 .where(product.deletedAt.isNull())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize() + 1)
                 .fetch();
 
+
+        boolean hasNext = false;
+
         if (liked == null) {
-            return empty;
+           return getPageSize(empty,pageable);
         } else if (liked) {
-            return like;
+            return getPageSize(like,pageable);
         } else {
-            return result;
+            return getPageSize(result,pageable);
         }
     }
+
+    public SliceImpl<Product> getPageSize(List<Product> box, Pageable pageable) {
+        boolean hasNext = false;
+        if (box.size() > pageable.getPageSize()) {
+            box.remove(pageable.getPageSize());
+            hasNext = true;
+        }
+        return new SliceImpl<>(box, pageable, hasNext);
+    }
+
 }

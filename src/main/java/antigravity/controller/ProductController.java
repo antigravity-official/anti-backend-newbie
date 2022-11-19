@@ -5,6 +5,7 @@ import antigravity.dto.payload.StatusResponseDto;
 import antigravity.entity.Product;
 import antigravity.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,14 +35,19 @@ public class ProductController {
                                              @PathVariable Long userId) {
         String msg = productService.likePost(productId, userId);
         return (msg.equals("success!"))
-                ? new ResponseEntity<>(new StatusResponseDto("성공"), HttpStatus.CREATED)
-                : new ResponseEntity<>(new StatusResponseDto(msg), HttpStatus.BAD_REQUEST);
+                ? new ResponseEntity<>(new StatusResponseDto("성공", null), HttpStatus.CREATED)
+                : new ResponseEntity<>(new StatusResponseDto(msg,null), HttpStatus.BAD_REQUEST);
     }
 
     // TODO 찜 상품 조회 API
     @GetMapping("/products/liked")
-    public List<ProductResponse> getLikeProduct(@RequestParam(name = "liked",required = false) Boolean liked,
-                                        @PathVariable Long userId) {
-        return productService.likeGet(liked,userId);
+    public ResponseEntity<?> getLikeProduct(@RequestParam(name = "liked",required = false) Boolean liked,
+                                            @PathVariable Long userId,
+                                            Pageable pageable) {
+//        List<ProductResponse>
+        return (productService.likeGet(liked, userId, pageable) != null)
+                ? new ResponseEntity<>(new StatusResponseDto("조회 성공", productService.likeGet(liked, userId,pageable)), HttpStatus.OK)
+                : new ResponseEntity<>(new StatusResponseDto("조회 실패", null), HttpStatus.BAD_REQUEST);
+
     }
 }
