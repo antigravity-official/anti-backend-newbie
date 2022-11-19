@@ -8,7 +8,6 @@ import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @Slf4j
 @RestControllerAdvice
@@ -68,6 +67,9 @@ public class GeneralExceptionHandler {
                 .body(errorResponse);
     }
 
+    /**
+     * 중복 데이터를 넣을려고 할 때 오류 발생
+     */
     @ExceptionHandler(value = { DuplicatedEntityException.class })
     protected ResponseEntity<ErrorResponse> handleNotFoundException(DuplicatedEntityException e) {
         log.error("NotFoundException", e);

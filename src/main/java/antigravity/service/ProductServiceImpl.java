@@ -2,7 +2,9 @@ package antigravity.service;
 
 import antigravity.entity.Product;
 import antigravity.entity.Wish;
-import antigravity.global.exception.*;
+import antigravity.global.exception.BusinessException;
+import antigravity.global.exception.ErrorCode;
+import antigravity.global.exception.NotFoundException;
 import antigravity.payload.ProductRequest;
 import antigravity.payload.ProductResponse;
 import antigravity.repository.ProductRepository;
@@ -16,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static antigravity.payload.ProductResponse.*;
+import static antigravity.payload.ProductResponse.toProductResponse;
 
 @Slf4j
 @RequiredArgsConstructor
