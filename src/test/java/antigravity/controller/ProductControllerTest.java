@@ -43,7 +43,7 @@ class ProductControllerTest {
     void userInterceptorFailTest() throws Exception {
         mockMvc.perform(post("/products/liked/{productId}", PRODUCT_TEST_ID))
                 .andExpect(status().is4xxClientError())
-                .andExpect(content().string("{\"errorCode\":\"400 BAD_REQUEST\",\"errorMessage\":\"Can't find a header info\"}"));
+                .andExpect(content().string("{\"statusCode\":\"400 BAD_REQUEST\",\"data\":\"Can't find a header info\"}"));
     }
 
     @DisplayName("헤더에 유저 정보가 있고, 이미 찜한 500(DuplicatedEntityException) 발생")
@@ -52,7 +52,7 @@ class ProductControllerTest {
         mockMvc.perform(post("/products/liked/{productId}", PRODUCT_TEST_ID)
                         .header(Constants.USER_ID_HEADER, TESTER))
                 .andExpect(status().is4xxClientError())
-                .andExpect(content().string("{\"errorCode\":\"500 INTERNAL_SERVER_ERROR\",\"errorMessage\":\"It is already in wishlist\"}"));
+                .andExpect(content().string("{\"statusCode\":\"500 INTERNAL_SERVER_ERROR\",\"data\":\"It is already in wishlist\"}"));
     }
 
     @DisplayName("헤더에 유저 정보가 있고, 이전에 찜한 기록이 없다면 Success")
@@ -61,7 +61,7 @@ class ProductControllerTest {
         mockMvc.perform(post("/products/liked/{productId}", NEW_PRODUCT_TEST_ID)
                         .header(Constants.USER_ID_HEADER, TESTER))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(content().string("{\"successCode\":\"201 CREATED\",\"data\":\"added to wishlist\"}"));
+                .andExpect(content().string("{\"statusCode\":\"201 CREATED\",\"data\":\"added to wishlist\"}"));
     }
 
     @DisplayName("찜을 하면, 상품의 조회수가 1 증가한다. (싱글 스레드)")
