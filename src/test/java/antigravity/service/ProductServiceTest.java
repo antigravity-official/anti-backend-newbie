@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 @SpringBootTest
 @Transactional
 class ProductServiceTest {
@@ -34,16 +37,5 @@ class ProductServiceTest {
     @Test
     void addWishFailWithNotFound() {
         Assertions.assertThrows(NotFoundException.class, () -> productService.addWish(testerId, -1L));
-    }
-
-    @DisplayName("찜을 하면, 상품의 조회수가 1 증가한다.")
-    @Test
-    void addWish() {
-        Long newProduct = 99990L;
-        productService.addWish(testerId, newProduct);
-
-        Product product = productRepository.findById(newProduct).orElseThrow(() -> new NotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
-        Assertions.assertEquals(1, product.getView());
-
     }
 }

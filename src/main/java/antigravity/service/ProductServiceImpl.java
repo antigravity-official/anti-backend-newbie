@@ -7,6 +7,7 @@ import antigravity.repository.ProductRepository;
 import antigravity.repository.WishRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -27,6 +28,8 @@ public class ProductServiceImpl implements ProductService {
         if(optionalWish.isPresent()) {
             throw new BusinessException(ErrorCode.DUPLICATE_WISH_PRODUCT);
         }
+
+        System.out.println("Thread = " + Thread.currentThread().getName());
 
         wishRepository.save(userId, productId);
         productRepository.updateViewCount(product);

@@ -44,3 +44,35 @@ VALUES  (99990, 'G2000000999', '테스트 브라(VBR0945)', 73000, 10);
 
 INSERT INTO `wish` (`user_id`, `product_id`, `created_at`)
 VALUES (99998, 99999, '2022-10-11 13:02:33');
+
+
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10000, 'tester1@antigravity.kr', '테스터1');
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10001, 'tester2@antigravity.kr', '테스터2');
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10002, 'tester3@antigravity.kr', '테스터3');
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10003, 'tester4@antigravity.kr', '테스터4');
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10004, 'tester5@antigravity.kr', '테스터5');
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10005, 'tester6@antigravity.kr', '테스터6');
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10006, 'tester7@antigravity.kr', '테스터7');
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10007, 'tester8@antigravity.kr', '테스터8');
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10008, 'tester9@antigravity.kr', '테스터9');
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10009, 'tester10@antigravity.kr', '테스터10');
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10010, 'tester11@antigravity.kr', '테스터10');
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10011, 'tester12@antigravity.kr', '테스터10');
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10012, 'tester13@antigravity.kr', '테스터10');
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10013, 'tester14@antigravity.kr', '테스터10');
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10014, 'tester15@antigravity.kr', '테스터10');

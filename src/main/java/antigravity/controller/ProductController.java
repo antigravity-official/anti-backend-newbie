@@ -20,7 +20,9 @@ public class ProductController {
     // TODO 찜 상품 등록 API
     @PostMapping("/products/liked/{productId}")
     public SuccessResponse addWish(@RequestHeader(value = "X-USER-ID") Long userId, @PathVariable Long productId) {
-        productService.addWish(userId, productId);
+        synchronized (this) {
+            productService.addWish(userId, productId);
+        }
         return new SuccessResponse(HttpStatus.CREATED.toString(), "added to wishlist");
     }
 

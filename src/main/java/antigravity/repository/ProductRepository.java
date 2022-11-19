@@ -3,6 +3,8 @@ package antigravity.repository;
 import antigravity.entity.Product;
 import antigravity.entity.Wish;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.relational.core.sql.LockMode;
+import org.springframework.data.relational.repository.Lock;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -29,6 +31,7 @@ public class ProductRepository {
         return Optional.ofNullable(results.isEmpty() ? null : results.get(0));
     }
 
+    @Lock(LockMode.PESSIMISTIC_WRITE)
     public void updateViewCount(Product product) {
         String query = "UPDATE product SET view = ? WHERE id = ?";
         jdbcTemplate.update(query, product.getView() + 1, product.getId());

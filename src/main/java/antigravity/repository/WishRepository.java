@@ -2,6 +2,9 @@ package antigravity.repository;
 
 import antigravity.entity.Wish;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
+import org.springframework.data.relational.core.sql.LockMode;
+import org.springframework.data.relational.repository.Lock;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -15,8 +18,6 @@ import java.util.*;
 @RequiredArgsConstructor
 @Repository
 public class WishRepository {
-
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final JdbcTemplate jdbcTemplate;
 
     public Optional<Wish> findById(Long userId, Long productId) {
@@ -27,6 +28,7 @@ public class WishRepository {
         List<Wish> results = jdbcTemplate.query(query, wishMapper, new Object[]{userId, productId});
         return Optional.ofNullable(results.isEmpty() ? null : results.get(0));
     }
+
 
     public void save(Long userId, Long productId) {
         String query = "INSERT INTO wish(user_id, product_id) VALUES (?, ?)";
