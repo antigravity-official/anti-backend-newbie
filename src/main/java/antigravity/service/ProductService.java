@@ -1,12 +1,11 @@
 package antigravity.service;
 
-import antigravity.dto.RequestDto.LikePostRequestDto;
 import antigravity.entity.LikeProduct;
 import antigravity.entity.Product;
 import antigravity.entity.User;
 import antigravity.dto.payload.ProductResponse;
 import antigravity.repository.LikeProductRepository;
-import antigravity.repository.ProductRepository;
+import antigravity.repository.custom.ProductRepository;
 import antigravity.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -57,7 +56,7 @@ public class ProductService {
     public String likePost(Long productId, Long userId) {
         Optional<User> userTarget = userRepository.findById(userId);
         Optional<Product> productTarget = productRepository.findById(productId);
-        LikeProduct target = likeProductRepository.findByUserId(userId);
+        LikeProduct target = likeProductRepository.findByUserId(userId).orElse(null);
 
 //        유저 존재여부 검증
         if (userTarget.isEmpty() || userTarget.get().getDeletedAt() != null) {
@@ -80,5 +79,73 @@ public class ProductService {
         LikeProduct likeProduct = new LikeProduct(userId, productId);
         likeProductRepository.save(likeProduct);
         return "success!";
+    }
+
+    public List<ProductResponse> likeGet(Boolean liked, Long userId) {
+        List<Product> products = productRepository.likeGet(liked, userId);
+        Optional<LikeProduct> targets = likeProductRepository.findByUserId(userId);
+
+        Long targetId = null;
+        if (targets.isPresent()) {
+         targetId = targets.get().getProductId();
+        }
+
+        List<ProductResponse> response = new ArrayList<>();
+        int totalLiked = products.size();
+
+        ProductResponse productResponse = ProductResponse.builder().build();
+//        liked 비어있는 경우
+        if (liked == null) {
+            for (Product product : products) {
+//                찜 상태인 제품인 경우
+                if (product.getId().equals(targetId)) {
+                    productResponse = ProductResponse.builder()
+                            .id(product.getId())
+                            .sku(product.getSku())
+                            .name(product.getName())
+                            .price(product.getPrice())
+                            .quantity(product.getQuantity())
+                            .liked(true)
+                            .totalLiked(totalLiked)
+                            .viewed(product.getView())
+                            .createdAt(product.getCreatedAt())
+                            .updatedAt(product.getUpdatedAt())
+                            .build();
+                    response.add(productResponse);
+                } else {
+//                    찜 상태인 제품이 아닌 경우
+                    productResponse = ProductResponse.builder()
+                            .id(product.getId())
+                            .sku(product.getSku())
+                            .name(product.getName())
+                            .price(product.getPrice())
+                            .quantity(product.getQuantity())
+                            .liked(false)
+                            .totalLiked(totalLiked)
+                            .viewed(product.getView())
+                            .createdAt(product.getCreatedAt())
+                            .updatedAt(product.getUpdatedAt())
+                            .build();
+                    response.add(productResponse);
+                }
+            }
+        } else {
+            for (Product product : products) {
+                productResponse = ProductResponse.builder()
+                        .id(product.getId())
+                        .sku(product.getSku())
+                        .name(product.getName())
+                        .price(product.getPrice())
+                        .quantity(product.getQuantity())
+                        .totalLiked(totalLiked)
+                        .viewed(product.getView())
+                        .createdAt(product.getCreatedAt())
+                        .updatedAt(product.getUpdatedAt())
+                        .build();
+                response.add(productResponse);
+            }
+        }
+
+        return response;
     }
 }

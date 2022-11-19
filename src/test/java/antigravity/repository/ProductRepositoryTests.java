@@ -1,6 +1,7 @@
 package antigravity.repository;
 
 import antigravity.entity.Product;
+import antigravity.repository.custom.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class ProductRepositoryTests {
     @Test
     public void findByIdTest() {
         Long id = 1L;
-        Product product = productRepository.findById(id);
+        Product product = productRepository.findById(id).orElse(null);
         Assertions.assertNotNull(product);
     }
 

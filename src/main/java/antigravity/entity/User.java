@@ -1,9 +1,11 @@
 package antigravity.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity @Getter
@@ -23,6 +25,5 @@ public class User {
     private LocalDateTime deletedAt;
     @Column
     private Long productId;
-
 
 }

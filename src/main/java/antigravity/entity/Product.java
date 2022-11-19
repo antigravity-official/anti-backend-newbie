@@ -25,7 +25,6 @@ public class Product {
     private LocalDateTime deletedAt;
     private int view;
 
-
     public void viewCount(int count) {
         this.view = count;
     }
