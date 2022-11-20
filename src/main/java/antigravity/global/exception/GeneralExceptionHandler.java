@@ -1,7 +1,6 @@
 package antigravity.global.exception;
 
 import antigravity.global.response.ApiResponse;
-import antigravity.global.response.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,7 @@ public class GeneralExceptionHandler {
     /**
      * javax.validation.Valid 또는 @Validated binding error가 발생할 경우
      */
-    @ExceptionHandler(BindException.class)
+    @ExceptionHandler({BindException.class})
     protected ResponseEntity<ApiResponse> handleBindException(BindException e) {
         log.error("handleBindException", e);
         ApiResponse errorResponse = ApiResponse.of(HttpStatus.BAD_REQUEST.toString(), e.getBindingResult());

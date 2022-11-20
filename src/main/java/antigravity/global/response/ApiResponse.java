@@ -3,6 +3,9 @@ package antigravity.global.response;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+
+import java.util.List;
 
 @Getter
 @Builder
@@ -26,8 +29,28 @@ public class ApiResponse {
     public static ApiResponse of(String statusCode, BindingResult bindingResult) {
         return ApiResponse.builder()
                 .statusCode(statusCode)
-                .data(bindingResult)
+                .data(createErrorMessage(bindingResult))
                 .build();
+    }
+
+    private static String createErrorMessage(BindingResult bindingResult) {
+        StringBuilder sb = new StringBuilder();
+        boolean isFirst = true;
+
+        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+        for (FieldError fieldError : fieldErrors) {
+            if(!isFirst) {
+                sb.append(", ");
+            } else {
+                isFirst = false;
+            }
+            sb.append("[");
+            sb.append(fieldError.getField());
+            sb.append("] ");
+            sb.append(fieldError.getDefaultMessage());
+        }
+
+        return sb.toString();
     }
 
 

@@ -3,13 +3,9 @@ package antigravity.repository;
 import antigravity.entity.Product;
 import antigravity.payload.ProductRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.relational.core.sql.LockMode;
-import org.springframework.data.relational.repository.Lock;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,7 +25,6 @@ public class JdbcProductRepository implements ProductRepository {
         return Optional.ofNullable(results.isEmpty() ? null : results.get(0));
     }
 
-//    @Lock(LockMode.PESSIMISTIC_WRITE)
     @Override
     public void updateViewCount(Product product) {
         String query = "UPDATE product SET view = ?, updated_at = ? WHERE id = ?";

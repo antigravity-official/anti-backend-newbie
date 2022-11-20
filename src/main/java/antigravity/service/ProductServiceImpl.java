@@ -2,8 +2,8 @@ package antigravity.service;
 
 import antigravity.entity.Product;
 import antigravity.entity.Wish;
-import antigravity.global.exception.BusinessException;
 import antigravity.global.common.ErrorCode;
+import antigravity.global.exception.BusinessException;
 import antigravity.global.exception.NotFoundException;
 import antigravity.payload.ProductRequest;
 import antigravity.payload.ProductResponse;
@@ -12,7 +12,6 @@ import antigravity.repository.JdbcWishRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -32,6 +31,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public void addWish(Long userId, Long productId) {
+        log.debug("Thread = {}", Thread.currentThread().getName());
         Product product = jdbcProductRepository.findById(productId).orElseThrow(() -> new NotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
 
         Optional<Wish> optionalWish = jdbcWishRepository.findById(userId, productId);
@@ -40,7 +40,6 @@ public class ProductServiceImpl implements ProductService {
         }
 
         jdbcWishRepository.save(userId, productId);
-
         jdbcProductRepository.updateViewCount(product);
     }
 
