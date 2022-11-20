@@ -23,16 +23,14 @@ public class ProductController {
     // TODO 찜 상품 등록 API
     @PostMapping("/liked/{productId}")
     public ApiResponse addWish(@RequestHeader(value = "X-USER-ID") Long userId, @PathVariable Long productId) {
-        synchronized (this) {
-            productService.addWish(userId, productId);
-        }
+        productService.addWish(userId, productId);
         return new ApiResponse(HttpStatus.CREATED.toString(), "added to wishlist");
     }
 
     // TODO 찜 상품 조회 API
     @GetMapping
-    public ApiResponse getWishList(@RequestHeader(value = "X-USER-ID") Long userId,
-                                   @ModelAttribute @Valid ProductRequest productRequest) {
+    public ApiResponse getProductOrWishList(@RequestHeader(value = "X-USER-ID") Long userId,
+                                            @ModelAttribute @Valid ProductRequest productRequest) {
         List<ProductResponse> responses = productService.getProductOrWishList(userId, productRequest);
         return new ApiResponse(HttpStatus.OK.toString(), responses);
     }

@@ -8,6 +8,8 @@ import org.springframework.data.relational.repository.Lock;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,13 +24,13 @@ public class JdbcProductRepository implements ProductRepository {
     public Optional<Product> findById(Long id) {
 
         String query = "SELECT id, sku, name, price, quantity, view, created_at, updated_at" +
-                "       FROM product WHERE id = ?";
+                "       FROM product WHERE id = ? FOR UPDATE";
         List<Product> results = jdbcTemplate.query(query, productMapper, new Object[]{id});
         return Optional.ofNullable(results.isEmpty() ? null : results.get(0));
     }
 
+//    @Lock(LockMode.PESSIMISTIC_WRITE)
     @Override
-    @Lock(LockMode.PESSIMISTIC_WRITE)
     public void updateViewCount(Product product) {
         String query = "UPDATE product SET view = ?, updated_at = ? WHERE id = ?";
         jdbcTemplate.update(query, product.getView() + 1, LocalDateTime.now(), product.getId());
