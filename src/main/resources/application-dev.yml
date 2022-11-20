@@ -2,17 +2,36 @@ database: hsqldb
 
 # Database Settings
 spring:
+  redis:
+    host: localhost
+    port: 6379
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
   datasource:
     url: jdbc:h2:mem:testdb;MODE=mysql;
     username: sa
     password:
     driverClassName: org.h2.Driver
 
-  # H2 Settings
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+  mvc:
+    path match:
+      matching-strategy: ant_path_matcher
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create
+    defer-datasource-initialization: true
+    show-sql: true
+    generate-ddl: true
+    properties:
+      hibernate:
+
+        auto_quote_keyword: true
 
   logging:
     level:
@@ -20,6 +39,6 @@ spring:
         springframework.web: debug
   sql:
     init:
-      schema-locations: classpath*:/${database}/schema.sql
+#      schema-locations: classpath*:/${database}/schema.sql
       data-locations: classpath*:/${database}/data.sql
       platform: h2
