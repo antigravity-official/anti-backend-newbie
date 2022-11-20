@@ -3,7 +3,7 @@ database: hsqldb
 # Database Settings
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb;MODE=mysql;
+    url: jdbc:h2:mem:testdb;MODE=mysql;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=10000;
     username: sa
     password:
     driverClassName: org.h2.Driver

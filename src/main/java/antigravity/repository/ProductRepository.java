@@ -1,32 +1,20 @@
 package antigravity.repository;
 
 import antigravity.entity.Product;
-import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.stereotype.Repository;
+import antigravity.payload.ProductRequest;
+import org.springframework.data.relational.core.sql.LockMode;
+import org.springframework.data.relational.repository.Lock;
 
-@RequiredArgsConstructor
-@Repository
-public class ProductRepository {
+import java.util.List;
 
-    private final NamedParameterJdbcTemplate jdbcTemplate;
+public interface ProductRepository extends CommonRepository<Product> {
 
-    // 예시 메서드입니다.
-    public Product findById(Long id) {
-        String query = "SELECT id, sku, name, price, quantity, created_at" +
-                "       FROM product WHERE id = :id";
-        MapSqlParameterSource params = new MapSqlParameterSource("id", id);
+    @Lock(LockMode.PESSIMISTIC_WRITE)
+    void updateViewCount(Product product);
 
-        return jdbcTemplate.queryForObject(query, params, (rs, rowNum) ->
-                Product.builder()
-                        .id(rs.getLong("id"))
-                        .sku(rs.getString("sku"))
-                        .name(rs.getString("name"))
-                        .price(rs.getBigDecimal("price"))
-                        .quantity(rs.getInt("quantity"))
-                        .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
-                        .build());
-    }
+    List<Product> getProductList(ProductRequest request);
 
+    List<Product> getWishList(Long userId, ProductRequest request);
+
+    List<Product> getNotWishProductList(Long userId, ProductRequest request);
 }

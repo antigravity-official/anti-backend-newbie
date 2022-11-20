@@ -18,17 +18,48 @@ VALUES ('G2000000019', 'No1. 더핏세트', 42800, 10),
        ('G2000000212', '소울 라이트 여성 드로즈', 18900, 10),
        ('G2000000312', '부유방 보정 프리컷 누디 브라 (KBRE134)', 11900, 10),
        ('G2000000411', '비너스 몰드 스타일 데일리 브라(VBRQ508)', 35000, 10),
-       ('G2000000520', 'Cerulean nylon trench coat', 3515000.00, 10);
+       ('G2000000520', 'Cerulean nylon trench coat', 3515000.00, 10),
+       ('G2000000521', '페이징 때문에 넣은 더미 데이터', 3515000.00, 10);
 
 INSERT INTO `product` (`sku`, `name`, `price`, `quantity`, `deleted_at`)
 VALUES ('G2000000521', '에어러블업 브라(VBR0945)', 73000, 10, '2022-10-11 13:02:33'),
        ('G2000000523', '기능성 등살 보정브라(VGBM110)', 99000, 10, '2022-10-11 13:02:33'),
        ('G2000000525', 'No4. 더핏세트', 51000, 10, '2021-11-11 13:02:33');
 
-INSERT INTO `user` (`email`, `name`, `deleted_at`)
+INSERT INTO `users` (`email`, `name`, `deleted_at`)
 VALUES ('user1@antigravity.kr', '회원1', '2021-10-10 16:11:23');
 
-INSERT INTO `user` (`email`, `name`)
+INSERT INTO `users` (`email`, `name`)
 VALUES ('user2@antigravity.kr', '회원2'),
        ('user3@antigravity.kr', '회원3'),
        ('user4@antigravity.kr', '회원4');
+
+INSERT INTO `product` (`id`, `sku`, `name`, `price`, `quantity`, `view`)
+VALUES  (99999, 'G2000000999', '테스트 브라(VBR0945)', 73000, 10, '1'),
+        (100000, 'G2000000999', '테스트 브라(VBR0945)', 73000, 10, '1');
+
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10000, 'tester1@antigravity.kr', '테스터1');
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10001, 'tester2@antigravity.kr', '테스터2');
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10002, 'tester3@antigravity.kr', '테스터3');
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10003, 'tester4@antigravity.kr', '테스터4');
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10004, 'tester5@antigravity.kr', '테스터5');
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10005, 'tester6@antigravity.kr', '테스터6');
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10006, 'tester7@antigravity.kr', '테스터7');
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10007, 'tester8@antigravity.kr', '테스터8');
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10008, 'tester9@antigravity.kr', '테스터9');
+INSERT INTO `users` (`id`, `email`, `name`)
+VALUES (10009, 'tester10@antigravity.kr', '테스터10');
+
+INSERT INTO `wish` (`user_id`, `product_id`, `created_at`)
+VALUES (10000, 99999, '2022-10-11 13:02:33');
+INSERT INTO `wish` (`user_id`, `product_id`, `created_at`)
+VALUES (10000, 100000, '2022-10-11 13:02:33');
