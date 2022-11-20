@@ -8,16 +8,22 @@ import antigravity.repository.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindException;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Stream;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -124,27 +130,64 @@ class ProductControllerTest {
     }
 
     @DisplayName("쿼리 파라미터로 liked가 안왔을 때")
-    @Test
-    void getProductList() throws Exception {
-        mockMvc.perform(get("/products?page=" + 0 + "&size=" + 10)
+    @ParameterizedTest
+    @MethodSource("productListParams")
+    void getProductList(int page, int size, int idx, boolean isWish) throws Exception {
+
+        mockMvc.perform(get("/products?page=" + page + "&size=" + size)
                         .header(Constants.USER_ID_HEADER, TESTER))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.data[" + idx + "].liked").value(isWish))
                 .andDo(print());
+    }
+
+    private static Stream<Arguments> productListParams() {
+        return Stream.of(
+                Arguments.of(0, 10, 0, false),
+                Arguments.of(1, 10, 0, false),
+                Arguments.of(2, 10, 0, false),
+                Arguments.of(2, 10, 1, true), // 내가 찜한 상품
+                Arguments.of(2, 10, 2, true)  // 내가 찜한 상품
+        );
     }
 
     @DisplayName("쿼리 파라미터로 liked가 true로 넘어오면 찜한 상품만 조회한다.")
-    @Test
-    void getWishList() throws Exception {
-        mockMvc.perform(get("/products?liked=true&page=" + 0 + "&size=" + 10)
+    @ParameterizedTest
+    @MethodSource("wishListParams")
+    void getWishList(int page, int size, int idx, boolean isWish) throws Exception {
+        mockMvc.perform(get("/products?liked=true&page=" + page + "&size=" + size)
                         .header(Constants.USER_ID_HEADER, TESTER))
-                .andDo(print());
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.data", hasSize(2)))
+                .andExpect(jsonPath("$.data[" + idx + "].liked").value(isWish));
+    }
+
+    private static Stream<Arguments> wishListParams() {
+        return Stream.of(
+                Arguments.of(0, 10, 0, true),
+                Arguments.of(0, 10, 1, true)
+        );
     }
 
     @DisplayName("쿼리 파라미터로 liked가 false로 넘어오면 찜하지 않은 상품만 조회한다.")
-    @Test
-    void getNotWishedList() throws Exception {
-        mockMvc.perform(get("/products?liked=false&page=" + 0 + "&size=" + 10)
+    @ParameterizedTest
+    @MethodSource("notWishListParams")
+    void getNotWishedList(int page, int size, int idx, boolean isWish) throws Exception {
+        mockMvc.perform(get("/products?liked=false&page=" + page + "&size=" + size)
                         .header(Constants.USER_ID_HEADER, TESTER))
-                .andDo(print());
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.data[" + idx + "].liked").value(isWish));
+    }
+
+    private static Stream<Arguments> notWishListParams() {
+        return Stream.of(
+                Arguments.of(0, 10, 0, false),
+                Arguments.of(1, 10, 0, false),
+                Arguments.of(2, 10, 0, false)
+        );
     }
 
 }
