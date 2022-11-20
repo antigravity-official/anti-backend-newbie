@@ -4,7 +4,6 @@ import antigravity.entity.Product;
 import antigravity.global.common.ErrorCode;
 import antigravity.global.exception.NotFoundException;
 import antigravity.payload.ProductRequest;
-import antigravity.payload.ProductResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

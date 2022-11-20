@@ -7,8 +7,8 @@ import antigravity.global.common.ErrorCode;
 import antigravity.global.exception.NotFoundException;
 import antigravity.payload.ProductRequest;
 import antigravity.payload.ProductResponse;
-import antigravity.repository.ProductRepository;
-import antigravity.repository.WishRepository;
+import antigravity.repository.JdbcProductRepository;
+import antigravity.repository.JdbcWishRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,21 +25,21 @@ import static antigravity.payload.ProductResponse.toProductResponse;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductRepository productRepository;
-    private final WishRepository wishRepository;
+    private final JdbcProductRepository jdbcProductRepository;
+    private final JdbcWishRepository jdbcWishRepository;
 
     @Transactional
     @Override
     public void addWish(Long userId, Long productId) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new NotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
+        Product product = jdbcProductRepository.findById(productId).orElseThrow(() -> new NotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
 
-        Optional<Wish> optionalWish = wishRepository.findById(userId, productId);
+        Optional<Wish> optionalWish = jdbcWishRepository.findById(userId, productId);
         if(optionalWish.isPresent()) {
             throw new BusinessException(ErrorCode.DUPLICATE_WISH_PRODUCT);
         }
 
-        wishRepository.save(userId, productId);
-        productRepository.updateViewCount(product);
+        jdbcWishRepository.save(userId, productId);
+        jdbcProductRepository.updateViewCount(product);
     }
 
     @Transactional(readOnly = true)
@@ -47,11 +47,11 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductResponse> getProductOrWishList(Long userId, ProductRequest request) {
         List<Product> results = new ArrayList<>();
         if(request.getLiked() == null) { // 전체 상품 조회
-            results = productRepository.getProductList(request);
+            results = jdbcProductRepository.getProductList(request);
         } else if(request.getLiked()) { // 찜한 상품만 조회
-            results = productRepository.getWishList(userId, request);
+            results = jdbcProductRepository.getWishList(userId, request);
         } else if(!request.getLiked()){
-            results = productRepository.getNotWishProductList(userId, request);
+            results = jdbcProductRepository.getNotWishProductList(userId, request);
         }
 
         return this.toResponse(userId, results);
@@ -60,7 +60,7 @@ public class ProductServiceImpl implements ProductService {
     private List<ProductResponse> toResponse(Long userId, List<Product> result) {
         List<ProductResponse> responses = new ArrayList<>();
         for (Product product : result) {
-            Optional<Wish> userWish = wishRepository.findById(userId, product.getId());
+            Optional<Wish> userWish = jdbcWishRepository.findById(userId, product.getId());
             if(userWish.isPresent()) {
                 responses.add(toProductResponse(product, true));
             } else {
