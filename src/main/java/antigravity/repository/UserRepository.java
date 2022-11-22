@@ -1,19 +1,19 @@
 package antigravity.repository;
 
-import antigravity.entity.Product;
+import antigravity.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Repository
-@Transactional(readOnly = true)
-public class ProductRepository {
+public class UserRepository {
     private final EntityManager em;
 
-    public Product findById(Long id) {
-        return em.find(Product.class, id);
+    public User findById(Long id) {
+        return em.find(User.class, id);
     }
 }

@@ -23,3 +23,13 @@ CREATE TABLE `user`
     `deleted_at` datetime              DEFAULT NULL,
     PRIMARY KEY (`id`)
 );
+
+CREATE TABLE `liked_product`
+(
+    `id`         bigint(20) NOT NULL AUTO_INCREMENT,
+    `product_id` bigint(20) NOT NULL,
+    `user_id`    bigint(20) NOT NULL,
+     PRIMARY KEY (`id`),
+     FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
+     FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+);
