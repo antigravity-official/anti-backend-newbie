@@ -34,13 +34,14 @@ public class LikedProductRpository {
     }
 
     public Long countByProductId(Long id) {
-        String sql = "select COUNT(lp.id) from LikedProduct lp where lp.id = :id";
+        String sql = "select COUNT(lp) from LikedProduct lp where lp.product.id = :id";
         Long likedProductCount = em.createQuery(sql, Long.class)
                 .setParameter("id", id)
                 .getSingleResult();
         return likedProductCount;
     }
 
+    @Transactional
     public void save(LikedProduct likedProduct) {
         em.persist(likedProduct);
     }

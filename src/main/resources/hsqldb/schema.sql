@@ -33,3 +33,15 @@ CREATE TABLE `liked_product`
      FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
      FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 );
+
+
+CREATE TABLE `product_statistics`
+(
+    `id`         bigint(20) NOT NULL AUTO_INCREMENT,
+    `product_id` bigint(20) NOT NULL COMMENT '상품아이디',
+    `view_count` int NOT NULL DEFAULT 0 COMMENT '조회수',
+    `created_at` datetime     NOT NULL DEFAULT current_timestamp(),
+    `deleted_at` datetime              DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
+);

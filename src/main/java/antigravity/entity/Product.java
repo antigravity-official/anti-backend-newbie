@@ -6,6 +6,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.io.CharArrayReader;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 60)
@@ -44,16 +45,8 @@ public class Product {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-/*
-    public static Product createProduct(Long id, String sku, String name, BigDecimal price, Integer quantity) {
-        return Product.builder()
-                .id(id)
-                .sku(sku)
-                .name(name)
-                .price(price)
-                .quantity(quantity)
-                .build();
-    }*/
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
+    private ProductStatistics productStatistics;
 
     @Builder
     public Product(Long id, String sku, String name, BigDecimal price, Integer quantity) {
@@ -62,5 +55,13 @@ public class Product {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
+    }
+
+    public ProductStatistics createProductStatistics() {
+        ProductStatistics productStatistics = ProductStatistics.builder()
+                .product(this)
+                .build();
+        this.productStatistics = productStatistics;
+        return productStatistics;
     }
 }

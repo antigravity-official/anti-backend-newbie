@@ -2,6 +2,7 @@ package antigravity.service;
 
 import antigravity.entity.LikedProduct;
 import antigravity.entity.Product;
+import antigravity.entity.ProductStatistics;
 import antigravity.entity.User;
 import antigravity.repository.LikedProductRpository;
 import antigravity.repository.ProductRepository;
