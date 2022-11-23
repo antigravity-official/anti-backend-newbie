@@ -25,6 +25,12 @@ public class LikedProduct {
     @JoinColumn(name = "user_id")
     private Customer customer;
 
+    /**
+     * 좋아요한 상품을 생성한다..
+     * @param product 좋아요한 상품
+     * @param customer 좋아요한 고객
+     * @return 좋아요한 상품
+     */
     public static LikedProduct createLikedProduct(Product product, Customer customer) {
         return LikedProduct.builder()
                 .product(product)

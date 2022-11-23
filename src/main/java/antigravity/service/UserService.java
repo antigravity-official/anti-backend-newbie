@@ -13,9 +13,17 @@ import java.util.Objects;
 @Transactional(readOnly = true)
 public class UserService {
     private final UserRepository userRepository;
+
     public Customer findById(Long userId) {
         return userRepository.findById(userId);
     }
+
+    /**
+     * 해당상품이 좋아요가 됐는지 체크한다.
+     * @param userId 사용자 아이디
+     * @param productId 상품 아이디
+     * @return 좋아요 상품 등록 여부
+     */
     public boolean isLikeProduct(Long userId, Long productId) {
         Customer foundCustomer = findById(userId);
 

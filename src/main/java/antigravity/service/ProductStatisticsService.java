@@ -17,6 +17,10 @@ public class ProductStatisticsService {
     private final ProductStatisticsRepository productStatisticsRepository;
     private final ProductRepository productRepository;
 
+    /**
+     * 조회 수를 증가한다.
+     * @param productId 상품아이디
+     */
     @Transactional
     public void increaseViewCount(Long productId) {
         Product foundProduct = productRepository.findById(productId);
