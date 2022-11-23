@@ -9,7 +9,7 @@
 
 ## 배경
 
-- 고객(user)와 상품(products) 테이블의 스키마, 데이터가 제공됩니다.
+- 고객(customer)와 상품(products) 테이블의 스키마, 데이터가 제공됩니다.
 - API 요청에 커스텀 헤더가 있습니다.
     - X-USER-ID: Integer
 
@@ -18,18 +18,18 @@
 ### 찜 상품 등록
 
 - [POST] `/products/liked/{productId}`
-- {user}가 {productId}를 찜 했다는 정보를 저장합니다.
-- {user}가 찜을 할 때마다 **상품 조회 수**도 1 증가합니다.
-- {user}가 존재하지 않거나 잘못된 {productId}로 요청을 했거나 이미 찜한 상품일 경우 `400 Bad Request` 로 응답합니다.
+- {customer}가 {productId}를 찜 했다는 정보를 저장합니다.
+- {customer}가 찜을 할 때마다 **상품 조회 수**도 1 증가합니다.
+- {customer}가 존재하지 않거나 잘못된 {productId}로 요청을 했거나 이미 찜한 상품일 경우 `400 Bad Request` 로 응답합니다.
 - 정상적으로 등록이 완료되면 `201 Created` 로 응답하며, 응답 본문은 자유롭게 구현할 수 있습니다.
 
 ### 찜 상품 조회
 
 - [GET] `/products?liked?liked={boolean}&page={integer}&size={integer}`
 - 페이징 된 상품 목록을 조회합니다.
-- liked 파라미터가 없으면 모든 상품을 조회하되 {user}가 찜한 상품에 `liked: true`를 추가하고
+- liked 파라미터가 없으면 모든 상품을 조회하되 {customer}가 찜한 상품에 `liked: true`를 추가하고
 - `liked=false` 이면 찜하지 않은 상품만 조회
-- `liked=true` 이면 {user}가 찜한 상품만 조회합니다.
+- `liked=true` 이면 {customer}가 찜한 상품만 조회합니다.
 - 잘못된 파라미터가 들어오면 `400 Bad Request` 로 응답합니다.
 - 정상인 경우 `200 OK` 로 응답하며, 응답 본문은 `antigravity.payload.ProductResponse` 를 참고하여 작성합니다.
 - 한 상품의 응답 `json` 명세는 기본적으로 다음과 같습니다. 아래 명세를 바탕으로 **페이징 된 전체 응답 객체**를 구성 해주세요.

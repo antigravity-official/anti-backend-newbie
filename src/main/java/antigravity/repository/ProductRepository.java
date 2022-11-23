@@ -2,31 +2,75 @@ package antigravity.repository;
 
 import antigravity.entity.Product;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Repository
+@Transactional(readOnly = true)
 public class ProductRepository {
+    private final EntityManager em;
 
-    private final NamedParameterJdbcTemplate jdbcTemplate;
-
-    // 예시 메서드입니다.
     public Product findById(Long id) {
-        String query = "SELECT id, sku, name, price, quantity, created_at" +
-                "       FROM product WHERE id = :id";
-        MapSqlParameterSource params = new MapSqlParameterSource("id", id);
-
-        return jdbcTemplate.queryForObject(query, params, (rs, rowNum) ->
-                Product.builder()
-                        .id(rs.getLong("id"))
-                        .sku(rs.getString("sku"))
-                        .name(rs.getString("name"))
-                        .price(rs.getBigDecimal("price"))
-                        .quantity(rs.getInt("quantity"))
-                        .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
-                        .build());
+        return em.find(Product.class, id);
     }
+
+    public List<Product> findAll(Integer offset, Integer limit) {
+        String sql = " SELECT p FROM Product p ";
+
+        TypedQuery<Product> productTypedQuery = em.createQuery(sql, Product.class);
+        if (offset != null && limit != null) {
+            productTypedQuery
+                    .setFirstResult(offset)
+                    .setMaxResults(limit);
+        }
+        return productTypedQuery.getResultList();
+    }
+
+    public List<Product> findLikedProduct(Long userId, Integer offset, Integer limit) {
+        String sql = " SELECT p FROM Product p " +
+                " LEFT JOIN LikedProduct lp ON lp.product.id = p.id " +
+                " WHERE " +
+                " lp.customer.id = :userId ";
+
+
+        TypedQuery<Product> query = em.createQuery(sql, Product.class)
+                .setParameter("userId", userId);
+
+        if (offset != null && limit != null) {
+            query.setFirstResult(offset)
+                    .setMaxResults(limit);
+        }
+        return query.getResultList();
+    }
+
+
+    public List<Product> findNotLikedProduct(Long userId, Integer offset, Integer limit) {
+        String sql =
+                "SELECT p FROM \n" +
+                        "              Product p \n" +
+                        "    WHERE \n" +
+                        "      p.id NOT IN ( \n" +
+                        "          SELECT lp.product.id \n" +
+                        "          FROM\n" +
+                        "               LikedProduct lp \n" +
+                        "          WHERE lp.customer.id = :userId)\n";
+
+        TypedQuery<Product> query = em.createQuery(sql, Product.class)
+                .setParameter("userId", userId);
+
+        if (offset != null && limit != null) {
+            query.setFirstResult(offset)
+                    .setMaxResults(limit);
+        }
+
+        return query.getResultList();
+    }
+
 
 }

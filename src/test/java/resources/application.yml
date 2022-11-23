@@ -1,0 +1,23 @@
+#테스트 수행시 해당 yml 을 탄다.
+# 아래 주석한것은 따로 지정하지 않으면
+# 스프링이 알아서 메모리로 돌린다.
+
+spring:
+ datasource:
+   url:  jdbc:h2:mem:test
+   username: sa
+   password:
+   driver-class-name: org.h2.Driver
+
+jpa:
+  hibernate:
+    ddl-auto: create #자동으로 table을 생성해주는 모드
+  properties:
+    hibernate:
+       show_sql: true #systemout 으로 찍음 운영 환경에서는 사용하지 말아야 된다.
+       format_sql: true
+
+logging:
+  level:
+    org.hibernate.SQL: debug #로거를 통해서 로그를 찍는다.
+    org.hibernate.type: trace
