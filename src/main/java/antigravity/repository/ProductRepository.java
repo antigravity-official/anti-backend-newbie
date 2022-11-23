@@ -36,13 +36,17 @@ public class ProductRepository {
         String sql = " SELECT p FROM Product p " +
                 " LEFT JOIN LikedProduct lp ON lp.product.id = p.id " +
                 " WHERE " +
-                " lp.user.id = :userId ";
+                " lp.customer.id = :userId ";
 
-        return em.createQuery(sql, Product.class)
-                .setParameter("userId", userId)
-                .setFirstResult(offset)
-                .setMaxResults(limit)
-                .getResultList();
+
+        TypedQuery<Product> query = em.createQuery(sql, Product.class)
+                .setParameter("userId", userId);
+
+        if (offset != null && limit != null) {
+            query.setFirstResult(offset)
+                    .setMaxResults(limit);
+        }
+        return query.getResultList();
     }
 
 
@@ -55,7 +59,7 @@ public class ProductRepository {
                         "          SELECT lp.product.id \n" +
                         "          FROM\n" +
                         "               LikedProduct lp \n" +
-                        "          WHERE lp.user.id = :userId)\n";
+                        "          WHERE lp.customer.id = :userId)\n";
 
         return em.createQuery(sql, Product.class)
                 .setParameter("userId", userId)
