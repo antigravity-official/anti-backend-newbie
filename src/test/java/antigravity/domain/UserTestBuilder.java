@@ -1,18 +1,14 @@
 package antigravity.domain;
 
-import antigravity.entity.LikedProduct;
-import antigravity.entity.Product;
-import antigravity.entity.User;
-
-import java.math.BigDecimal;
+import antigravity.entity.Customer;
 
 public class UserTestBuilder {
-    public static User createUser0() {
-        User user = User.builder()
+    public static Customer createUser0() {
+        Customer customer = Customer.builder()
                 .email("'user3@antigravity.kr'")
                 .name("회원3")
                 .build();
 
-        return user;
+        return customer;
     }
 }

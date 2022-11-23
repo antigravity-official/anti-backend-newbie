@@ -1,9 +1,7 @@
 package antigravity.entity;
 
 import lombok.*;
-import lombok.extern.java.Log;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,9 +11,9 @@ import java.util.List;
 @ToString
 @Getter
 @Entity
-@Table(name = "user")
+@Table(name = "customer")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +25,6 @@ public class User {
     @Column(length = 45, nullable = false)
     private String name;
 
-
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
@@ -35,19 +32,23 @@ public class User {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "customer")
     private List<LikedProduct> likedProducts = new ArrayList<>();
 
     @Builder
-    public User(Long id,
-                String email,
-                String name,
-                LocalDateTime createdAt,
-                LocalDateTime deletedAt) {
+    public Customer(Long id,
+                    String email,
+                    String name,
+                    LocalDateTime createdAt,
+                    LocalDateTime deletedAt) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.createdAt = createdAt;
         this.deletedAt = deletedAt;
+    }
+
+    public void addLikeProducts(LikedProduct likedProduct) {
+        likedProducts.add(likedProduct);
     }
 }

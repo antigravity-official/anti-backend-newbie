@@ -2,10 +2,8 @@ package antigravity.service;
 
 import antigravity.domain.ProductTestBuilder;
 import antigravity.entity.Product;
-import antigravity.entity.ProductStatistics;
 import antigravity.repository.ProductRepository;
 import antigravity.repository.ProductStatisticsRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;

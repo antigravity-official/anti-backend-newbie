@@ -1,8 +1,6 @@
 package antigravity.domain;
 
-import antigravity.entity.LikedProduct;
 import antigravity.entity.Product;
-import antigravity.entity.User;
 
 import java.math.BigDecimal;
 

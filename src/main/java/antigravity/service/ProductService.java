@@ -1,18 +1,16 @@
 package antigravity.service;
 
+import antigravity.entity.Customer;
 import antigravity.entity.LikedProduct;
 import antigravity.entity.Product;
-import antigravity.entity.ProductStatistics;
-import antigravity.entity.User;
+import antigravity.exception.CustomException;
+import antigravity.exception.ErrorCode;
 import antigravity.repository.LikedProductRpository;
 import antigravity.repository.ProductRepository;
 import antigravity.repository.UserRepository;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 
@@ -32,31 +30,45 @@ public class ProductService {
      */
     @Transactional
     public void registerLikeProduct(Long productId, Long userId) throws IllegalArgumentException {
-        User foundUser = userRepository.findById(userId);
-        if (foundUser == null) {
-            throw new IllegalArgumentException("The User dose not exist.");
+        Customer foundCustomer = userRepository.findById(userId);
+        if (foundCustomer == null) {
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
         }
 
         Product foundProduct = productRepository.findById(productId);
         if (foundProduct == null) {
-            throw new IllegalArgumentException("The product dose not exist.");
+            throw new CustomException(ErrorCode.PRODUCT_NOT_FOUND);
         }
 
         if (isAlreadyLikedProduct(productId, userId)) {
-            throw new IllegalArgumentException("This product is already liked Product.");
+            throw new CustomException(ErrorCode.PRODUCT_NOT_FOUND);
         }
 
-        LikedProduct likedProduct = LikedProduct.createLikedProduct(foundProduct, foundUser);
+        LikedProduct likedProduct = LikedProduct.createLikedProduct(foundProduct, foundCustomer);
         likedProductRpository.save(likedProduct);
     }
 
-
-    public List<Product> findByLikedStatus(Boolean like, Integer page, Integer size) {
+    /**
+     * LIKE 에 따라서 조회 조건 분기 하여 상품목록을 가져온다.
+     * @param userId 사용자 아이디
+     * @param like 좋아요 여부
+     * @param page 조회 offset
+     * @param size 조회 limit
+     * @return
+     */
+    public List<Product> findByLikedStatus(Boolean like, Long userId, Integer page, Integer size) {
+        List<Product> findList = null;
         if (like == null) {
-
+            findList = productRepository.findAll(page, size);
+        } else if (like) {
+            findList = productRepository.findLikedProduct(userId, page, size);
+        } else {
+            findList = productRepository.findNotLikedProduct(userId, page, size);
         }
-        return null;
+        return findList;
     }
+
+
 
     /**
      * 사용자가 이미 제품을 찜 했는지 체크한다.

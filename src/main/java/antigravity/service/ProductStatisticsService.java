@@ -2,6 +2,8 @@ package antigravity.service;
 
 import antigravity.entity.Product;
 import antigravity.entity.ProductStatistics;
+import antigravity.exception.CustomException;
+import antigravity.exception.ErrorCode;
 import antigravity.repository.ProductRepository;
 import antigravity.repository.ProductStatisticsRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +21,7 @@ public class ProductStatisticsService {
     public void increaseViewCount(Long productId) {
         Product foundProduct = productRepository.findById(productId);
         if (foundProduct == null) {
-            throw new IllegalArgumentException("The product dose not exist.");
+            throw new CustomException(ErrorCode.PRODUCT_NOT_FOUND);
         }
 
         ProductStatistics foundProductStatistics = foundProduct.getProductStatistics();

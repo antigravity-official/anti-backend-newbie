@@ -6,9 +6,9 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.io.CharArrayReader;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @ToString
 @Getter
@@ -48,6 +48,9 @@ public class Product {
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
     private ProductStatistics productStatistics;
 
+    @OneToMany(mappedBy = "product")
+    private List<LikedProduct> likedProducts;
+
     @Builder
     public Product(Long id, String sku, String name, BigDecimal price, Integer quantity) {
         this.id = id;
@@ -63,5 +66,13 @@ public class Product {
                 .build();
         this.productStatistics = productStatistics;
         return productStatistics;
+    }
+
+    public int countLike() {
+        if (likedProducts == null) {
+            return 0;
+        } else {
+            return this.likedProducts.size();
+        }
     }
 }

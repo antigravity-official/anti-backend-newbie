@@ -23,18 +23,18 @@ public class LikedProduct {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private Customer customer;
 
-    public static LikedProduct createLikedProduct(Product product, User user) {
+    public static LikedProduct createLikedProduct(Product product, Customer customer) {
         return LikedProduct.builder()
                 .product(product)
-                .user(user)
+                .customer(customer)
                 .build();
     }
 
     @Builder
-    private LikedProduct(Product product, User user) {
+    private LikedProduct(Product product, Customer customer) {
         this.product = product;
-        this.user = user;
+        this.customer = customer;
     }
 }

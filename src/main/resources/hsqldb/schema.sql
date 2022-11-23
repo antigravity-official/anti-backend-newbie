@@ -1,5 +1,5 @@
 DROP TABLE `product` IF EXISTS;
-DROP TABLE `user` IF EXISTS;
+DROP TABLE `customer` IF EXISTS;
 
 CREATE TABLE `product`
 (
@@ -14,7 +14,7 @@ CREATE TABLE `product`
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `user`
+CREATE TABLE `customer`
 (
     `id`         bigint(20) NOT NULL AUTO_INCREMENT,
     `email`      varchar(120) NOT NULL DEFAULT '',
@@ -31,7 +31,7 @@ CREATE TABLE `liked_product`
     `user_id`    bigint(20) NOT NULL,
      PRIMARY KEY (`id`),
      FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
-     FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+     FOREIGN KEY (`user_id`) REFERENCES `customer` (`id`)
 );
 
 
@@ -41,6 +41,7 @@ CREATE TABLE `product_statistics`
     `product_id` bigint(20) NOT NULL COMMENT '상품아이디',
     `view_count` int NOT NULL DEFAULT 0 COMMENT '조회수',
     `created_at` datetime     NOT NULL DEFAULT current_timestamp(),
+    `updated_at` datetime              DEFAULT NULL,
     `deleted_at` datetime              DEFAULT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)

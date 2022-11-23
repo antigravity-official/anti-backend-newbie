@@ -5,7 +5,7 @@ import antigravity.domain.ProductTestBuilder;
 import antigravity.domain.UserTestBuilder;
 import antigravity.entity.LikedProduct;
 import antigravity.entity.Product;
-import antigravity.entity.User;
+import antigravity.entity.Customer;
 import antigravity.repository.LikedProductRpository;
 import antigravity.repository.ProductRepository;
 import antigravity.repository.UserRepository;
@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -85,8 +84,8 @@ class ProductServiceTest {
         void success() {
             // given
             doNothing().when(likedProductRpository).save(any());
-            User user = UserTestBuilder.createUser0();
-            when(userRepository.findById(1L)).thenReturn(user);
+            Customer customer = UserTestBuilder.createUser0();
+            when(userRepository.findById(1L)).thenReturn(customer);
 
             Product product = ProductTestBuilder.createLikedProduct0();
             when(productRepository.findById(1L)).thenReturn(product);
@@ -114,8 +113,8 @@ class ProductServiceTest {
         void failProductNull() {
             // given
             doNothing().when(likedProductRpository).save(any());
-            User user = UserTestBuilder.createUser0();
-            when(userRepository.findById(1L)).thenReturn(user);
+            Customer customer = UserTestBuilder.createUser0();
+            when(userRepository.findById(1L)).thenReturn(customer);
 
             when(productRepository.findById(1L)).thenReturn(null);
 
