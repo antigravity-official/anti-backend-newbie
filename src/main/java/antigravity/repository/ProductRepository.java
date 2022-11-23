@@ -61,11 +61,15 @@ public class ProductRepository {
                         "               LikedProduct lp \n" +
                         "          WHERE lp.customer.id = :userId)\n";
 
-        return em.createQuery(sql, Product.class)
-                .setParameter("userId", userId)
-                .setFirstResult(offset)
-                .setMaxResults(limit)
-                .getResultList();
+        TypedQuery<Product> query = em.createQuery(sql, Product.class)
+                .setParameter("userId", userId);
+
+        if (offset != null && limit != null) {
+            query.setFirstResult(offset)
+                    .setMaxResults(limit);
+        }
+
+        return query.getResultList();
     }
 
 
