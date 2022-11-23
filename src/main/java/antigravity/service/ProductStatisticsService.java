@@ -21,6 +21,7 @@ public class ProductStatisticsService {
     public void increaseViewCount(Long productId) {
         Product foundProduct = productRepository.findById(productId);
         if (foundProduct == null) {
+            // TODO: product_not_found 전용 익셉션을 만들면 간단함.
             throw new CustomException(ErrorCode.PRODUCT_NOT_FOUND);
         }
 

@@ -14,6 +14,7 @@ CREATE TABLE `product`
     PRIMARY KEY (`id`)
 );
 
+//customer 로 변경한 이유는 user 가 h2 에서 키워드로 사용되고 있어서 에러가 발생함.
 CREATE TABLE `customer`
 (
     `id`         bigint(20) NOT NULL AUTO_INCREMENT,

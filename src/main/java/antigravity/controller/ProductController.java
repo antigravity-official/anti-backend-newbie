@@ -3,8 +3,6 @@ package antigravity.controller;
 
 import antigravity.entity.Customer;
 import antigravity.entity.Product;
-import antigravity.exception.CustomException;
-import antigravity.exception.ErrorCode;
 import antigravity.payload.ProductResponse;
 import antigravity.service.ProductService;
 import antigravity.service.ProductStatisticsService;
@@ -40,6 +38,8 @@ public class ProductController {
     }
 
     // TODO 찜 상품 조회 API
+    // TODO: 컨트롤러에서 DTO 를 조립하는 형식으로 Controller 의 덩치가 커짐
+    // 나중에 서비스 코드로 옮기는 것도 고려해야됨.
     @GetMapping("/products/liked")
     public ResponseEntity<List<ProductResponse>> findByLikedStatus(
             @RequestParam(required = false) Boolean liked,
@@ -51,6 +51,7 @@ public class ProductController {
         List<Product> foundProducts = productService.findByLikedStatus(liked, userId.longValue(), page, size);
         Customer customer = userService.findById(userId.longValue());
 
+        // 상품 기본정보를 조회한다.
         for (Product product : foundProducts) {
             ProductResponse productResponse = modelMapper.map(product, ProductResponse.class);
             Integer viewCount = 0;
@@ -62,6 +63,8 @@ public class ProductController {
             productResponses.add(productResponse);
         }
 
+        // 찜한 상품 여부를 업데이트 한다.
+        // 아래로 뺀이유는 O(n^2) 을 만들지 않기 위해 따로 뺌.
         for (ProductResponse productRespons : productResponses) {
             if (liked != null) {
                 productRespons.setLiked(liked);
@@ -72,10 +75,5 @@ public class ProductController {
         }
 
         return new ResponseEntity<>(productResponses, HttpStatus.OK);
-    }
-
-    @GetMapping("ex")
-    public void test () {
-        throw new CustomException(ErrorCode.PRODUCT_NOT_FOUND);
     }
 }
