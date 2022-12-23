@@ -9,4 +9,5 @@ import java.util.List;
 public interface ViewRepository extends JpaRepository<View, Long> {
 
     List<View> findAllByProductIdAndMemberIdAndLikedStatus(Long productId, Long memberId, LikedStatus likedStatus);
+
 }

@@ -1,21 +1,18 @@
 package antigravity.service;
 
 
-import antigravity.entity.LikedStatus;
 import antigravity.entity.LikedValidator;
 import antigravity.entity.Member;
 import antigravity.entity.Product;
 import antigravity.entity.View;
-import antigravity.entity.dto.LikedDto.Create;
-import antigravity.entity.dto.exception.BadRequestException;
+import antigravity.payload.BadRequestException;
+import antigravity.payload.LikedDto.Create;
+import antigravity.payload.ProductConstants;
 import antigravity.repository.MemberRepository;
-import antigravity.repository.ProductRepository;
 import antigravity.repository.ViewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.function.Consumer;
 
 
 /**
@@ -27,9 +24,9 @@ public class LikedCreator {
 
     private final MemberRepository memberRepository;
 
-    private final ProductRepository productRepository;
-
     private final ViewRepository viewRepository;
+
+    private final LikedRetriever retriever;
 
     /**
      * 찜 상품 등록
@@ -40,11 +37,10 @@ public class LikedCreator {
     @Transactional
     public Create.Response create(Create.Condition condition) {
         Member member = findMember(condition.getMemberId());
-        Product product = findProduct(condition.getProductId(), LikedValidator::deletedProduct);
+        Product product = retriever.findProduct(condition.getProductId(), LikedValidator::deletedProduct);
 
         // 이미 등록된 찜인지 체크
-        LikedValidator.alreadyLiked(viewRepository.findAllByProductIdAndMemberIdAndLikedStatus(condition.getProductId(), condition.getMemberId(),
-                                                                                               LikedStatus.LIKED));
+        LikedValidator.alreadyLiked(retriever.findByLiked(condition.getProductId(), condition.getMemberId()));
 
         // 찜 등록
         View result = viewRepository.save(new View(product, member, condition.getLikedStatus()));
@@ -60,25 +56,9 @@ public class LikedCreator {
      */
     private Member findMember(Long memberId) {
         // goto member finder
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new BadRequestException("사용자가 없습니다."));
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new BadRequestException(ProductConstants.NOT_EXISTS_USER));
         LikedValidator.deletedMember(member);
         return member;
-    }
-
-    /**
-     * 상품 조회
-     *
-     * @param productId     상품 id
-     * @param afterConsumer validation 작업
-     */
-    @Transactional(readOnly = true)
-    public Product findProduct(Long productId, Consumer<Product> afterConsumer) {
-        Product result = productRepository.findById(productId).orElseThrow(() -> new BadRequestException("상품이 없습니다."));
-
-        if (null != afterConsumer) {
-            afterConsumer.accept(result);
-        }
-        return result;
     }
 
 

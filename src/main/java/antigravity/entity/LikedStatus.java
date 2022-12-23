@@ -8,5 +8,9 @@ import lombok.RequiredArgsConstructor;
 public enum LikedStatus {
     NONE,
     LIKED,
-    UNLIKED
+    UNLIKED;
+
+    public boolean liked() {
+        return this == LIKED;
+    }
 }

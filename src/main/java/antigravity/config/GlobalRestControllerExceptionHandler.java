@@ -1,7 +1,6 @@
 package antigravity.config;
 
-
-import antigravity.entity.dto.exception.BadRequestException;
+import antigravity.payload.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

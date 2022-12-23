@@ -47,4 +47,17 @@ public class Product extends BaseEntity {
             cascade = CascadeType.ALL)
     private List<View> viewList = new ArrayList<>();
 
+
+    public int totalLiked() {
+        return (int) this.viewList.stream()
+                                  .filter(f -> f.getLikedStatus().liked())
+                                  .count();
+    }
+
+    public LikedStatus memberMatchLikedStatus(Long memberId) {
+        return this.viewList.stream().filter(f -> f.getMember().getId().equals(memberId))
+                            .map(View::getLikedStatus)
+                            .findAny()
+                            .orElse(LikedStatus.NONE);
+    }
 }

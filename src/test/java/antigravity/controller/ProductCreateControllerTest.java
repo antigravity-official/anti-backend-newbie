@@ -1,10 +1,11 @@
 package antigravity.controller;
 
 import antigravity.entity.LikedStatus;
-import antigravity.entity.dto.LikedDto;
-import antigravity.entity.dto.LikedDto.Create.Response;
-import antigravity.entity.dto.exception.BadRequestException;
+import antigravity.payload.BadRequestException;
+import antigravity.payload.LikedDto;
+import antigravity.payload.LikedDto.Create.Response;
 import antigravity.service.LikedCreator;
+import antigravity.service.LikedRetriever;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,9 @@ class ProductCreateControllerTest {
     @MockBean
     LikedCreator creator;
 
+    @MockBean
+    LikedRetriever likedRetriever;
+
     @Test
     @DisplayName("생성")
     void testSuccessCreate() throws Exception {
@@ -53,7 +57,7 @@ class ProductCreateControllerTest {
     }
 
     @Test
-    @DisplayName("탈퇴한 회원")
+    @DisplayName("오류 - 탈퇴한 회원")
     void testFailureCreateExpireMember() throws Exception {
 
         doThrow(BadRequestException.class).when(creator).create(any());
@@ -67,7 +71,7 @@ class ProductCreateControllerTest {
     }
 
     @Test
-    @DisplayName("삭제된 상품")
+    @DisplayName("오류 - 삭제된 상품")
     void testFailureCreateDeletedProduct() throws Exception {
         doThrow(BadRequestException.class).when(creator).create(any());
 
@@ -78,4 +82,5 @@ class ProductCreateControllerTest {
                .andExpect(status().isBadRequest())
         ;
     }
+
 }
