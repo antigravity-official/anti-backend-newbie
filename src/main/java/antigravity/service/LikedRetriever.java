@@ -5,7 +5,6 @@ import antigravity.entity.Product;
 import antigravity.entity.View;
 import antigravity.payload.BadRequestException;
 import antigravity.payload.LikedDto;
-import antigravity.payload.ProductConstants;
 import antigravity.payload.ProductResponse;
 import antigravity.repository.ProductRepository;
 import antigravity.repository.ViewRepository;
@@ -20,7 +19,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static antigravity.payload.ProductConstants.*;
+import static antigravity.payload.ProductConstants.NOT_EXISTS_PRODUCT;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +30,7 @@ public class LikedRetriever {
 
     /**
      * 찜 상품 목록 조회
+     *
      * @param condition 조회 조건
      * @return paging 객체
      */
@@ -81,6 +81,7 @@ public class LikedRetriever {
 
     /**
      * 상품 찜 등록 여부 조회
+     *
      * @param productId 상품
      * @param memberId  사용자
      * @return LIKED 등록된 객체 반환
@@ -91,6 +92,7 @@ public class LikedRetriever {
 
     /**
      * (임시) 전체 페이지 조회
+     *
      * @param memberId 사용자
      * @param pageable 페이징
      */
