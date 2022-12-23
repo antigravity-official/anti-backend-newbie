@@ -8,6 +8,16 @@ spring:
     password:
     driverClassName: org.h2.Driver
 
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+
   # H2 Settings
   h2:
     console:

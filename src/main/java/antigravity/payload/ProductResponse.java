@@ -1,8 +1,14 @@
 package antigravity.payload;
 
+import antigravity.entity.Product;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@RequiredArgsConstructor
+@Getter
 public class ProductResponse {
 
     private Long id; // 상품아이디
@@ -15,4 +21,18 @@ public class ProductResponse {
     private Integer viewed; // 상품 조회 수
     private LocalDateTime createdAt; // 상품 생성일시
     private LocalDateTime updatedAt; // 상품 수정일시
+
+    public ProductResponse(Product product, Long memberId) {
+        this.id = product.getId();
+        this.name = product.getName();
+        this.sku = product.getSku();
+        this.price = product.getPrice();
+        this.quantity = product.getQuantity();
+        // 찜을 눌렀으면 표기
+        this.liked = product.memberMatchLikedStatus(memberId).liked();
+        this.totalLiked = product.totalLiked();
+        this.viewed = product.getViewList().size();
+        this.createdAt = product.getCreatedAt();
+        this.updatedAt = product.getUpdatedAt();
+    }
 }
