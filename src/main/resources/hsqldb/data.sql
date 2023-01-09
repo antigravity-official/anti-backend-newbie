@@ -39,7 +39,6 @@ VALUES (1, 2, 'LIKE'),
        (3, 2, 'LIKE'),
        (1, 3, 'LIKE'),
        (2, 3, 'LIKE'),
-       (1, 2, 'LIKE'),
        (5, 4, 'LIKE');
 
 INSERT INTO `product_like` (`product_id`, `user_id`, `like_status`, `deleted_at`)
