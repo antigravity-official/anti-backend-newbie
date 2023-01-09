@@ -45,7 +45,7 @@ public class ProductService {
 			throw new IllegalStateException("Nonexistent Product");
 		}
 
-		return ProductResponse.toDtoList(products);
+		return ProductResponse.from(products, user);
 	}
 
 }

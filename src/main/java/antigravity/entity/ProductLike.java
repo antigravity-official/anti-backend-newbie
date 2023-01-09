@@ -50,4 +50,5 @@ public class ProductLike extends BaseEntity {
 		this.user = user;
 		this.likeStatus = LikeStatus.LIKE;
 	}
+
 }

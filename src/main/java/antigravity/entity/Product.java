@@ -2,12 +2,15 @@ package antigravity.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PreUpdate;
 
 import lombok.AllArgsConstructor;
@@ -40,6 +43,9 @@ public class Product extends BaseEntity {
 
 	private Integer viewed;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+	private List<ProductLike> productLikes;
+
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 	private LocalDateTime deletedAt;
@@ -56,4 +62,20 @@ public class Product extends BaseEntity {
 	public boolean isDeleted() {
 		return deletedAt != null;
 	}
+
+	public Integer getTotalLiked() {
+		return Math.toIntExact(this.productLikes.stream()
+			.filter(p -> p.getLikeStatus().isLike())
+			.count());
+	}
+
+	public boolean getLiked(User user) {
+		for (ProductLike productLike : productLikes) {
+			if (productLike.getUser().equals(user)) {
+				return productLike.getLikeStatus().isLike();
+			}
+		}
+		return false;
+	}
+
 }
