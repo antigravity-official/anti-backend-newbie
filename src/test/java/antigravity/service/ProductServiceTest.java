@@ -104,7 +104,7 @@ class ProductServiceTest {
 
 	@DisplayName("상품 전체 조회 테스트 - 상품이 존재하지 않을 때")
 	@Test
-	void given_NotExistProduct_when_GetAllProducts_then_DoesThrowsIllegalStateException() {
+	void given_NotExistProduct_when_GetAllProducts_then_ThrowIllegalStateException() {
 		//given
 		Long userId = 1L;
 		Pageable pageable = mock(Pageable.class);
@@ -148,7 +148,7 @@ class ProductServiceTest {
 
 	@DisplayName("찜하지 않은 상품 조회 테스트 - 상품이 존재하지 않을 때")
 	@Test
-	void given_NotExistProduct_when_GetUnlikedProducts_then_DoesNotThrow() {
+	void given_NotExistProduct_when_GetUnlikedProducts_then_ThrowIllegalStateException() {
 		//given
 		Long userId = 1L;
 		Pageable pageable = mock(Pageable.class);
@@ -192,7 +192,7 @@ class ProductServiceTest {
 
 	@DisplayName("찜한 상품 조회 테스트 - 상품이 존재하지 않을 때")
 	@Test
-	void given_NotExistProduct_when_GetLikedProducts_then_DoesNotThrow() {
+	void given_NotExistProduct_when_GetLikedProducts_then_ThrowIllegalStateException() {
 		//given
 		Long userId = 1L;
 		Pageable pageable = mock(Pageable.class);
