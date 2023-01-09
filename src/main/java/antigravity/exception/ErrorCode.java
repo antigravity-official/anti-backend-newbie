@@ -8,8 +8,14 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ErrorCode {
 
-    //예시 Exception
-    EXAMPLE_EXCEPTION(HttpStatus.NOT_ACCEPTABLE, "예시 Exception");
+    // USER 관련 Exception
+    USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "해당 유저를 찾지 못했습니다."),
+
+    // PRODUCT 관련 Exception
+    PRODUCT_NOT_FOUND(HttpStatus.BAD_REQUEST, "해당 상품을 찾지 못했습니다."),
+
+    // PRODUCT-LIKE 관련 Exception
+    CAN_NOT_LIKE(HttpStatus.BAD_REQUEST, "찜을 하실 수 없습니다.");
 
     private final HttpStatus status;
 
