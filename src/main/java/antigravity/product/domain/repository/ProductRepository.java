@@ -1,6 +1,6 @@
-package antigravity.repository;
+package antigravity.product.domain.repository;
 
-import antigravity.entity.Product;
+import antigravity.product.domain.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
