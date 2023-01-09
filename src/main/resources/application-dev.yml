@@ -8,6 +8,7 @@ spring:
     password:
     driverClassName: org.h2.Driver
   jpa:
+    defer-datasource-initialization: true
     show-sql: true
     open-in-view: false
     hibernate:
@@ -27,6 +28,6 @@ spring:
         springframework.web: debug
   sql:
     init:
-      schema-locations: classpath*:/${database}/schema.sql
+#      schema-locations: classpath*:/${database}/schema.sql
       data-locations: classpath*:/${database}/data.sql
       platform: h2
