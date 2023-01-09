@@ -30,8 +30,14 @@ CREATE TABLE `product_like`
     `id`            bigint(20)   NOT NULL AUTO_INCREMENT,
     `product_id`    bigint(20)   NOT NULL,
     `user_id`       bigint(20)   NOT NULL,
-    `like_status`   varchar(17)  NOT NULL,
+    `like_status`   varchar(20),
     `created_at`    datetime     NOT NULL DEFAULT current_timestamp(),
     `deleted_at`    datetime              DEFAULT NULL,
     PRIMARY KEY (`id`)
-)
+);
+
+ALTER TABLE `product_like`
+    ADD CONSTRAINT FK_PRODUCT_LIKE_ON_PRODUCT FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+
+ALTER TABLE `product_like`
+    ADD CONSTRAINT FK_PRODUCT_LIKE_ON_USER FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);

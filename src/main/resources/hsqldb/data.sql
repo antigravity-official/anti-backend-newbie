@@ -32,3 +32,18 @@ INSERT INTO `user` (`email`, `name`)
 VALUES ('user2@antigravity.kr', '회원2'),
        ('user3@antigravity.kr', '회원3'),
        ('user4@antigravity.kr', '회원4');
+
+INSERT INTO `product_like` (`product_id`, `user_id`, `like_status`)
+VALUES (1, 2, 'LIKE'),
+       (2, 2, 'LIKE'),
+       (3, 2, 'LIKE'),
+       (1, 3, 'LIKE'),
+       (2, 3, 'LIKE'),
+       (1, 2, 'LIKE'),
+       (5, 4, 'LIKE');
+
+INSERT INTO `product_like` (`product_id`, `user_id`, `like_status`, `deleted_at`)
+VALUES (3, 1, 'LIKE','2021-10-10 16:11:23'),
+       (7, 1, 'LIKE', '2021-10-10 16:11:23'),
+       (21, 4, 'LIKE','2022-10-11 13:02:33'),
+       (23, 1, 'LIKE', '2021-10-10 16:11:23');
