@@ -28,13 +28,13 @@ public class UserServiceTest {
 	@Test
 	void given_UserId_when_FindById_then_DoesNotThrow() {
 		//given
-		Integer userId = 1;
+		Long userId = 1L;
 
 		//mock
 		User mockedUser = mock(User.class);
 
 		//when
-		when(userRepository.findById(Long.valueOf(userId))).thenReturn(Optional.of(mockedUser));
+		when(userRepository.findById(userId)).thenReturn(Optional.of(mockedUser));
 		when(mockedUser.isDeleted()).thenReturn(false);
 
 		//then
@@ -45,10 +45,10 @@ public class UserServiceTest {
 	@Test
 	void given_NonExistentUserId_when_FindById_then_ThrowsIllegalStateException() {
 		//given
-		Integer userId = 1;
+		Long userId = 1L;
 
 		//when
-		when(userRepository.findById(Long.valueOf(userId))).thenReturn(Optional.empty());
+		when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
 		//then
 		IllegalStateException e = assertThrows(IllegalStateException.class,
@@ -60,13 +60,13 @@ public class UserServiceTest {
 	@Test
 	void given_DeletedUserId_when_FindById_then_ThrowsIllegalStateException() {
 		//given
-		Integer userId = 1;
+		Long userId = 1L;
 
 		//mock
 		User mockedUser = mock(User.class);
 
 		//when
-		when(userRepository.findById(Long.valueOf(userId))).thenReturn(Optional.of(mockedUser));
+		when(userRepository.findById(userId)).thenReturn(Optional.of(mockedUser));
 		when(mockedUser.isDeleted()).thenReturn(true);
 
 		//then
