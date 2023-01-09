@@ -15,7 +15,7 @@ CREATE TABLE `product`
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `user`
+CREATE TABLE `users`
 (
     `id`         bigint(20) NOT NULL AUTO_INCREMENT,
     `email`      varchar(120) NOT NULL DEFAULT '',
@@ -40,4 +40,4 @@ ALTER TABLE `product_like`
     ADD CONSTRAINT FK_PRODUCT_LIKE_ON_PRODUCT FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 
 ALTER TABLE `product_like`
-    ADD CONSTRAINT FK_PRODUCT_LIKE_ON_USER FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+    ADD CONSTRAINT FK_PRODUCT_LIKE_ON_USER FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
