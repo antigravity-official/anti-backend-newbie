@@ -1,6 +1,7 @@
 package antigravity.repository;
 
-import antigravity.entity.Product;
+import antigravity.product.domain.Product;
+import antigravity.product.adapter.out.persistence.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
