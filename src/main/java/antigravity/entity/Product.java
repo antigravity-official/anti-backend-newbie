@@ -38,17 +38,22 @@ public class Product extends BaseEntity {
 	@Column(nullable = false)
 	private Integer quantity;
 
+	private Integer viewed;
+
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 	private LocalDateTime deletedAt;
+
+	public void increaseViewed() {
+		this.viewed += 1;
+	}
 
 	@PreUpdate
 	private void updatedAt() {
 		this.updatedAt = LocalDateTime.now();
 	}
 
-	private void deleteAt() {
-		this.deletedAt = LocalDateTime.now();
+	public boolean isDeleted() {
+		return deletedAt != null;
 	}
-
 }
