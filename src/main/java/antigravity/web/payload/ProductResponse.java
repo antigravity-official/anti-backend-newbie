@@ -1,4 +1,4 @@
-package antigravity.payload;
+package antigravity.web.payload;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
