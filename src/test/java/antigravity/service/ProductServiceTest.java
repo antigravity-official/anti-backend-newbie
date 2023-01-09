@@ -11,8 +11,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import antigravity.entity.Product;
+import antigravity.entity.User;
 import antigravity.repository.ProductRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -20,6 +23,9 @@ class ProductServiceTest {
 
 	@Mock
 	private ProductRepository productRepository;
+
+	@Mock
+	private UserService userService;
 
 	@InjectMocks
 	private ProductService productService;
@@ -74,4 +80,137 @@ class ProductServiceTest {
 			() -> productService.findProductById(productId));
 		assertEquals("Already Product Deleted", e.getMessage());
 	}
+
+	@DisplayName("상품 전체 조회 테스트")
+	@Test
+	void given_UserIdAndPageable_when_GetAllProducts_then_DoesNotThrow() {
+		//given
+		Long userId = 1L;
+		Pageable pageable = mock(Pageable.class);
+		Boolean liked = null;
+
+		//mock
+		User mockedUser = mock(User.class);
+		Page<Product> mockedPage = mock(Page.class);
+
+		//when
+		when(userService.findUserById(userId)).thenReturn(mockedUser);
+		when(productRepository.findAll(pageable)).thenReturn(mockedPage);
+		when(mockedPage.isEmpty()).thenReturn(false);
+
+		//then
+		assertDoesNotThrow(() -> productService.getProducts(userId, pageable, liked));
+	}
+
+	@DisplayName("상품 전체 조회 테스트 - 상품이 존재하지 않을 때")
+	@Test
+	void given_NotExistProduct_when_GetAllProducts_then_DoesThrowsIllegalStateException() {
+		//given
+		Long userId = 1L;
+		Pageable pageable = mock(Pageable.class);
+		Boolean liked = null;
+
+		//mock
+		User mockedUser = mock(User.class);
+		Page<Product> mockedPage = mock(Page.class);
+
+		//when
+		when(userService.findUserById(userId)).thenReturn(mockedUser);
+		when(productRepository.findAll(pageable)).thenReturn(mockedPage);
+		when(mockedPage.isEmpty()).thenReturn(true);
+
+		//then
+		IllegalStateException e = assertThrows(IllegalStateException.class,
+			() -> productService.getProducts(userId, pageable, liked));
+		assertEquals("Nonexistent Product", e.getMessage());
+	}
+
+	@DisplayName("찜하지 않은 상품 조회 테스트")
+	@Test
+	void given_UserIdAndPageable_when_GetUnlikedProducts_then_DoesNotThrow() {
+		//given
+		Long userId = 1L;
+		Pageable pageable = mock(Pageable.class);
+		Boolean liked = false;
+
+		//mock
+		User mockedUser = mock(User.class);
+		Page<Product> mockedPage = mock(Page.class);
+
+		//when
+		when(userService.findUserById(userId)).thenReturn(mockedUser);
+		when(productRepository.findAllNotLikeProduct(mockedUser, pageable)).thenReturn(mockedPage);
+		when(mockedPage.isEmpty()).thenReturn(false);
+
+		//then
+		assertDoesNotThrow(() -> productService.getProducts(userId, pageable, liked));
+	}
+
+	@DisplayName("찜하지 않은 상품 조회 테스트 - 상품이 존재하지 않을 때")
+	@Test
+	void given_NotExistProduct_when_GetUnlikedProducts_then_DoesNotThrow() {
+		//given
+		Long userId = 1L;
+		Pageable pageable = mock(Pageable.class);
+		Boolean liked = false;
+
+		//mock
+		User mockedUser = mock(User.class);
+		Page<Product> mockedPage = mock(Page.class);
+
+		//when
+		when(userService.findUserById(userId)).thenReturn(mockedUser);
+		when(productRepository.findAllNotLikeProduct(mockedUser, pageable)).thenReturn(mockedPage);
+		when(mockedPage.isEmpty()).thenReturn(true);
+
+		//then
+		IllegalStateException e = assertThrows(IllegalStateException.class,
+			() -> productService.getProducts(userId, pageable, liked));
+		assertEquals("Nonexistent Product", e.getMessage());
+	}
+
+	@DisplayName("찜한 상품 조회 테스트")
+	@Test
+	void given_UserIdAndPageable_when_GetLikedProducts_then_DoesNotThrow() {
+		//given
+		Long userId = 1L;
+		Pageable pageable = mock(Pageable.class);
+		Boolean liked = true;
+
+		//mock
+		User mockedUser = mock(User.class);
+		Page<Product> mockedPage = mock(Page.class);
+
+		//when
+		when(userService.findUserById(userId)).thenReturn(mockedUser);
+		when(productRepository.findAllLikeProduct(mockedUser, pageable)).thenReturn(mockedPage);
+		when(mockedPage.isEmpty()).thenReturn(false);
+
+		//then
+		assertDoesNotThrow(() -> productService.getProducts(userId, pageable, liked));
+	}
+
+	@DisplayName("찜한 상품 조회 테스트 - 상품이 존재하지 않을 때")
+	@Test
+	void given_NotExistProduct_when_GetLikedProducts_then_DoesNotThrow() {
+		//given
+		Long userId = 1L;
+		Pageable pageable = mock(Pageable.class);
+		Boolean liked = true;
+
+		//mock
+		User mockedUser = mock(User.class);
+		Page<Product> mockedPage = mock(Page.class);
+
+		//when
+		when(userService.findUserById(userId)).thenReturn(mockedUser);
+		when(productRepository.findAllLikeProduct(mockedUser, pageable)).thenReturn(mockedPage);
+		when(mockedPage.isEmpty()).thenReturn(true);
+
+		//then
+		IllegalStateException e = assertThrows(IllegalStateException.class,
+			() -> productService.getProducts(userId, pageable, liked));
+		assertEquals("Nonexistent Product", e.getMessage());
+	}
+
 }
