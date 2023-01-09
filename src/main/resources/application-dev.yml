@@ -7,7 +7,14 @@ spring:
     username: sa
     password:
     driverClassName: org.h2.Driver
-
+  jpa:
+    show-sql: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
   # H2 Settings
   h2:
     console:
