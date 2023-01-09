@@ -37,7 +37,7 @@ public class ProductLikeServiceTest {
 	void given_ProductIdAndUserId_when_ProductLike_then_DoesNotThrow() {
 		//given
 		Long productId = 1L;
-		Integer userId = 1;
+		Long userId = 1L;
 
 		//mock
 		Product mockedProduct = mock(Product.class);
@@ -60,7 +60,7 @@ public class ProductLikeServiceTest {
 	void given_InvalidProductId_when_ProductLike_then_ThrowsIllegalStateException() {
 		//given
 		Long productId = 1L;
-		Integer userId = 1;
+		Long userId = 1L;
 
 		//when
 		when(productService.findProductById(productId)).thenThrow(new IllegalStateException());
@@ -75,7 +75,7 @@ public class ProductLikeServiceTest {
 	void given_InvalidUserId_when_ProductLike_then_ThrowsIllegalStateException() {
 		//given
 		Long productId = 1L;
-		Integer userId = 1;
+		Long userId = 1L;
 
 		//mock
 		Product mockedProduct = mock(Product.class);
@@ -94,7 +94,7 @@ public class ProductLikeServiceTest {
 	void given_AlreadyProductLike_when_ProductLike_then_ThrowsIllegalStateException() {
 		//given
 		Long productId = 1L;
-		Integer userId = 1;
+		Long userId = 1L;
 
 		//mock
 		Product mockedProduct = mock(Product.class);

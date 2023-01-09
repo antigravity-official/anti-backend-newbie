@@ -18,7 +18,7 @@ public class ProductLikeService {
 	private final ProductService productService;
 	private final UserService userService;
 
-	public void productLike(Long productId, Integer userId) {
+	public void productLike(Long productId, Long userId) {
 		Product product = productService.findProductById(productId);
 		User user = userService.findUserById(userId);
 
@@ -33,4 +33,5 @@ public class ProductLikeService {
 
 		product.increaseViewed();
 	}
+
 }

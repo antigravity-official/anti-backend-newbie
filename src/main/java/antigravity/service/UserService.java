@@ -12,8 +12,8 @@ public class UserService {
 
 	private final UserRepository userRepository;
 
-	public User findUserById(Integer userId) {
-		User user = userRepository.findById(Long.valueOf(userId))
+	public User findUserById(Long userId) {
+		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new IllegalStateException("User Not Found"));
 
 		if (user.isDeleted()) {
