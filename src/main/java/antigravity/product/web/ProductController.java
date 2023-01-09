@@ -20,6 +20,7 @@ public class ProductController {
     public ResponseEntity<Long> postDipProduct(@PathVariable Long productId) {
         return ResponseEntity.status(HttpStatus.CREATED).body(productId);
     }
+
     // TODO 찜 상품 조회 API
     @GetMapping()
     public ResponseEntity<List<ProductResponse>> getDipProductList(@PathParam("liked") boolean liked, Pageable pageable) {
