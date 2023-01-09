@@ -1,8 +1,12 @@
 package antigravity.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import antigravity.entity.Product;
+import antigravity.entity.User;
+import antigravity.payload.ProductResponse;
 import antigravity.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -11,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 public class ProductService {
 
 	private final ProductRepository productRepository;
+	private final UserService userService;
 
 	public Product findProductById(Long productId) {
 		Product product = productRepository.findById(productId)
@@ -21,6 +26,26 @@ public class ProductService {
 		}
 
 		return product;
+	}
+
+	public Page<ProductResponse> getProducts(Long userId, Pageable pageable, Boolean liked) {
+		User user = userService.findUserById(userId);
+
+		Page<Product> products;
+
+		if (liked == null) {
+			products = productRepository.findAll(pageable);
+		} else if (!liked) {
+			products = productRepository.findAllNotLikeProduct(user, pageable);
+		} else {
+			products = productRepository.findAllLikeProduct(user, pageable);
+		}
+
+		if (products.isEmpty()) {
+			throw new IllegalStateException("Nonexistent Product");
+		}
+
+		return ProductResponse.toDtoList(products);
 	}
 
 }
