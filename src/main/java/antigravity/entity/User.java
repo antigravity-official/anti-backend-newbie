@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import lombok.Getter;
@@ -14,7 +15,7 @@ import lombok.Getter;
 public class User extends BaseEntity {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(length = 120, nullable = false)
@@ -24,4 +25,8 @@ public class User extends BaseEntity {
 	private String name;
 
 	private LocalDateTime deletedAt;
+
+	public boolean isDeleted() {
+		return deletedAt != null;
+	}
 }
