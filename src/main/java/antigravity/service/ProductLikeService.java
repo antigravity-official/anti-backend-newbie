@@ -3,6 +3,7 @@ package antigravity.service;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import antigravity.entity.Product;
 import antigravity.entity.ProductLike;
@@ -18,6 +19,7 @@ public class ProductLikeService {
 	private final ProductService productService;
 	private final UserService userService;
 
+	@Transactional(timeout = 10)
 	public void productLike(Long productId, Long userId) {
 		Product product = productService.findProductById(productId);
 		User user = userService.findUserById(userId);
