@@ -3,11 +3,12 @@ DROP TABLE `user` IF EXISTS;
 
 CREATE TABLE `product`
 (
-    `id`         bigint(20) NOT NULL AUTO_INCREMENT,
+    `id`         bigint(20)     NOT NULL AUTO_INCREMENT,
     `sku`        varchar(60)             DEFAULT '' COMMENT '상품 식별값',
     `name`       varchar(125)   NOT NULL COMMENT '상품명',
     `price`      decimal(12, 2) NOT NULL COMMENT '가격',
     `quantity`   int            NOT NULL COMMENT '재고량',
+    `viewed`     int                     DEFAULT 0 COMMENT '상품조회수',
     `created_at` datetime       NOT NULL DEFAULT current_timestamp(),
     `updated_at` datetime                DEFAULT current_timestamp(),
     `deleted_at` datetime                DEFAULT NULL,
@@ -23,3 +24,14 @@ CREATE TABLE `user`
     `deleted_at` datetime              DEFAULT NULL,
     PRIMARY KEY (`id`)
 );
+
+CREATE TABLE `product_like`
+(
+    `id`            bigint(20)   NOT NULL AUTO_INCREMENT,
+    `product_id`    bigint(20)   NOT NULL,
+    `user_id`       bigint(20)   NOT NULL,
+    `like_status`   varchar(17)  NOT NULL,
+    `created_at`    datetime     NOT NULL DEFAULT current_timestamp(),
+    `deleted_at`    datetime              DEFAULT NULL,
+    PRIMARY KEY (`id`)
+)
