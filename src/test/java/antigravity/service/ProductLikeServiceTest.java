@@ -18,7 +18,6 @@ import antigravity.entity.User;
 import antigravity.repository.ProductLikeRepository;
 
 @ExtendWith(MockitoExtension.class)
-
 public class ProductLikeServiceTest {
 
 	@Mock
@@ -35,7 +34,7 @@ public class ProductLikeServiceTest {
 
 	@DisplayName("찜 상품 등록 테스트")
 	@Test
-	void given_ProductIdAndUserId_when_productLike_then_DoesThrow() {
+	void given_ProductIdAndUserId_when_ProductLike_then_DoesNotThrow() {
 		//given
 		Long productId = 1L;
 		Integer userId = 1;
