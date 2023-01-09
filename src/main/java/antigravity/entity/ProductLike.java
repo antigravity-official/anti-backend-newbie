@@ -24,4 +24,7 @@ public class ProductLike {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
+
+    @Column(name = "product_like_status")
+    private LikeStatus likeStatus;
 }
