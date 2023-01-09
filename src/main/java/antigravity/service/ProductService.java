@@ -3,6 +3,7 @@ package antigravity.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import antigravity.entity.Product;
 import antigravity.entity.User;
@@ -17,6 +18,7 @@ public class ProductService {
 	private final ProductRepository productRepository;
 	private final UserService userService;
 
+	@Transactional(readOnly = true)
 	public Product findProductById(Long productId) {
 		Product product = productRepository.findById(productId)
 			.orElseThrow(() -> new IllegalStateException("Product Not Found"));
@@ -28,6 +30,7 @@ public class ProductService {
 		return product;
 	}
 
+	@Transactional(readOnly = true)
 	public Page<ProductResponse> getProducts(Long userId, Pageable pageable, Boolean liked) {
 		User user = userService.findUserById(userId);
 
