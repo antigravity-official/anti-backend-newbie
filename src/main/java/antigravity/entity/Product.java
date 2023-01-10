@@ -1,6 +1,7 @@
 package antigravity.entity;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.springframework.data.annotation.LastModifiedDate;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -40,6 +43,10 @@ public class Product extends BaseTimeEntity {
 
 	@Column(nullable = false)
 	private Integer quantity;
+
+	@Column(name = "updated_at")
+	@LastModifiedDate
+	private LocalDateTime updatedAt;
 
 	public void increaseViews() {
 		this.views += 1;
