@@ -1,5 +1,6 @@
+DROP TABLE `product_like` IF EXISTS;
 DROP TABLE `product` IF EXISTS;
-DROP TABLE `user` IF EXISTS;
+DROP TABLE `users` IF EXISTS;
 
 CREATE TABLE `product`
 (
