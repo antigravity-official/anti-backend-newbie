@@ -5,9 +5,7 @@ import antigravity.product.domain.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -34,7 +32,7 @@ public class ProductRepositoryTests {
                 .build();
     }
     @Test
-    public void saveAndFind() throws Exception {
+    void saveAndFind() throws Exception {
         //when
         Long id = productRepository.save(product);
         Product findProduct = productRepository.findById(id).get();
@@ -43,7 +41,7 @@ public class ProductRepositoryTests {
         assertEquals(id, findProduct.getId());
     }
     @Test
-    public void findViewCnt() throws Exception {
+    void findViewCnt() throws Exception {
         //when
         Long id = productRepository.save(product);
         Long viewCnt = productRepository.findProductViewCnt(id);
@@ -53,7 +51,7 @@ public class ProductRepositoryTests {
     }
 
     @Test
-    public void updateViewCnt() throws Exception {
+    void updateViewCnt() throws Exception {
         //when
         Long id = productRepository.save(product);
         productRepository.updateViewCntFromRedis(id, 100L);
