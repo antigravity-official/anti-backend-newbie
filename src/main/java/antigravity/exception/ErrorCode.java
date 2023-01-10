@@ -15,8 +15,8 @@ public enum ErrorCode {
 	ALREADY_DELETED_PRODUCT(HttpStatus.BAD_REQUEST, "Already Deleted Product"),
 	ALREADY_LIKED_PRODUCT(HttpStatus.BAD_REQUEST, "Already Liked Product"),
 	NONEXISTENT_PRODUCTS(HttpStatus.BAD_REQUEST, "Nonexistent Products"),
-	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error"),
 	BAD_REQUEST(HttpStatus.BAD_REQUEST, "Bad request error"),
+	HEADER_NULL(HttpStatus.BAD_REQUEST, "Header is null"),
 	;
 
 	private HttpStatus status;
