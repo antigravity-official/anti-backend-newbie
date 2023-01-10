@@ -20,7 +20,6 @@ public abstract class BaseTime {
     @CreatedDate
     private LocalDateTime createAt;
 
-    @LastModifiedDate
     private LocalDateTime deletedAt;
 
 }
