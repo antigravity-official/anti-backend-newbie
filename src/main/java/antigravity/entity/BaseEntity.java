@@ -14,6 +14,7 @@ public abstract class BaseEntity {
 
 	@Column(updatable = false)
 	private LocalDateTime createdAt;
+	private LocalDateTime deletedAt;
 
 	@PrePersist
 	public void createdAt() {
