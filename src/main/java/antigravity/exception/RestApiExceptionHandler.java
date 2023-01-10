@@ -34,6 +34,16 @@ public class RestApiExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseErrorMsg(ex.getMessage(),HttpStatus.BAD_REQUEST.value()));
     }
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ResponseErrorMsg> handleValidationExceptions(IllegalArgumentException ex) {
+        String message = getExceptionMessage(ex.getMessage());
+
+        StackTraceElement[] stackTraceElements = ex.getStackTrace();
+        log.error(message,stackTraceElements[0]); // 0번(에러메세지만) 저장
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseErrorMsg(ex.getMessage(),HttpStatus.BAD_REQUEST.value()));
+    }
+
     private String getExceptionMessage(String message){
         if(StringUtils.hasText(message)){
             return message + "\n \t {}";

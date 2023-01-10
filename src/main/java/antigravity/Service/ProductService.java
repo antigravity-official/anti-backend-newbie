@@ -19,7 +19,7 @@ public class ProductService {
             return allProduct;
         } else { //TODO liked true false 상품 선택
             if(liked == true){
-                return productRepository.findProductTrueLike(userId, pageable, true);
+                return productRepository.findProductTrueLike(userId, pageable);
             }
             else{
                 return productRepository.findProductFalseLike(userId, pageable);

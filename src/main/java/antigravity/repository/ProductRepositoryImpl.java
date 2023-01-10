@@ -47,7 +47,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
         return new PageImpl<>(updateProductList,pageable,getCount());
     }
     @Override
-    public Page<ProductResponse> findProductTrueLike(Long userId, Pageable pageable, boolean wishBit) {
+    public Page<ProductResponse> findProductTrueLike(Long userId, Pageable pageable) {
         List<Product> resultQuery = query
                 .selectFrom(product)
                 .join(product.wishList, wish)

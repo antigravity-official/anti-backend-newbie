@@ -11,6 +11,6 @@ import java.util.List;
 public interface ProductRepositoryCustom  {
     Page<ProductResponse> findAllProduct(Long userId, Pageable pageable);
 
-    Page<ProductResponse> findProductTrueLike(Long userId, Pageable pageable, boolean wishBit);
+    Page<ProductResponse> findProductTrueLike(Long userId, Pageable pageable);
     Page<ProductResponse> findProductFalseLike(Long userId, Pageable pageable);
 }
