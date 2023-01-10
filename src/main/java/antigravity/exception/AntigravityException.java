@@ -7,13 +7,14 @@ import lombok.Getter;
 @AllArgsConstructor
 public class AntigravityException extends RuntimeException {
 
-	private ErrorCode errorCode;
+	private final ErrorCode errorCode;
 	private String message;
 
 	public AntigravityException(ErrorCode errorCode) {
 		if (this.message == null) {
 			this.message = errorCode.getMessage();
 		}
+
 		this.errorCode = errorCode;
 	}
 

@@ -19,7 +19,7 @@ public enum ErrorCode {
 	HEADER_NULL(HttpStatus.BAD_REQUEST, "Header is null"),
 	;
 
-	private HttpStatus status;
-	private String message;
+	private final HttpStatus status;
+	private final String message;
 
 }
