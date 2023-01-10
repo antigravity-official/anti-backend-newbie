@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import antigravity.entity.Product;
 import antigravity.entity.User;
+import antigravity.exception.AntigravityException;
+import antigravity.exception.ErrorCode;
 import antigravity.payload.ProductResponse;
 import antigravity.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,10 +23,12 @@ public class ProductService {
 	@Transactional(readOnly = true)
 	public Product findProductById(Long productId) {
 		Product product = productRepository.findById(productId)
-			.orElseThrow(() -> new IllegalStateException("Product Not Found"));
+			.orElseThrow(() -> new AntigravityException(ErrorCode.PRODUCT_ID_NOT_FOUND,
+				String.format("%d is not founded", productId)));
 
 		if (product.isDeleted()) {
-			throw new IllegalStateException("Already Product Deleted");
+			throw new AntigravityException(ErrorCode.ALREADY_DELETED_PRODUCT,
+				String.format("%d already deleted", productId));
 		}
 
 		return product;
@@ -45,7 +49,8 @@ public class ProductService {
 		}
 
 		if (products.isEmpty()) {
-			throw new IllegalStateException("Nonexistent Product");
+			throw new AntigravityException(ErrorCode.NONEXISTENT_PRODUCTS,
+				String.format("userId=%d, pageable=%s, liked=%s", userId, pageable, liked));
 		}
 
 		return ProductResponse.from(products, user);

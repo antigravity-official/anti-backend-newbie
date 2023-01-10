@@ -1,5 +1,6 @@
 package antigravity.controller;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import antigravity.payload.ProductResponse;
+import antigravity.payload.Response;
 import antigravity.service.ProductLikeService;
 import antigravity.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +29,12 @@ public class ProductController {
 	private final ProductLikeService productLikeService;
 
 	@PostMapping("/liked/{productId}")
-	public ResponseEntity<String> addLikedProduct(
+	public ResponseEntity<?> addLikedProduct(
 		@PathVariable Long productId,
 		@RequestHeader("X-USER-ID") Integer userId) {
 
 		productLikeService.productLike(productId, userId.longValue());
-		return new ResponseEntity<>("찜이 완료되었습니다.", HttpStatus.CREATED);
+		return new ResponseEntity<>(Response.success("찜이 완료되었습니다."), HttpStatus.CREATED);
 	}
 
 	@GetMapping("/liked")
@@ -40,7 +43,9 @@ public class ProductController {
 		@RequestParam(required = false) Boolean liked,
 		@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
 
-		return new ResponseEntity<>(productService.getProducts(userId.longValue(), pageable, liked), HttpStatus.OK);
+		Page<ProductResponse> products = productService.getProducts(userId.longValue(), pageable, liked);
+
+		return new ResponseEntity<>(Response.success(products), HttpStatus.OK);
 	}
 
 }

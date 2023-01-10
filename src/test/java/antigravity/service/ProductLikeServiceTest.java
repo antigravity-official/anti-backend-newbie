@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import antigravity.entity.Product;
 import antigravity.entity.ProductLike;
 import antigravity.entity.User;
+import antigravity.exception.AntigravityException;
 import antigravity.repository.ProductLikeRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -108,9 +109,10 @@ public class ProductLikeServiceTest {
 			Optional.of(mockedProductLike));
 
 		//then
-		IllegalStateException e = assertThrows(IllegalStateException.class,
+		AntigravityException e = assertThrows(AntigravityException.class,
 			() -> productLikeService.productLike(productId, userId));
-		assertEquals("Already User Liked Product", e.getMessage());
+		assertEquals(String.format("Already Liked Product. userId=%d is already liked productId=%d",userId,productId)
+			, e.getMessage());
 	}
 
 }

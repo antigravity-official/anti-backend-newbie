@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import antigravity.entity.Product;
 import antigravity.entity.ProductLike;
 import antigravity.entity.User;
+import antigravity.exception.AntigravityException;
+import antigravity.exception.ErrorCode;
 import antigravity.repository.ProductLikeRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -27,7 +29,8 @@ public class ProductLikeService {
 		Optional<ProductLike> optionalProductLike = productLikeRepository.findByProductAndUser(product, user);
 
 		if (optionalProductLike.isPresent()) {
-			throw new IllegalStateException("Already User Liked Product");
+			throw new AntigravityException(ErrorCode.ALREADY_LIKED_PRODUCT,
+				String.format("userId=%d is already liked productId=%d", userId, productId));
 		}
 
 		ProductLike productLike = ProductLike.from(product, user);

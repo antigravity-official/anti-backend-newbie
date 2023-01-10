@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import antigravity.entity.User;
+import antigravity.exception.AntigravityException;
 import antigravity.repository.UserRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -51,9 +52,9 @@ public class UserServiceTest {
 		when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
 		//then
-		IllegalStateException e = assertThrows(IllegalStateException.class,
+		AntigravityException e = assertThrows(AntigravityException.class,
 			() -> userService.findUserById(userId));
-		assertEquals("User Not Found", e.getMessage());
+		assertEquals(String.format("User ID is not founded. %d not founded", userId), e.getMessage());
 	}
 
 	@DisplayName("사용자 찾기 테스트 - userId로 조회한 사용자가 삭제된 상태일때")
@@ -70,9 +71,9 @@ public class UserServiceTest {
 		when(mockedUser.isDeleted()).thenReturn(true);
 
 		//then
-		IllegalStateException e = assertThrows(IllegalStateException.class,
+		AntigravityException e = assertThrows(AntigravityException.class,
 			() -> userService.findUserById(userId));
-		assertEquals("Already User Deleted", e.getMessage());
+		assertEquals(String.format("Already Deleted User. %d already deleted", userId), e.getMessage());
 	}
 
 }

@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 
 import antigravity.entity.Product;
 import antigravity.entity.User;
+import antigravity.exception.AntigravityException;
 import antigravity.repository.ProductRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -57,9 +58,9 @@ class ProductServiceTest {
 		when(productRepository.findById(productId)).thenReturn(Optional.empty());
 
 		//then
-		IllegalStateException e = assertThrows(IllegalStateException.class,
+		AntigravityException e = assertThrows(AntigravityException.class,
 			() -> productService.findProductById(productId));
-		assertEquals("Product Not Found", e.getMessage());
+		assertEquals(String.format("Product ID is not founded. %d is not founded", productId), e.getMessage());
 	}
 
 	@DisplayName("상품 찾기 테스트")
@@ -76,9 +77,9 @@ class ProductServiceTest {
 		when(mockedProduct.isDeleted()).thenReturn(true);
 
 		//then
-		IllegalStateException e = assertThrows(IllegalStateException.class,
+		AntigravityException e = assertThrows(AntigravityException.class,
 			() -> productService.findProductById(productId));
-		assertEquals("Already Product Deleted", e.getMessage());
+		assertEquals(String.format("Already Deleted Product. %d already deleted", productId), e.getMessage());
 	}
 
 	@DisplayName("상품 전체 조회 테스트")
@@ -120,9 +121,10 @@ class ProductServiceTest {
 		when(mockedPage.isEmpty()).thenReturn(true);
 
 		//then
-		IllegalStateException e = assertThrows(IllegalStateException.class,
+		AntigravityException e = assertThrows(AntigravityException.class,
 			() -> productService.getProducts(userId, pageable, liked));
-		assertEquals("Nonexistent Product", e.getMessage());
+		assertEquals(String.format("Nonexistent Products. userId=%d, pageable=%s, liked=%s", userId, pageable, liked),
+			e.getMessage());
 	}
 
 	@DisplayName("찜하지 않은 상품 조회 테스트")
@@ -164,9 +166,10 @@ class ProductServiceTest {
 		when(mockedPage.isEmpty()).thenReturn(true);
 
 		//then
-		IllegalStateException e = assertThrows(IllegalStateException.class,
+		AntigravityException e = assertThrows(AntigravityException.class,
 			() -> productService.getProducts(userId, pageable, liked));
-		assertEquals("Nonexistent Product", e.getMessage());
+		assertEquals(String.format("Nonexistent Products. userId=%d, pageable=%s, liked=%s", userId, pageable, liked),
+			e.getMessage());
 	}
 
 	@DisplayName("찜한 상품 조회 테스트")
@@ -208,9 +211,10 @@ class ProductServiceTest {
 		when(mockedPage.isEmpty()).thenReturn(true);
 
 		//then
-		IllegalStateException e = assertThrows(IllegalStateException.class,
+		AntigravityException e = assertThrows(AntigravityException.class,
 			() -> productService.getProducts(userId, pageable, liked));
-		assertEquals("Nonexistent Product", e.getMessage());
+		assertEquals(String.format("Nonexistent Products. userId=%d, pageable=%s, liked=%s", userId, pageable, liked),
+			e.getMessage());
 	}
 
 }

@@ -18,6 +18,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import antigravity.exception.AntigravityException;
+import antigravity.exception.ErrorCode;
 import antigravity.exception.GlobalExceptionHandler;
 import antigravity.service.ProductLikeService;
 import antigravity.service.ProductService;
@@ -61,7 +63,8 @@ public class ProductControllerTest {
 		Long userId = 2L;
 
 		//mock
-		doThrow(new IllegalStateException()).when(productLikeService).productLike(productId, userId);
+		doThrow(new AntigravityException(ErrorCode.USER_ID_NOT_FOUND, "임의 에러"))
+			.when(productLikeService).productLike(productId, userId);
 
 		//when&then
 		mockMvc.perform(
@@ -138,8 +141,9 @@ public class ProductControllerTest {
 		params.add("size", "10");
 
 		//mock
-		when(productService.getProducts(userId, mock(Pageable.class), true))
-			.thenThrow(IllegalStateException.class);
+		doThrow(new AntigravityException(ErrorCode.USER_ID_NOT_FOUND, "임의 에러")).
+			when(productService).getProducts(userId, mock(Pageable.class), true);
+
 		mockMvc = MockMvcBuilders.standaloneSetup(new ProductController(productService, productLikeService))
 			.setControllerAdvice(GlobalExceptionHandler.class).build();
 
