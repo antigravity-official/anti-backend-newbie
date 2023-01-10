@@ -1,7 +1,6 @@
-package antigravity.domain;
+package antigravity.domain.product;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,18 +12,19 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Product {
+public class ProductLike {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String sku;
-    private String name;
-    private BigDecimal price;
-    private Integer quantity;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private LocalDateTime deletedAt;
+    @Column(name = "product_id")
+    private Long productId;
+    @Column(name = "user_id")
+    private Long userId;
 
+    public ProductLike(Long productId, Long userId) {
+        this.productId = productId;
+        this.userId = userId;
+    }
 }
