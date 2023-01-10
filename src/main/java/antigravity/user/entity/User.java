@@ -1,16 +1,19 @@
 package antigravity.user.entity;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
+import lombok.ToString;
+import javax.validation.constraints.Email;
+import java.time.LocalDateTime;
 
 @Getter
-@Entity
-@NoArgsConstructor
+@Builder
+@ToString
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     private Long id;
+    @Email
+    private String email;
+    private String name;
+    private LocalDateTime createdAt;
+    private LocalDateTime deletedAt;
 }

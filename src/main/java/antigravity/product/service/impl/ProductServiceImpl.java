@@ -23,22 +23,32 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
     private DipProductRepository dipProductRepository;
     private UserRepository userRepository;
+    private ViewServiceImpl viewService;
     @Override
     public DipProductResponse createDip(Integer userId, Long productId) {
+        // 유저 존재 X
         userRepository.findById((long)userId).orElseThrow(() -> new AntiException(UserErrorCode.USER_NOT_EXIST));
+
+        // 상품 존재 X
         Product product = productRepository.findById(productId).orElseThrow(() -> new AntiException(ProductErrorCode.PRODUCT_NOT_EXIST));
 
-        //이미 찜했다면
-        if (dipProductRepository.existsDipProductByUserIdAndProductId((long)userId, productId)) {
+        // 이미 찜했다면
+        if (dipProductRepository.existsDipProductByUserIdAndProductId(userId, productId) > 0) {
             throw new AntiException(ProductErrorCode.PRODUCT_ALREADY_DIP);
         }
 
+        // 조회수 처리
+        Long viewCnt = viewService.addViewCntToRedis(productId);
+
+        // 찜한 상품 저장
         dipProductRepository.save(DipProduct.builder()
-                .product(product)
+                .productId(productId)
                 .userId(userId).build());
+
         return DipProductResponse.builder()
                 .userId(userId)
                 .productId(productId)
+                .viewed(viewCnt)
                 .build();
     }
 

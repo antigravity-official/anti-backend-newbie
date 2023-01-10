@@ -1,15 +1,11 @@
 package antigravity.global.redis;
 
-import antigravity.product.domain.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.SecondaryTable;
 import java.time.Duration;
-import java.util.Iterator;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -29,14 +25,15 @@ public class RedisDao {
         valueOperations.set(key, value);
     }
 
-    public void setDataExpire(String key, String value, Duration duration) {
+    public String setDataExpire(String key, String value, Duration duration) {
         ValueOperations<String, String> valueOperations = stringRedisTemplate.opsForValue();
         Duration expireDuration = duration;
         valueOperations.set(key, value, expireDuration);
+        return value;
     }
-    public void incrementData(String key) {
+    public Long incrementData(String key) {
         ValueOperations<String, String> valueOperations = stringRedisTemplate.opsForValue();
-        valueOperations.increment(key);
+        return valueOperations.increment(key);
     }
 
     public void deleteData(String key) {

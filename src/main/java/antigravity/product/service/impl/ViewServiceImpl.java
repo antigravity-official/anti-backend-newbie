@@ -17,12 +17,12 @@ public class ViewServiceImpl implements ViewService {
     private final ProductRepository productRepository;
     private final RedisDao redisDao;
     @Override
-    public void addViewCntToRedis(Long productId) {
+    public Long addViewCntToRedis(Long productId) {
         String key = "productViewCnt::" + productId;
         if(redisDao.getData(key) == null) {
-            redisDao.setDataExpire(key, String.valueOf(productRepository.findProductViewCnt(productId)), Duration.ofMinutes(5));
+            return Long.parseLong(redisDao.setDataExpire(key, String.valueOf(productRepository.findProductViewCnt(productId) + 1), Duration.ofMinutes(5)));
         } else {
-            redisDao.incrementData(key);
+            return redisDao.incrementData(key);
         }
     }
 

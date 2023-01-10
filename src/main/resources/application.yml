@@ -4,4 +4,35 @@ server:
 spring:
   profiles:
     active: dev
-
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  cache:
+    type: redis
+  redis:
+    host: 127.0.0.1
+    port: 6379
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3307/antigravity?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: P@ssw0rd
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false #시작과 동시에 실행되는 건 방지
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+  sql:
+    init:
+      schema-locations: classpath*:/${database}/schema.sql
+      data-locations: classpath*:/${database}/data.sql
+      platform: mysql

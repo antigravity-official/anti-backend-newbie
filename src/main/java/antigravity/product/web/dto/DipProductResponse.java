@@ -8,10 +8,10 @@ import lombok.Getter;
 public class DipProductResponse {
     private Integer userId;
     private Long productId;
-    private Integer viewed;
+    private Long viewed;
 
     @Builder
-    public DipProductResponse(Integer userId, Long productId, Integer viewed) {
+    public DipProductResponse(Integer userId, Long productId, Long viewed) {
         this.userId = userId;
         this.productId = productId;
         this.viewed = viewed;
