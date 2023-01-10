@@ -36,5 +36,14 @@ VALUES ('user2@antigravity.kr', '회원2'),
 INSERT INTO `heart` (`member_id`, `product_id`)
 VALUES (4, 1);
 
+INSERT INTO `heart` (`member_id`, `product_id`)
+VALUES (4, 2);
+
+INSERT INTO `heart` (`member_id`, `product_id`)
+VALUES (3, 2);
+
+INSERT INTO `heart` (`member_id`, `product_id`)
+VALUES (2, 10);
+
 INSERT INTO `view_count` (`product_id`, `views`)
 VALUES (1, 1);

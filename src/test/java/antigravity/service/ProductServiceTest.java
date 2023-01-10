@@ -12,6 +12,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -31,7 +34,8 @@ public class ProductServiceTest {
     @DisplayName("찜하지 않은 상품인 경우 heart 테이블에 insert")
     @Test
     public void isNotAlreadyLikedTest() {
-        when(repository.isAlreadyLiked(memberId, productId)).thenReturn(null);
+        List<Heart> list = new ArrayList<Heart>();
+        when(repository.isAlreadyLiked(memberId, productId)).thenReturn(list);
         when(repository.checkViewCount(productId)).thenReturn(null);
         when(repository.addViewCount(productId)).thenReturn(1);
 
@@ -42,7 +46,9 @@ public class ProductServiceTest {
     @DisplayName("이미 찜한 상품인 경우 heart 테이블에서 delete")
     @Test
     public void isAlreadyLikedTest() {
-        when(repository.isAlreadyLiked(memberId, productId)).thenReturn(Heart.builder().memberId(memberId).productId(productId).build());
+        List<Heart> list = new ArrayList<Heart>();
+        list.add(new Heart());
+        when(repository.isAlreadyLiked(memberId, productId)).thenReturn(list);
 
         service.isAlreadyLiked(memberId, productId);
         verify(repository).deleteLikedProduct(memberId, productId);

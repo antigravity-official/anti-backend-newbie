@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @SpringBootTest
 @Transactional
 public class ProductRepositoryTests {
@@ -27,7 +29,7 @@ public class ProductRepositoryTests {
     public void isAlreadyLikedTest() {
         Long memberId = 4L;
         Long productId = 1L;
-        Heart heart = repository.isAlreadyLiked(memberId, productId);
+        List<Heart> heart = repository.isAlreadyLiked(memberId, productId);
         Assertions.assertNotNull(heart);
     }
 
@@ -62,5 +64,10 @@ public class ProductRepositoryTests {
         Long memberId = 3L;
         Long productId = 1L;
         Assertions.assertEquals(1, repository.likeProduct(memberId,productId));
+    }
+
+    @Test
+    public void getAllProductTest() {
+
     }
 }
