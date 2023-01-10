@@ -1,6 +1,6 @@
 package antigravity.config;
 
-import antigravity.web.UserInfoArgumentResolver;
+import antigravity.web.argumentresolver.UserInfoArgumentResolver;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;

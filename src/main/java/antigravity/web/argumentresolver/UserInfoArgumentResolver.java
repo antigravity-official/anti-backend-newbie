@@ -1,6 +1,5 @@
-package antigravity.web;
+package antigravity.web.argumentresolver;
 
-import antigravity.application.exception.UserNotFoundException;
 import antigravity.web.exception.InvalidUserInfoException;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
