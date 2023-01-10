@@ -2,5 +2,9 @@ server:
   port: 8089
 
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
   profiles:
     active: dev
+

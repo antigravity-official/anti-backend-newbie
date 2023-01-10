@@ -1,8 +1,18 @@
 package antigravity.payload;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import antigravity.entity.Product;
+import antigravity.entity.Wish;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.querydsl.core.annotations.QueryProjection;
+import lombok.Data;
 
+import java.math.BigDecimal;
+import java.sql.Array;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
 public class ProductResponse {
 
     private Long id; // 상품아이디
@@ -15,4 +25,20 @@ public class ProductResponse {
     private Integer viewed; // 상품 조회 수
     private LocalDateTime createdAt; // 상품 생성일시
     private LocalDateTime updatedAt; // 상품 수정일시
+
+    @JsonBackReference
+    private List<Wish> wishList = new ArrayList<>();
+
+    public ProductResponse(Product product, boolean liked) {
+        id = product.getId();
+        name = product.getName();
+        price = product.getPrice();
+        quantity = product.getQuantity();
+        this.liked = liked;
+        wishList = product.getWishList();
+        viewed = product.getView();
+        createdAt = product.getCreatedAt();
+        updatedAt = product.getUpdatedAt();
+    }
+
 }
