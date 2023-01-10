@@ -22,7 +22,7 @@ public class Product extends BaseTimeEntity {
     private String name;
     private BigDecimal price;
     private Integer quantity;
-    private Integer viewed;
+    private Long viewed;
     private LocalDateTime deletedAt;
     @Builder
     public Product(String sku, String name, BigDecimal price, Integer quantity, LocalDateTime deletedAt) {
@@ -32,7 +32,7 @@ public class Product extends BaseTimeEntity {
         this.quantity = quantity;
         this.deletedAt = deletedAt;
     }
-    void setViewed(Integer viewed) {
+    void setViewed(Long viewed) {
         this.viewed = viewed;
     }
 
