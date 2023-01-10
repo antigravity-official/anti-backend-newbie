@@ -1,13 +1,22 @@
+
 database: hsqldb
 
 # Database Settings
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb;MODE=mysql;
+    url: jdbc:mysql://localhost:3306/fittingnote?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
     username: sa
-    password:
-    driverClassName: org.h2.Driver
-
+    password: sa
+    driverClassName: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    jackson:
+      property-naming-strategy: SNAKE_CASE
   # H2 Settings
   h2:
     console:
