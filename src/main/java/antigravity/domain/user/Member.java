@@ -1,5 +1,6 @@
 package antigravity.domain.user;
 
+import antigravity.domain.product.Product;
 import antigravity.domain.product.ProductLike;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import org.hibernate.annotations.Where;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Where(clause = "deleted_at is null")
 public class Member {
 
     @Id
@@ -33,16 +35,18 @@ public class Member {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @Where(clause = "deleted_at = NULL")
     private List<ProductLike> productLikes = new ArrayList<>();
 
 
-    public boolean isLiked(Long productId) {
+    public boolean likes(Long productId) {
         return productLikes.stream()
             .anyMatch(p -> p.getProductId().equals(productId));
     }
 
-    public void like(Long productId) {
-        productLikes.add(new ProductLike(productId, this.id));
+    public void like(Product product) {
+        ProductLike productLike = new ProductLike(product.getId(), this.id);
+
+        this.productLikes.add(productLike);
+        product.addProductLike(productLike);
     }
 }

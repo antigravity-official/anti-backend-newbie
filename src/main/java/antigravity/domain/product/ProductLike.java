@@ -20,11 +20,11 @@ public class ProductLike {
 
     @Column(name = "product_id")
     private Long productId;
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "member_id")
+    private Long memberId;
 
-    public ProductLike(Long productId, Long userId) {
+    public ProductLike(Long productId, Long memberId) {
         this.productId = productId;
-        this.userId = userId;
+        this.memberId = memberId;
     }
 }

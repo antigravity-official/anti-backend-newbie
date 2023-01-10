@@ -20,6 +20,7 @@ import org.hibernate.annotations.Where;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Where(clause = "deleted_at is null")
 public class Product {
 
     @Id
@@ -36,7 +37,6 @@ public class Product {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    @Where(clause = "deleted_at = NULL")
     private List<ProductLike> likes = new ArrayList<>();
 
     public Product(String sku, String name, BigDecimal price, Integer quantity) {
@@ -50,4 +50,7 @@ public class Product {
         return likes.size();
     }
 
+    public void addProductLike(ProductLike productLike) {
+        likes.add(productLike);
+    }
 }
