@@ -43,7 +43,7 @@ public class ProductService {
 		if (liked == null) {
 			products = productRepository.findAll(pageable);
 		} else if (!liked) {
-			products = productRepository.findAllNotLikeProduct(user, pageable);
+			products = productRepository.findAllUnlikeProduct(user, pageable);
 		} else {
 			products = productRepository.findAllLikeProduct(user, pageable);
 		}
