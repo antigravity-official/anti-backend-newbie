@@ -3,6 +3,7 @@ package antigravity.product.repository;
 import antigravity.product.domain.entity.Product;
 import antigravity.product.domain.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,6 +33,7 @@ public class ProductRepositoryTests {
                 .build();
     }
     @Test
+    @DisplayName("상품을 저장한 뒤 상품 아이디로 찾을 수 있다.")
     void saveAndFind() throws Exception {
         //when
         Long id = productRepository.save(product);
@@ -41,6 +43,7 @@ public class ProductRepositoryTests {
         assertEquals(id, findProduct.getId());
     }
     @Test
+    @DisplayName("상품 아이디로 조회수를 찾을 수 있다.")
     void findViewCnt() throws Exception {
         //when
         Long id = productRepository.save(product);
@@ -51,6 +54,7 @@ public class ProductRepositoryTests {
     }
 
     @Test
+    @DisplayName("상품 아이디로 조회수를 수정할 수 있다.")
     void updateViewCnt() throws Exception {
         //when
         Long id = productRepository.save(product);

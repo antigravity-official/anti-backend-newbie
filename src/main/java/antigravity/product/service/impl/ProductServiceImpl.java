@@ -24,13 +24,14 @@ public class ProductServiceImpl implements ProductService {
     private DipProductRepository dipProductRepository;
     private UserRepository userRepository;
     private ViewServiceImpl viewService;
+
     @Override
     public DipProductResponse createDip(Integer userId, Long productId) {
         // 유저 존재 X
         userRepository.findById((long)userId).orElseThrow(() -> new AntiException(UserErrorCode.USER_NOT_EXIST));
 
         // 상품 존재 X
-        Product product = productRepository.findById(productId).orElseThrow(() -> new AntiException(ProductErrorCode.PRODUCT_NOT_EXIST));
+        productRepository.findById(productId).orElseThrow(() -> new AntiException(ProductErrorCode.PRODUCT_NOT_EXIST));
 
         // 이미 찜했다면
         if (dipProductRepository.existsDipProductByUserIdAndProductId(userId, productId) > 0) {

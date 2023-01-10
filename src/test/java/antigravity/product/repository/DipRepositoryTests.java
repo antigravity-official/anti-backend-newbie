@@ -27,7 +27,7 @@ public class DipRepositoryTests {
                 .build();
     }
     @Test
-    @DisplayName("찜 상품 저장 후 찾기")
+    @DisplayName("찜 상품을 저장 한 뒤 상품 아이디로 찾을 수 있다.")
     void saveAndFind() {
         //when
         Long id = dipProductRepository.save(dipProduct);
@@ -38,7 +38,7 @@ public class DipRepositoryTests {
     }
 
     @Test
-    @DisplayName("찜 상품 개수 찾기 by 유저아이디")
+    @DisplayName("유저아이디로 찜 상품 개수를 찾을 수 있다.")
     void countOfDipProductByUserId() {
         //when
         for (int i = 0; i < 10; i++) {
@@ -51,7 +51,7 @@ public class DipRepositoryTests {
     }
 
     @Test
-    @DisplayName("유저아이디와 상품아이디로 존재 여부 확인")
+    @DisplayName("유저아이디와 상품아이디로 찜상품의 존재 여부를 확인할 수 있다.")
     void existOfDipProductByUserIdAndProductId() {
         //when
         for (int i = 0; i < 10; i++) {
@@ -64,7 +64,7 @@ public class DipRepositoryTests {
     }
 
     @Test
-    @DisplayName("유저아이디로 모든 찜상품 찾기")
+    @DisplayName("유저아이디로 모든 찜상품을 찾을 수 있다.")
     void findAllDipProductByUserId() {
         //when
         for (int i = 0; i < 100; i++) {
