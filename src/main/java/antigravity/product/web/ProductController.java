@@ -17,14 +17,15 @@ public class ProductController {
 
     // TODO 찜 상품 등록 API
     @PostMapping("{productId}")
-    public ResponseEntity<Long> postDipProduct(@PathVariable Long productId) {
+    public ResponseEntity<Long> postDipProduct(@RequestHeader("X-USER-ID") Integer userId, @PathVariable Long productId) {
+        productService.createDip((long)userId, productId);
         return ResponseEntity.status(HttpStatus.CREATED).body(productId);
     }
 
     // TODO 찜 상품 조회 API
     @GetMapping()
-    public ResponseEntity<List<ProductResponse>> getDipProductList(@PathParam("liked") boolean liked, Pageable pageable) {
-        List<ProductResponse> productList = productService.findProductList(liked, pageable);
+    public ResponseEntity<List<ProductResponse>> getDipProductList(@RequestHeader("X-USER-ID") Integer userId, @PathParam("liked") boolean liked, Pageable pageable) {
+        List<ProductResponse> productList = productService.findProductList((long)userId, liked, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
 }

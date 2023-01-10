@@ -6,5 +6,6 @@ import java.awt.print.Pageable;
 import java.util.List;
 
 public interface ProductService {
-    List<ProductResponse> findProductList(boolean liked, Pageable pageable);
+    Long createDip(Long userId, Long productId);
+    List<ProductResponse> findProductList(Long userId, boolean liked, Pageable pageable);
 }
