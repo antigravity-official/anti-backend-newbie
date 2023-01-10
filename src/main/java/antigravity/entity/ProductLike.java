@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @Table(name = "product_like")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProductLike {
+public class ProductLike extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

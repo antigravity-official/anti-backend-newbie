@@ -16,6 +16,7 @@ public class ProductController {
 
     /**
      * 과제 1. 찜 상품 등록 API
+     *
      * @param userId
      * @param productId
      * @return User or Product Not Found -> 400 Bad Request, else 201 Created
