@@ -1,6 +1,5 @@
 package antigravity.product.domain.entity;
 
-import antigravity.user.domain.entity.User;
 import antigravity.util.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +22,7 @@ public class Product extends BaseTimeEntity {
     private String name;
     private BigDecimal price;
     private Integer quantity;
+    private Integer viewed;
     private LocalDateTime deletedAt;
     @Builder
     public Product(String sku, String name, BigDecimal price, Integer quantity, LocalDateTime deletedAt) {
@@ -31,5 +31,13 @@ public class Product extends BaseTimeEntity {
         this.price = price;
         this.quantity = quantity;
         this.deletedAt = deletedAt;
+    }
+    void setViewed(Integer viewed) {
+        this.viewed = viewed;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.viewed = this.viewed == null ? 0: this.viewed;
     }
 }
