@@ -39,7 +39,7 @@ class AuthServiceTest {
 
     @Test
     public void fail() {
-        String expectParameter = "2";
+        String expectParameter = "100000";
         Assertions.assertThatThrownBy(() -> authService.validateId(expectParameter)).isInstanceOf(BaseException.class);
     }
 
