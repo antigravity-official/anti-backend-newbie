@@ -141,7 +141,7 @@ class ProductServiceTest {
 
 		//when
 		when(userService.findUserById(userId)).thenReturn(mockedUser);
-		when(productRepository.findAllNotLikeProduct(mockedUser, pageable)).thenReturn(mockedPage);
+		when(productRepository.findAllUnlikeProduct(mockedUser, pageable)).thenReturn(mockedPage);
 		when(mockedPage.isEmpty()).thenReturn(false);
 
 		//then
@@ -162,7 +162,7 @@ class ProductServiceTest {
 
 		//when
 		when(userService.findUserById(userId)).thenReturn(mockedUser);
-		when(productRepository.findAllNotLikeProduct(mockedUser, pageable)).thenReturn(mockedPage);
+		when(productRepository.findAllUnlikeProduct(mockedUser, pageable)).thenReturn(mockedPage);
 		when(mockedPage.isEmpty()).thenReturn(true);
 
 		//then
