@@ -6,6 +6,7 @@ import antigravity.entity.Product;
 import antigravity.repository.LikeHistoryRepository;
 import antigravity.repository.MemberRepository;
 import antigravity.repository.ProductRepository;
+import antigravity.repository.ProductViewCountRepository;
 import java.math.BigDecimal;
 import java.util.List;
 import org.assertj.core.api.Assertions;
@@ -34,6 +35,8 @@ class LikeHistoryServiceTest {
     @Autowired
     LikeHistoryService likeHistoryService;
 
+    @Autowired
+    ProductViewCountRepository productViewCountRepository;
     Member alreadySaveMember;
 
     Product alreadySaveProduct;
@@ -76,4 +79,12 @@ class LikeHistoryServiceTest {
                         alreadySaveMember.getId()))
                 .isInstanceOf(BaseException.class);
     }
+
+    @Test
+    public void addCountTest() {
+        likeHistoryService.addNotDuplicatedLikeHistory(alreadySaveProduct.getId(), alreadySaveMember.getId());
+        Long expect = 1L;
+        Assertions.assertThat(expect).isEqualTo(productViewCountRepository.findAll().get(0).getCount());
+    }
+
 }
