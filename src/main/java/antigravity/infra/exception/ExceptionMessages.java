@@ -1,11 +1,12 @@
 package antigravity.infra.exception;
 
+import antigravity.web.payload.common.ResponseMessages;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum ExceptionMessages {
+public enum ExceptionMessages implements ResponseMessages {
 
     //user
     USER_NOT_FOUND("U-F001", "유저를 찾을 수 없습니다."),
