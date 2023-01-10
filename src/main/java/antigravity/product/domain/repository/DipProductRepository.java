@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -20,6 +21,7 @@ import java.util.Optional;
 @Repository
 public class DipProductRepository {
     private final NamedParameterJdbcTemplate jdbcTemplate;
+    GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
     public Integer existsDipProductByUserIdAndProductId(Integer userId, Long productId) {
         String sql = "select count(*) from dip_product where user_id = :user_id and product_id = :product_id";
         Map<String, Object> params = new HashMap<>();
@@ -27,12 +29,13 @@ public class DipProductRepository {
         params.put("product_id", productId);
         return jdbcTemplate.queryForObject(sql, params, Integer.class);
     }
-    public int save(DipProduct dipProduct) {
+    public Long save(DipProduct dipProduct) {
         String sql = "insert into dip_product (user_id, product_id) values (:user_id, :product_id)";
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", dipProduct.getUserId());
         params.put("product_id", dipProduct.getProductId());
-        return jdbcTemplate.update(sql, params);
+        jdbcTemplate.update(sql, new MapSqlParameterSource(params),generatedKeyHolder);
+        return (long)generatedKeyHolder.getKeys().get("id");
     }
     public Optional<DipProduct> findById(Long id) {
         String query = "SELECT * FROM dip_product WHERE id = :id";

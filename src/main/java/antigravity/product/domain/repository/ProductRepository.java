@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import java.util.Optional;
 @Repository
 public class ProductRepository {
     private final NamedParameterJdbcTemplate jdbcTemplate;
+    GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
     public void updateViewCntFromRedis(Long productId, Long viewCnt) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("viewCnt", viewCnt);
@@ -36,6 +38,20 @@ public class ProductRepository {
         MapSqlParameterSource params = new MapSqlParameterSource("id", id);
         return Optional.ofNullable(jdbcTemplate.queryForObject(query, params, productRowMapper()));
     }
+
+    public Long save(Product product) {
+        String sql = "insert into product (sku, name, price, quantity, viewed, created_at) values (:sku, :name, :price, :quantity, :viewed, :createdAt)";
+        Map<String, Object> params = new HashMap<>();
+        params.put("sku", product.getSku());
+        params.put("name", product.getName());
+        params.put("price", product.getPrice());
+        params.put("quantity", product.getQuantity());
+        params.put("viewed", product.getViewed());
+        params.put("createdAt", product.getCreatedAt());
+        jdbcTemplate.update(sql, new MapSqlParameterSource(params),generatedKeyHolder);
+        return (long)generatedKeyHolder.getKeys().get("id");
+    }
+
     private RowMapper<Product> productRowMapper() {
         return (rs, rowNum) -> {
             Product product = Product.builder()
