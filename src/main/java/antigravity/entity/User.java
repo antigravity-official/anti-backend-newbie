@@ -10,10 +10,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import lombok.Getter;
 
 @Getter
 @Table(name = "users")
+@SQLDelete(sql = "UPDATE users SET deletedAt = NOW() where id =?")
+@Where(clause = "deleted_at is NULL")
 @Entity
 public class User extends BaseEntity {
 

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +13,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.PreUpdate;
+
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +28,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE product SET deletedAt = NOW() where id =?")
+@Where(clause = "deleted_at is NULL")
+@DynamicUpdate
 @Entity
 public class Product extends BaseEntity {
 
@@ -43,20 +52,15 @@ public class Product extends BaseEntity {
 
 	private Integer viewed;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+	@BatchSize(size = 100)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
 	private List<ProductLike> productLikes;
 
-	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 	private LocalDateTime deletedAt;
 
 	public void increaseViewed() {
 		this.viewed += 1;
-	}
-
-	@PreUpdate
-	private void updatedAt() {
-		this.updatedAt = LocalDateTime.now();
 	}
 
 	public boolean isDeleted() {
@@ -76,6 +80,11 @@ public class Product extends BaseEntity {
 			}
 		}
 		return false;
+	}
+
+	@PreUpdate
+	private void updatedAt() {
+		this.updatedAt = LocalDateTime.now();
 	}
 
 }
