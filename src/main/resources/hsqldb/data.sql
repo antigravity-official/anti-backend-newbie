@@ -32,3 +32,4 @@ INSERT INTO `user` (`email`, `name`)
 VALUES ('user2@antigravity.kr', '회원2'),
        ('user3@antigravity.kr', '회원3'),
        ('user4@antigravity.kr', '회원4');
+
