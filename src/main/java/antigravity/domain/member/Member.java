@@ -1,4 +1,4 @@
-package antigravity.domain.user;
+package antigravity.domain.member;
 
 import antigravity.domain.product.Product;
 import antigravity.domain.product.ProductLike;

@@ -1,4 +1,4 @@
-package antigravity.domain.user;
+package antigravity.domain.member;
 
 import java.util.List;
 import java.util.Optional;
