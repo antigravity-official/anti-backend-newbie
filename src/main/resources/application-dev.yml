@@ -2,11 +2,23 @@ database: hsqldb
 
 # Database Settings
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
+        show_sql: true
+    defer-datasource-initialization: true
+
   datasource:
+    driverClassName: org.h2.Driver
     url: jdbc:h2:mem:testdb;MODE=mysql;
     username: sa
     password:
-    driverClassName: org.h2.Driver
 
   # H2 Settings
   h2:
@@ -18,8 +30,9 @@ spring:
     level:
       org:
         springframework.web: debug
+
   sql:
     init:
-      schema-locations: classpath*:/${database}/schema.sql
+      mode: always
+      encoding: UTF-8
       data-locations: classpath*:/${database}/data.sql
-      platform: h2
