@@ -11,7 +11,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -33,20 +32,17 @@ public class Member {
     private LocalDateTime createdAt;
     private LocalDateTime deletedAt;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductLike> productLikes = new ArrayList<>();
-
 
     public boolean likes(Long productId) {
         return productLikes.stream()
-            .anyMatch(p -> p.getProductId().equals(productId));
+            .anyMatch(p -> p.getProduct().getId().equals(productId));
     }
 
     public void like(Product product) {
-        ProductLike productLike = new ProductLike(product.getId(), this.id);
+        ProductLike productLike = new ProductLike(product, this);
 
         this.productLikes.add(productLike);
-        product.addProductLike(productLike);
     }
 }

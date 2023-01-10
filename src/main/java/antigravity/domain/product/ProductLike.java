@@ -1,10 +1,13 @@
 package antigravity.domain.product;
 
-import javax.persistence.Column;
+import antigravity.domain.member.Member;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,13 +21,16 @@ public class ProductLike {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "product_id")
-    private Long productId;
-    @Column(name = "member_id")
-    private Long memberId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private Product product;
 
-    public ProductLike(Long productId, Long memberId) {
-        this.productId = productId;
-        this.memberId = memberId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    public ProductLike(Product product, Member member) {
+        this.product = product;
+        this.member = member;
     }
 }
