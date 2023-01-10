@@ -25,21 +25,23 @@ import lombok.RequiredArgsConstructor;
 @RestController
 public class ProductController {
 
+	public static final String USER_ID_HEADER_KEY = "X-USER-ID";
+
 	private final ProductService productService;
 	private final ProductLikeService productLikeService;
 
 	@PostMapping("/liked/{productId}")
-	public ResponseEntity<?> addLikedProduct(
+	public ResponseEntity<Response<String>> addLikedProduct(
 		@PathVariable Long productId,
-		@RequestHeader("X-USER-ID") Integer userId) {
+		@RequestHeader(USER_ID_HEADER_KEY) Integer userId) {
 
 		productLikeService.productLike(productId, userId.longValue());
 		return new ResponseEntity<>(Response.success("찜이 완료되었습니다."), HttpStatus.CREATED);
 	}
 
 	@GetMapping("/liked")
-	public ResponseEntity<?> getProducts(
-		@RequestHeader("X-USER-ID") Integer userId,
+	public ResponseEntity<Response<Page<ProductResponse>>> getProducts(
+		@RequestHeader(USER_ID_HEADER_KEY) Integer userId,
 		@RequestParam(required = false) Boolean liked,
 		@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
 
