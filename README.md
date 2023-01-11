@@ -1,5 +1,13 @@
 # 안티그래비티 백엔드 주니어 기술과제
 
+## 문서
+
+-[TODOLIST](docs/TODO_LIST.md)
+
+-[응답 메세지](docs/응답 메세지.md)
+
+-[추가로 만든 테이블 정보](docs/APPEND_ENTITY_INFORMATION.md)
+
 ## [피팅노트 서비스에 "찜 상품" 기능을 구현 해주세요!]
 
 ## 개요
