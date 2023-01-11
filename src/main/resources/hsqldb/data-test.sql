@@ -32,3 +32,12 @@ INSERT INTO `member` (`email`, `name`, `created_at`)
 VALUES ('user2@antigravity.kr', '회원2', now()),
        ('user3@antigravity.kr', '회원3', now()),
        ('user4@antigravity.kr', '회원4', now());
+
+INSERT INTO `product_like` (`product_id`, `member_id`)
+VALUES (1, 2);
+
+INSERT INTO `product_like` (`product_id`, `member_id`)
+VALUES (2, 2);
+
+INSERT INTO `product_like` (`product_id`, `member_id`)
+VALUES (3, 2);

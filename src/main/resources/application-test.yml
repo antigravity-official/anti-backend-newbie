@@ -35,4 +35,4 @@ spring:
     init:
       mode: always
       encoding: UTF-8
-      data-locations: classpath*:/${database}/data.sql
+      data-locations: classpath*:/${database}/data-test.sql

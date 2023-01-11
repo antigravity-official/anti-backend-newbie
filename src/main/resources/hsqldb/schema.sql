@@ -1,5 +1,5 @@
 DROP TABLE `product` IF EXISTS;
-DROP TABLE `user` IF EXISTS;
+DROP TABLE `member` IF EXISTS;
 
 CREATE TABLE `product`
 (
@@ -14,7 +14,7 @@ CREATE TABLE `product`
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `user`
+CREATE TABLE `member`
 (
     `id`         bigint(20) NOT NULL AUTO_INCREMENT,
     `email`      varchar(120) NOT NULL DEFAULT '',
