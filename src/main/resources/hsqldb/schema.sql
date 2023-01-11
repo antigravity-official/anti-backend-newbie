@@ -14,7 +14,7 @@ CREATE TABLE `product`
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `user`
+CREATE TABLE `users`
 (
     `id`         bigint(20) NOT NULL AUTO_INCREMENT,
     `email`      varchar(120) NOT NULL DEFAULT '',
