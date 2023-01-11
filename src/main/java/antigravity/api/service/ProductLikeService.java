@@ -22,29 +22,28 @@ public class ProductLikeService {
 
     private final UserSearchService userSearchService;
 
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = RuntimeException.class)
+    @Transactional(rollbackFor = RuntimeException.class)
     public void addLikedProduct(Long userId, Long productId) {
 
         User findUser = userSearchService.searchUserByUserId(userId);
 
-        Product findProduct = searchProductByProductId(productId);
+        Product findProduct = searchProductForUpdateByProductId(productId);
 
         Boolean isLikedProduct = productLikeRepository.existsByUserAndProduct(findUser, findProduct);
 
-        if (isLikedProduct) {
+        if (isLikedProduct)
             throw new CustomException(ErrorCode.CAN_NOT_LIKE);
-        } else {
-            ProductLike createProductLike = createProductLikeUser(findUser, findProduct);
-            productLikeRepository.save(createProductLike);
-            findProduct.incrementView();
-        }
+
+        ProductLike createProductLike = createProductLikeUser(findUser, findProduct);
+        productLikeRepository.save(createProductLike);
+        findProduct.incrementView();
 
         productRepository.save(findProduct);
     }
 
-    @Transactional(readOnly = true)
-    public Product searchProductByProductId(Long productId) {
-        return productRepository.findById(productId)
+    @Transactional
+    public Product searchProductForUpdateByProductId(Long productId) {
+        return productRepository.findByForUpdateByProductId(productId)
                 .orElseThrow(() -> {
                     throw new CustomException(ErrorCode.PRODUCT_NOT_FOUND);
                 });

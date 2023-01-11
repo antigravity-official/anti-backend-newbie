@@ -16,9 +16,8 @@ public class ProductSearchResponse {
     private final int viewed;
     private final String createdAt;
     private final String updatedAt;
-    private boolean liked;
-    private Integer totalLiked;
-
+    private final boolean liked;
+    private final Integer totalLiked;
 
     @Builder
     public ProductSearchResponse(Long id, String sku, String name, BigDecimal price,
