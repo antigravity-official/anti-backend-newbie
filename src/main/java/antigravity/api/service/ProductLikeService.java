@@ -24,7 +24,6 @@ public class ProductLikeService {
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = RuntimeException.class)
     public void addLikedProduct(Long userId, Long productId) {
-
         User findUser = userSearchService.searchUserByUserId(userId);
 
         Product findProduct = searchProductByProductId(productId);

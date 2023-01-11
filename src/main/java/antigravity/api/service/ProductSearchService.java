@@ -1,6 +1,5 @@
 package antigravity.api.service;
 
-import antigravity.api.factory.ResponseFactoryService;
 import antigravity.api.repository.ProductLikeRepository;
 import antigravity.api.repository.ProductRepository;
 import antigravity.entity.LikeStatus;
@@ -25,7 +24,6 @@ public class ProductSearchService {
     private final ProductRepository productRepository;
 
     private final UserSearchService userSearchService;
-    private final ResponseFactoryService factoryService;
 
     public List<ProductSearchResponse> searchLikedProduct(Long userId, Boolean isLiked, Pageable pageable) {
 
@@ -44,8 +42,7 @@ public class ProductSearchService {
     public List<ProductSearchResponse> takeLikedProductWithUserId(User user, boolean isLiked, Pageable pageable) {
         return productRepository.findLikedProductWithUser(user, LikeStatus.LIKE, pageable)
                 .stream()
-                .map(product -> factoryService.makeProductSearchResponseWithProduct(
-                        product, isLiked, product.getProductLikes().size()))
+                .map(product -> new ProductSearchResponse(product, isLiked, product.getProductLikes().size()))
                 .collect(Collectors.toList());
     }
 
@@ -53,8 +50,7 @@ public class ProductSearchService {
     public List<ProductSearchResponse> takeNoLikedProductWithUserId(User user, boolean isLiked, Pageable pageable) {
         return productRepository.findProductsNotInProductLike(user, pageable)
                 .stream()
-                .map(product -> factoryService.makeProductSearchResponseWithProduct(
-                        product, isLiked, product.getProductLikes().size()))
+                .map(product -> new ProductSearchResponse(product, isLiked, product.getProductLikes().size()))
                 .collect(Collectors.toList());
     }
 
@@ -65,13 +61,13 @@ public class ProductSearchService {
             boolean flag = false;
             for (ProductLike productLike : product.getProductLikes()) {
                 if (productLike.getUser().equals(user)) {
-                    responseList.add(factoryService.makeProductSearchResponseWithProduct(product, true, product.getProductLikes().size()));
+                    responseList.add(new ProductSearchResponse(product, true, product.getProductLikes().size()));
                     flag = true;
                     break;
                 }
             }
             if (!flag) {
-                responseList.add(factoryService.makeProductSearchResponseWithProduct(product, false, product.getProductLikes().size()));
+                responseList.add(new ProductSearchResponse(product, false, product.getProductLikes().size()));
             }
         }
         return responseList;

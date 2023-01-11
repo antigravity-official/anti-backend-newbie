@@ -32,6 +32,7 @@ public class ProductController {
     @PostMapping("/liked/{productId}")
     public ResponseEntity<HttpStatus> likedProductAdd(@RequestHeader(name = "X-USER-ID") Long userId,
                                                       @Valid ProductLikedRequest productLikedRequest) {
+        System.out.println(productLikedRequest.getProductId());
         productLikeService.addLikedProduct(userId, productLikedRequest.getProductId());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

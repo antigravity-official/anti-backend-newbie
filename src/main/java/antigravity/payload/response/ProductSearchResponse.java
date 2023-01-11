@@ -1,5 +1,6 @@
 package antigravity.payload.response;
 
+import antigravity.entity.Product;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -20,19 +21,17 @@ public class ProductSearchResponse {
     private final Integer totalLiked;
 
     @Builder
-    public ProductSearchResponse(Long id, String sku, String name, BigDecimal price,
-                                 Integer quantity, int viewed, String createdAt,
-                                 String updatedAt, Boolean liked, Integer totalLiked
+    public ProductSearchResponse(Product product, Boolean isLiked, Integer totalLiked
     ) {
-        this.id = id;
-        this.sku = sku;
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
-        this.viewed = viewed;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.liked = liked;
+        this.id = product.getId();
+        this.sku = product.getSku();
+        this.name = product.getName();
+        this.price = product.getPrice();
+        this.quantity = product.getQuantity();
+        this.viewed = product.getViewed();
+        this.createdAt = product.getCreatedAt().toString();
+        this.updatedAt = product.getUpdatedAt().toString();
+        this.liked = isLiked;
         this.totalLiked = totalLiked;
     }
 }

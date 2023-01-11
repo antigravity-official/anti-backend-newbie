@@ -29,6 +29,17 @@ dependencies {
 
 	// JPA Dependency
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	// MySQL
+//	implementation 'mysql:mysql-connector-java'
+
+	// ModelMapper.
+	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
+
+	/*  Hamcrest & Mockito */
+	testImplementation 'org.hamcrest:hamcrest-library:2.2'
+	testImplementation 'org.mockito:mockito-core:3.11.2'
+	testImplementation 'org.mockito:mockito-junit-jupiter:3.11.2'
 }
 
 test {
