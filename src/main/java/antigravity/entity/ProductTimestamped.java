@@ -18,6 +18,8 @@ public abstract class ProductTimestamped {
   private LocalDateTime createdAt;
 
   @LastModifiedDate
+  private LocalDateTime updatedAt;
+
   private LocalDateTime deletedAt;
 
 }

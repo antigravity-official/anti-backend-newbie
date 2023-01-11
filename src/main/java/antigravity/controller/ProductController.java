@@ -29,5 +29,12 @@ public class ProductController {
 
     // TODO 찜 상품 조회 API
 
+    @GetMapping("/liked")
+    public ResponseDto<?> getLikeProduct(@RequestParam(required = false) Boolean liked,
+                                         @PageableDefault(sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable,@RequestHeader("X-USER-ID") Long memberId)  {
+        return productService.getLikeProduct(liked,pageable,memberId);
+    }
+
+
 
 }

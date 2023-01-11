@@ -30,11 +30,6 @@ public class Product extends ProductTimestamped {
     @Column(nullable = false)
     private Integer quantity;
 
-    @Column
-    @ColumnDefault("false")
-    @Builder.Default
-    private Integer liked;
-
     private Long viewed;
 
 }
