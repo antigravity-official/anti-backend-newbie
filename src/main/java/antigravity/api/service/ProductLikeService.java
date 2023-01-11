@@ -22,12 +22,12 @@ public class ProductLikeService {
 
     private final UserSearchService userSearchService;
 
-    @Transactional(rollbackFor = RuntimeException.class)
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = RuntimeException.class)
     public void addLikedProduct(Long userId, Long productId) {
 
         User findUser = userSearchService.searchUserByUserId(userId);
 
-        Product findProduct = searchProductForUpdateByProductId(productId);
+        Product findProduct = searchProductByProductId(productId);
 
         Boolean isLikedProduct = productLikeRepository.existsByUserAndProduct(findUser, findProduct);
 
@@ -36,14 +36,24 @@ public class ProductLikeService {
 
         ProductLike createProductLike = createProductLikeUser(findUser, findProduct);
         productLikeRepository.save(createProductLike);
-        findProduct.incrementView();
+        updateProductViewWithPessimistic(productId);
 
         productRepository.save(findProduct);
     }
 
     @Transactional
-    public Product searchProductForUpdateByProductId(Long productId) {
-        return productRepository.findByForUpdateByProductId(productId)
+    public void updateProductViewWithPessimistic(Long productId){
+        // 앞단에서 이미 영속화가 되어 있기 때문에, 빠르게 가져올 수 있다.
+        Product product = productRepository.findByForUpdateByProductId(productId)
+                .orElseThrow(() -> {
+                    throw new CustomException(ErrorCode.PRODUCT_NOT_FOUND);
+                });
+        product.incrementView();
+    }
+
+    @Transactional
+    public Product searchProductByProductId(Long productId) {
+        return productRepository.findById(productId)
                 .orElseThrow(() -> {
                     throw new CustomException(ErrorCode.PRODUCT_NOT_FOUND);
                 });
