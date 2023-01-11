@@ -35,7 +35,7 @@ public class Product extends BaseEntity {
     @Column(columnDefinition = "integer default 0", nullable = false)// 기본 값을 0, null 불가 처리, 동시성 고려
     private int viewed;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<ProductLike> productLikes = new HashSet<>();
 
     public void incrementView() {

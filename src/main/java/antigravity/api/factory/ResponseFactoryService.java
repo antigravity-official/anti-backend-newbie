@@ -1,12 +1,11 @@
-package antigravity.api.service;
+package antigravity.api.factory;
 
 import antigravity.entity.Product;
 import antigravity.payload.response.ProductSearchResponse;
-import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class ResponseFactoryService {
 
     public ProductSearchResponse makeProductSearchResponseWithProduct(Product product, Boolean isLiked, Integer totalLiked) {
