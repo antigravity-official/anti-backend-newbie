@@ -2,10 +2,10 @@ package antigravity.api.service;
 
 import antigravity.api.repository.ProductLikeRepository;
 import antigravity.api.repository.ProductRepository;
-import antigravity.api.repository.UserRepository;
-import antigravity.entity.*;
-import antigravity.exception.CustomException;
-import antigravity.exception.ErrorCode;
+import antigravity.entity.LikeStatus;
+import antigravity.entity.Product;
+import antigravity.entity.ProductLike;
+import antigravity.entity.User;
 import antigravity.payload.response.ProductSearchResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -22,30 +22,28 @@ public class ProductSearchService {
 
     private final ProductLikeRepository productLikeRepository;
     private final ProductRepository productRepository;
-    private final UserRepository userRepository;
 
+    private final UserSearchService userSearchService;
+    private final ResponseFactoryService factoryService;
 
     public List<ProductSearchResponse> searchLikedProduct(Long userId, Boolean isLiked, Pageable pageable) {
 
-        User findUser = userRepository.findById(userId).orElseThrow(() -> {
-            throw new CustomException(ErrorCode.USER_NOT_FOUND);
-        });
+        User findUser = userSearchService.searchUserByUserId(userId);
 
-        if (Boolean.TRUE.equals(isLiked)){
-            return takeLikedProductWithUserId(userId, true, pageable);
-        } else if (Boolean.FALSE.equals(isLiked)){
-            return takeNoLikedProductWithUserId(findUser, false, pageable);
-        } else{
-            return takeProductAll(findUser,pageable);
+        if (isLiked == null) {
+            return takeProductAll(findUser, pageable);
         }
 
+        return Boolean.TRUE.equals(isLiked) ?
+                takeLikedProductWithUserId(userId, true, pageable) :
+                takeNoLikedProductWithUserId(findUser, false, pageable);
     }
 
     @Transactional(readOnly = true)
     public List<ProductSearchResponse> takeNoLikedProductWithUserId(User user, boolean isLiked, Pageable pageable) {
         return productRepository.findProductsNotInProductLike(user)
                 .stream()
-                .map(product -> makeProductSearchResponseWithProduct(
+                .map(product -> factoryService.makeProductSearchResponseWithProduct(
                         product, isLiked, product.getProductLikes().size()))
                 .collect(Collectors.toList());
     }
@@ -54,7 +52,7 @@ public class ProductSearchService {
     public List<ProductSearchResponse> takeLikedProductWithUserId(Long userId, boolean isLiked, Pageable pageable) {
         return productLikeRepository.findProductLikeByUserAndLikeStatus(userId, LikeStatus.LIKE)
                 .stream()
-                .map(productLike -> makeProductSearchResponseWithProduct(
+                .map(productLike -> factoryService.makeProductSearchResponseWithProduct(
                         productLike.getProduct(), isLiked, productLike.getProduct().getProductLikes().size()))
                 .collect(Collectors.toList());
     }
@@ -67,30 +65,16 @@ public class ProductSearchService {
             boolean flag = false;
 
             for (ProductLike productLike : product.getProductLikes()) {
-                if (productLike.getUser().equals(user)){
-                    responseList.add(makeProductSearchResponseWithProduct(product,true,product.getProductLikes().size()));
+                if (productLike.getUser().equals(user)) {
+                    responseList.add(factoryService.makeProductSearchResponseWithProduct(product, true, product.getProductLikes().size()));
                     flag = true;
+                    break;
                 }
             }
-            if (!flag){
-                responseList.add(makeProductSearchResponseWithProduct(product,false,product.getProductLikes().size()));
+            if (!flag) {
+                responseList.add(factoryService.makeProductSearchResponseWithProduct(product, false, product.getProductLikes().size()));
             }
         }
         return responseList;
-    }
-
-    private ProductSearchResponse makeProductSearchResponseWithProduct(Product product, Boolean isLiked, Integer totalLiked) {
-        return ProductSearchResponse.builder()
-                .id(product.getId())
-                .sku(product.getSku())
-                .name(product.getName())
-                .price(product.getPrice())
-                .quantity(product.getQuantity())
-                .viewed(product.getViewed())
-                .createdAt(product.getCreatedAt().toString())
-                .updatedAt(product.getUpdatedAt().toString())
-                .liked(isLiked)
-                .totalLiked(totalLiked)
-                .build();
     }
 }

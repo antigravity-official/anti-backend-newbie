@@ -2,12 +2,10 @@ package antigravity.payload.response;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.ToString;
 
 import java.math.BigDecimal;
 
 @Getter
-@ToString
 public class ProductSearchResponse {
 
     private final Long id;
@@ -38,5 +36,4 @@ public class ProductSearchResponse {
         this.liked = liked;
         this.totalLiked = totalLiked;
     }
-
 }

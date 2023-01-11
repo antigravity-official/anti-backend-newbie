@@ -2,7 +2,6 @@ package antigravity.api.service;
 
 import antigravity.api.repository.ProductLikeRepository;
 import antigravity.api.repository.ProductRepository;
-import antigravity.api.repository.UserRepository;
 import antigravity.entity.LikeStatus;
 import antigravity.entity.Product;
 import antigravity.entity.ProductLike;
@@ -20,21 +19,15 @@ public class ProductLikeService {
 
     private final ProductRepository productRepository;
     private final ProductLikeRepository productLikeRepository;
-    private final UserRepository userRepository;
 
-    // TODO: 2023-01-10 동시성 이슈를 위해서 Lock 고려, 과제 2 다하고 돌아오자.
+    private final UserSearchService userSearchService;
+
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = RuntimeException.class)
     public void addLikedProduct(Long userId, Long productId) {
 
-        User findUser = userRepository.findById(userId)
-                .orElseThrow(() -> {
-                    throw new CustomException(ErrorCode.USER_NOT_FOUND);
-                });
+        User findUser = userSearchService.searchUserByUserId(userId);
 
-        Product findProduct = productRepository.findById(productId)
-                .orElseThrow(() -> {
-                    throw new CustomException(ErrorCode.PRODUCT_NOT_FOUND);
-                });
+        Product findProduct = searchProductByProductId(productId);
 
         Boolean isLikedProduct = productLikeRepository.existsByUserAndProduct(findUser, findProduct);
 
@@ -47,6 +40,14 @@ public class ProductLikeService {
         }
 
         productRepository.save(findProduct);
+    }
+
+    @Transactional(readOnly = true)
+    public Product searchProductByProductId(Long productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> {
+                    throw new CustomException(ErrorCode.PRODUCT_NOT_FOUND);
+                });
     }
 
     private ProductLike createProductLikeUser(User user, Product product) {
