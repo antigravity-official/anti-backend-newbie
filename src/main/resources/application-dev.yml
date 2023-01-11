@@ -23,3 +23,9 @@ spring:
       schema-locations: classpath*:/${database}/schema.sql
       data-locations: classpath*:/${database}/data.sql
       platform: h2
+
+# mybatis
+mybatis:
+  mapper-locations: classpath:mapperConfig/Mappers/*Mapper.xml
+
+

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="antigravity.repository.LikedProductRepository">
+
+    <insert id="insertLikedProduct" parameterType="antigravity.entity.LikeProduct">
+        insert into Liked_product(product_id, user_id, like_status)
+        values (#{productId}, #{userId}, #{likeStatus})
+    </insert>
+    <select id="selectLikedProductByProductIdAndUserId" resultType="antigravity.entity.LikeProduct"
+            parameterType="antigravity.entity.LikeProduct">
+        select *
+        from Liked_product
+        where product_id = #{productId}
+          and user_id = #{userId}
+    </select>
+    <update id="updateStatusByProductIdAndUserId" parameterType="antigravity.entity.LikeProduct">
+        update Liked_product
+        SET like_status = #{likeStatus}
+          , updated_at  = now()
+        where product_id = #{productId}
+          and user_id = #{userId}
+    </update>
+
+    <insert id="updateLikedCount" parameterType="antigravity.entity.ProductViewCount">
+        INSERT INTO product_view_count(product_id)
+        VALUES (#{productId}) ON DUPLICATE KEY
+        UPDATE product_id = #{productId} ,view_count = view_count + 1
+    </insert>
+
+    <select id="getLikedProductsByUser" resultType="antigravity.payload.ProductResponse" parameterType="antigravity.entity.GetLikedProductByUserParam">
+
+        SELECT *
+            FROM(
+                SELECT rownum rn, x.*
+                    FROM(
+                        select o.*,
+                               (select like_status from liked_product where user_id = #{userId} and product_id = o.id) as liked,
+                               pvc.view_count as viewed
+                        from (
+                            SELECT
+                                p.id,
+                                p.sku,
+                                p.name,
+                                p.price,
+                                p.quantity,
+                                p.created_at,
+                                p.updated_at,
+                            FROM PRODUCT p
+                                LEFT OUTER JOIN LIKED_PRODUCT lp ON p.id = lp.product_id
+                            WHERE 1=1
+                            <if test="liked == true">
+                                AND like_status = #{liked} and lp.user_id = #{userId}
+                            </if>
+                            <if test="liked == false">
+                                AND ((like_status = #{liked} AND lp.user_id = #{userId}) or like_status is null)
+                            </if>
+                                group by p.id, p.sku, p.name, p.price, p.quantity, p.created_at, p.updated_at) o
+                        LEFT OUTER JOIN product_view_count pvc ON pvc.product_id = o.id
+                    ) x
+            <![CDATA[
+                    where rownum  <=  #{page} * #{size}
+            )
+        where rn > (#{page}-1) * #{size}
+        ]]>
+    </select>
+
+    <select id="getCountLikedProductByProductId" parameterType="Long" resultType="int">
+        select count(*) from liked_product where product_id = #{productId}
+    </select>
+</mapper>
