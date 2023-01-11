@@ -1,10 +1,9 @@
 package antigravity.entity;
 
+
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -13,23 +12,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Product extends ProductTimestamped {
+public class Member extends MemberTimestamped {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String sku;
+    private String email;
 
     @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
-    private BigDecimal price;
-
-    @Column(nullable = false)
-    private Integer quantity;
-
-    private Long viewed;
 
 }
