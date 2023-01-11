@@ -42,9 +42,4 @@ public class User extends BaseTimeEntity {
 		this.email = email;
 		this.name = name;
 	}
-
-	public void addLikeProduct(LikedProduct likedProduct) {
-		likedProducts.add(likedProduct);
-	}
-
 }

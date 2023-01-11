@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 
 import antigravity.entity.LikedProduct;
@@ -20,15 +22,18 @@ import antigravity.entity.User;
 import antigravity.exception.custom.AlreadyLikedException;
 import antigravity.exception.custom.ProductNotFoundException;
 import antigravity.exception.custom.UserNotFoundException;
+import antigravity.payload.ProductResponse;
+import antigravity.payload.ProductSearch;
 import antigravity.repository.LikedProductRepository;
 import antigravity.repository.ProductRepository;
 import antigravity.repository.UserRepository;
 
 @SpringBootTest
-class LikedProductServiceTest {
+@Transactional
+class ProductServiceTest {
 
 	@Autowired
-	private ProductService likedProductService;
+	private ProductService ProductService;
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
@@ -55,11 +60,10 @@ class LikedProductServiceTest {
 	}
 
 	@Test
-	@Transactional
 	@DisplayName("찜하기 성공 테스트")
 	void test1() {
 		// given when
-		likedProductService.registerLikedProduct(product.getId(), user.getId());
+		ProductService.registerLikedProduct(product.getId(), user.getId());
 
 		// then
 		LikedProduct likedProduct = likedProductRepository
@@ -78,11 +82,11 @@ class LikedProductServiceTest {
 	@DisplayName("찜하기 실패 테스트 : 유저 정보 없음")
 	void test2() {
 		// given
-		Long NotSavedUserId = 2L;
+		Long NotSavedUserId = 100L;
 
 		// expected
 		assertThatThrownBy(
-				() -> likedProductService.registerLikedProduct(product.getId(), NotSavedUserId))
+				() -> ProductService.registerLikedProduct(product.getId(), NotSavedUserId))
 				.isInstanceOf(UserNotFoundException.class)
 				.hasMessageContaining("존재하지 않는 유저입니다.");
 	}
@@ -91,11 +95,11 @@ class LikedProductServiceTest {
 	@DisplayName("찜하기 실패 테스트 : 제품 정보 없음")
 	void test3() {
 		// given
-		Long NotSavedProductId = 2L;
+		Long NotSavedProductId = 100L;
 
 		// expected
 		assertThatThrownBy(
-				() -> likedProductService.registerLikedProduct(product.getId(), NotSavedProductId))
+				() -> ProductService.registerLikedProduct(NotSavedProductId, user.getId()))
 				.isInstanceOf(ProductNotFoundException.class)
 				.hasMessageContaining("존재하지 않는 상품입니다.");
 	}
@@ -109,8 +113,43 @@ class LikedProductServiceTest {
 
 		// expected
 		assertThatThrownBy(
-				() -> likedProductService.registerLikedProduct(product.getId(), user.getId()))
+				() -> ProductService.registerLikedProduct(product.getId(), user.getId()))
 				.isInstanceOf(AlreadyLikedException.class)
 				.hasMessageContaining("이미 찜한 상품입니다.");
+	}
+
+	@Test
+	@DisplayName("상품 조회하기 - like=true")
+	void test5() {
+		// given
+		LikedProduct likedProduct = new LikedProduct(user, product);
+		likedProductRepository.save(likedProduct);
+		ProductSearch productSearch = ProductSearch.builder()
+				.liked(true)
+				.page(1).size(10)
+				.build();
+
+		// when
+		ResponseEntity<List<ProductResponse>> products = ProductService.findProducts(user.getId(), productSearch);
+
+		// then
+		assertThat(products.getBody().size()).isEqualTo(1);
+	}
+
+	@Test
+	@DisplayName("상품 조회하기 - like=false")
+	void test6() {
+		//given
+		LikedProduct likedProduct = new LikedProduct(user, product);
+		likedProductRepository.save(likedProduct);
+		ProductSearch productSearch = ProductSearch.builder()
+				.liked(false)
+				.page(1).size(10)
+				.build();
+		// when
+		ResponseEntity<List<ProductResponse>> products = ProductService.findProducts(user.getId(), productSearch);
+
+		// then
+		assertThat(products.getBody().size()).isEqualTo(0);
 	}
 }

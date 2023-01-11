@@ -40,6 +40,7 @@ public class LikedProduct {
 		this.product = product;
 		this.isLiked = true;
 		this.product.increaseViews();
+		this.product.getProductLiked().add(this);
 		this.user.getLikedProducts().add(this);
 	}
 

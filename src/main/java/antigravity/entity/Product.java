@@ -2,12 +2,16 @@ package antigravity.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.UpdateTimestamp;
@@ -49,6 +53,12 @@ public class Product extends BaseTimeEntity {
 	@UpdateTimestamp
 	private LocalDateTime updatedAt;
 
+	@OneToMany(
+			mappedBy = "product",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true)
+	private List<LikedProduct> ProductLiked = new ArrayList<>();
+
 	@Builder
 	public Product(String sku, String name, BigDecimal price, int views, Integer quantity) {
 		this.sku = sku;
@@ -61,5 +71,4 @@ public class Product extends BaseTimeEntity {
 	public void increaseViews() {
 		this.views += 1;
 	}
-
 }
