@@ -111,9 +111,10 @@ class ProductControllerGetLikeHistoryListTest {
         List<ProductResponse> expect = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8),
                 new TypeReference<List<ProductResponse>>() {
                 });
-
         Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        Assertions.assertThat(expect.get(0).getLiked()).isNotEqualTo(null);
+        Assertions.assertThat(expect.get(0).getLiked()).isNotNull();
+        Assertions.assertThat(expect.get(0).getCreatedAt()).isNotNull();
+        Assertions.assertThat(expect.get(0).getUpdatedAt()).isNotNull();
         Assertions.assertThat(expect.size()).isEqualTo(3);
     }
 
@@ -134,7 +135,7 @@ class ProductControllerGetLikeHistoryListTest {
                 new TypeReference<List<ProductResponse>>() {
                 });
         Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        Assertions.assertThat(expect.get(0).getLiked()).isEqualTo(null);
+        Assertions.assertThat(expect.get(0).getLiked()).isNull();
         Assertions.assertThat(expect.size()).isEqualTo(size);
     }
 
