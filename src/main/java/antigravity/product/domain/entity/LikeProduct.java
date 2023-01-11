@@ -8,7 +8,7 @@ import lombok.ToString;
 @Getter
 @Builder
 @ToString
-public class DipProduct {
+public class LikeProduct {
     private Long id;
     private Integer userId;
     private Long productId;

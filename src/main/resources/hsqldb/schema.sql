@@ -26,7 +26,7 @@ CREATE TABLE `user`
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `dip_product`
+CREATE TABLE `like_product`
 (
     `id`         bigint(20) NOT NULL AUTO_INCREMENT,
     `user_id`      int            NOT NULL COMMENT '유저아이디',

@@ -1,14 +1,13 @@
 package antigravity.product.service;
 
 import antigravity.global.exception.AntiException;
-import antigravity.global.redis.RedisDao;
-import antigravity.product.domain.entity.DipProduct;
+import antigravity.product.domain.entity.LikeProduct;
 import antigravity.product.domain.entity.Product;
-import antigravity.product.domain.repository.DipProductRepository;
+import antigravity.product.domain.repository.LikeProductRepository;
 import antigravity.product.domain.repository.ProductRepository;
 import antigravity.product.service.impl.ProductServiceImpl;
 import antigravity.product.service.impl.ViewServiceImpl;
-import antigravity.product.web.dto.DipProductResponse;
+import antigravity.product.web.dto.LikeProductResponse;
 import antigravity.user.entity.User;
 import antigravity.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +33,7 @@ public class ProductServiceTests {
     @Mock
     private UserRepository userRepository;
     @Mock
-    private DipProductRepository dipProductRepository;
+    private LikeProductRepository likeProductRepository;
     @Mock
     private ProductRepository productRepository;
     @Mock
@@ -43,7 +42,7 @@ public class ProductServiceTests {
     private ProductServiceImpl productService;
     User user;
     Product product;
-    DipProduct dipProduct;
+    LikeProduct likeProduct;
     @BeforeEach
     void setting() {
         user = User.builder()
@@ -60,7 +59,7 @@ public class ProductServiceTests {
                 .price(BigDecimal.valueOf(42800))
                 .sku("G2000000019")
                 .build();
-        dipProduct = DipProduct.builder()
+        likeProduct = LikeProduct.builder()
                 .id(1L)
                 .userId(user.getId().intValue())
                 .productId(product.getId())
@@ -99,7 +98,7 @@ public class ProductServiceTests {
         //mocking
         given(userRepository.findById(any())).willReturn(Optional.of(user));
         given(productRepository.findById(any())).willReturn(Optional.of(product));
-        given(dipProductRepository.existsDipProductByUserIdAndProductId(any(),any())).willReturn(1);
+        given(likeProductRepository.existsDipProductByUserIdAndProductId(any(),any())).willReturn(1);
 
         //when
         AntiException exception = assertThrows(AntiException.class, () -> {
@@ -117,17 +116,17 @@ public class ProductServiceTests {
         //mocking
         given(userRepository.findById(any())).willReturn(Optional.of(user));
         given(productRepository.findById(any())).willReturn(Optional.of(product));
-        given(dipProductRepository.existsDipProductByUserIdAndProductId(any(),any())).willReturn(0);
+        given(likeProductRepository.existsDipProductByUserIdAndProductId(any(),any())).willReturn(0);
         given(viewService.addViewCntToRedis(any())).willReturn(1L);
-        given(dipProductRepository.save(any())).willReturn(dipProduct.getProductId());
+        given(likeProductRepository.save(any())).willReturn(likeProduct.getProductId());
 
         //when
-        DipProductResponse dipProductResponse = productService.createDip(user.getId().intValue(),product.getId());
+        LikeProductResponse likeProductResponse = productService.createDip(user.getId().intValue(),product.getId());
 
         //then
-        assertEquals(dipProductResponse.getProductId(), product.getId());
-        assertEquals(Optional.ofNullable(dipProductResponse.getUserId()), Optional.ofNullable(user.getId().intValue()));
-        assertEquals(Optional.ofNullable(dipProductResponse.getViewed()), Optional.ofNullable(1L));
+        assertEquals(likeProductResponse.getProductId(), product.getId());
+        assertEquals(Optional.ofNullable(likeProductResponse.getUserId()), Optional.ofNullable(user.getId().intValue()));
+        assertEquals(Optional.ofNullable(likeProductResponse.getViewed()), Optional.ofNullable(1L));
     }
 
 }

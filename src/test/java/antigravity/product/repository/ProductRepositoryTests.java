@@ -1,8 +1,8 @@
 package antigravity.product.repository;
 
-import antigravity.product.domain.entity.DipProduct;
+import antigravity.product.domain.entity.LikeProduct;
 import antigravity.product.domain.entity.Product;
-import antigravity.product.domain.repository.DipProductRepository;
+import antigravity.product.domain.repository.LikeProductRepository;
 import antigravity.product.domain.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +28,7 @@ public class ProductRepositoryTests {
     private ProductRepository productRepository;
 
     @Autowired
-    private DipProductRepository dipProductRepository;
+    private LikeProductRepository likeProductRepository;
     Product product;
     @BeforeEach
     void setting() {
@@ -99,11 +99,11 @@ public class ProductRepositoryTests {
         }
 
         for (int i = 0; i < 20; i++) {
-            DipProduct dipProduct = DipProduct.builder()
+            LikeProduct likeProduct = LikeProduct.builder()
                     .userId(1)
                     .productId(Long.valueOf(i+1))
                     .build();
-            dipProductList.add(dipProductRepository.save(dipProduct));
+            dipProductList.add(likeProductRepository.save(likeProduct));
         }
 
         Iterator it = dipProductList.iterator();

@@ -1,8 +1,9 @@
 package antigravity.product.web;
 
 import antigravity.product.domain.entity.Product;
+import antigravity.product.service.LikeProductService;
 import antigravity.product.service.ProductService;
-import antigravity.product.web.dto.DipProductResponse;
+import antigravity.product.web.dto.LikeProductResponse;
 import antigravity.product.web.dto.ProductResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,14 +31,16 @@ public class ProductControllerTests {
     MockMvc mockMvc;
     @MockBean
     private ProductService productService;
-    DipProductResponse dipProductResponse;
+    @MockBean
+    private LikeProductService likeProductService;
+    LikeProductResponse likeProductResponse;
     List<ProductResponse> notDipProductResponses = new LinkedList<>();
     List<ProductResponse> dipProductResponses = new LinkedList<>();
     List<ProductResponse> allResponses = new LinkedList<>();
 
     @BeforeEach
     void settings() {
-        dipProductResponse = DipProductResponse.builder()
+        likeProductResponse = LikeProductResponse.builder()
                 .productId(1L)
                 .userId(1)
                 .viewed(1L)
@@ -77,7 +80,7 @@ public class ProductControllerTests {
     @DisplayName("찜 상품을 등록할 수 있다.")
     void dipProduct() throws Exception {
         //when
-        when(productService.createDip(any(), any())).thenReturn(dipProductResponse);
+        when(likeProductService.createDip(any(), any())).thenReturn(likeProductResponse);
 
         //then
         mockMvc.perform(post("/products/liked/1")

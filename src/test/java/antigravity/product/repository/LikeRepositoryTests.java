@@ -1,7 +1,7 @@
 package antigravity.product.repository;
 
-import antigravity.product.domain.entity.DipProduct;
-import antigravity.product.domain.repository.DipProductRepository;
+import antigravity.product.domain.entity.LikeProduct;
+import antigravity.product.domain.repository.LikeProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,13 +15,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-public class DipRepositoryTests {
+public class LikeRepositoryTests {
     @Autowired
-    DipProductRepository dipProductRepository;
-    DipProduct dipProduct;
+    LikeProductRepository likeProductRepository;
+    LikeProduct likeProduct;
     @BeforeEach
     void settings() {
-        dipProduct = DipProduct.builder()
+        likeProduct = LikeProduct.builder()
                 .productId(1L)
                 .userId(1)
                 .build();
@@ -30,11 +30,11 @@ public class DipRepositoryTests {
     @DisplayName("찜 상품을 저장 한 뒤 상품 아이디로 찾을 수 있다.")
     void saveAndFind() {
         //when
-        Long id = dipProductRepository.save(dipProduct);
-        DipProduct findDipProduct = dipProductRepository.findById(id).get();
+        Long id = likeProductRepository.save(likeProduct);
+        LikeProduct findLikeProduct = likeProductRepository.findById(id).get();
 
         //then
-        assertEquals(dipProduct.getProductId(), findDipProduct.getProductId());
+        assertEquals(likeProduct.getProductId(), findLikeProduct.getProductId());
     }
 
     @Test
@@ -42,9 +42,9 @@ public class DipRepositoryTests {
     void countOfDipProductByUserId() {
         //when
         for (int i = 0; i < 10; i++) {
-            dipProductRepository.save(dipProduct);
+            likeProductRepository.save(likeProduct);
         }
-        int cnt = dipProductRepository.countDipProductByUserId(1);
+        int cnt = likeProductRepository.countDipProductByUserId(1);
 
         //then
         assertEquals(10, cnt);
@@ -55,9 +55,9 @@ public class DipRepositoryTests {
     void countOfDipProductByProductId() {
         //when
         for (int i = 0; i < 10; i++) {
-            dipProductRepository.save(dipProduct);
+            likeProductRepository.save(likeProduct);
         }
-        int cnt = dipProductRepository.countDipProductByProductId(1L);
+        int cnt = likeProductRepository.countDipProductByProductId(1L);
 
         //then
         assertEquals(10, cnt);
@@ -68,9 +68,9 @@ public class DipRepositoryTests {
     void existOfDipProductByUserIdAndProductId() {
         //when
         for (int i = 0; i < 10; i++) {
-            dipProductRepository.save(dipProduct);
+            likeProductRepository.save(likeProduct);
         }
-        int cnt = dipProductRepository.existsDipProductByUserIdAndProductId(1,1L);
+        int cnt = likeProductRepository.existsDipProductByUserIdAndProductId(1,1L);
 
         //then
         assertEquals(10,cnt);
@@ -81,10 +81,10 @@ public class DipRepositoryTests {
     void findAllDipProductByUserId() {
         //when
         for (int i = 0; i < 100; i++) {
-            dipProductRepository.save(dipProduct);
+            likeProductRepository.save(likeProduct);
         }
 
-        Page<DipProduct> dipProducts = dipProductRepository.findAllByUserId(1, PageRequest.of(0, 10));
+        Page<LikeProduct> dipProducts = likeProductRepository.findAllByUserId(1, PageRequest.of(0, 10));
 
         //then
         assertEquals(10, dipProducts.getSize());

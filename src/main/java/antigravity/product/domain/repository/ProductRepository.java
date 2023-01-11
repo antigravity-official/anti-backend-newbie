@@ -1,7 +1,6 @@
 package antigravity.product.domain.repository;
 
 
-import antigravity.product.domain.entity.DipProduct;
 import antigravity.product.domain.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
