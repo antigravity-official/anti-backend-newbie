@@ -45,7 +45,7 @@ public class ProductControllerTest {
 		Long userId = 2L;
 
 		//mock
-		doNothing().when(productLikeService).productLike(productId, userId);
+		doNothing().when(productLikeService).saveProductLike(productId, userId);
 
 		//when&then
 		mockMvc.perform(
@@ -64,7 +64,7 @@ public class ProductControllerTest {
 
 		//mock
 		doThrow(new AntigravityException(ErrorCode.USER_ID_NOT_FOUND, "임의 에러"))
-			.when(productLikeService).productLike(productId, userId);
+			.when(productLikeService).saveProductLike(productId, userId);
 
 		//when&then
 		mockMvc.perform(

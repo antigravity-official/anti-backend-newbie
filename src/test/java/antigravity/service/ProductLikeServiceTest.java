@@ -53,7 +53,7 @@ public class ProductLikeServiceTest {
 		doNothing().when(mockedProduct).increaseViewed();
 
 		//then
-		assertDoesNotThrow(() -> productLikeService.productLike(productId, userId));
+		assertDoesNotThrow(() -> productLikeService.saveProductLike(productId, userId));
 	}
 
 	@DisplayName("찜 상품 등록 테스트 - 유요하지 않은 productId 일때")
@@ -68,7 +68,7 @@ public class ProductLikeServiceTest {
 
 		//then
 		assertThrows(IllegalStateException.class,
-			() -> productLikeService.productLike(productId, userId));
+			() -> productLikeService.saveProductLike(productId, userId));
 	}
 
 	@DisplayName("찜 상품 등록 테스트 - 유요하지 않은 userId 일때")
@@ -87,7 +87,7 @@ public class ProductLikeServiceTest {
 
 		//then
 		assertThrows(IllegalStateException.class,
-			() -> productLikeService.productLike(productId, userId));
+			() -> productLikeService.saveProductLike(productId, userId));
 	}
 
 	@DisplayName("찜 상품 등록 테스트 - 이미 찜한 상품일 때")
@@ -110,7 +110,7 @@ public class ProductLikeServiceTest {
 
 		//then
 		AntigravityException e = assertThrows(AntigravityException.class,
-			() -> productLikeService.productLike(productId, userId));
+			() -> productLikeService.saveProductLike(productId, userId));
 		assertEquals(String.format("Already Liked Product. userId=%d is already liked productId=%d",userId,productId)
 			, e.getMessage());
 	}

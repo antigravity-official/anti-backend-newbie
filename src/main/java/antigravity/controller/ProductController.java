@@ -35,7 +35,7 @@ public class ProductController {
 		@PathVariable Long productId,
 		@RequestHeader(USER_ID_HEADER_KEY) Integer userId) {
 
-		productLikeService.productLike(productId, userId.longValue());
+		productLikeService.saveProductLike(productId, userId.longValue());
 		return new ResponseEntity<>(Response.success("찜이 완료되었습니다."), HttpStatus.CREATED);
 	}
 

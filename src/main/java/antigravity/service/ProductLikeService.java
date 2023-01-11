@@ -22,7 +22,7 @@ public class ProductLikeService {
 	private final UserService userService;
 
 	@Transactional(timeout = 10)
-	public void productLike(Long productId, Long userId) {
+	public void saveProductLike(Long productId, Long userId) {
 		Product product = productService.findProductById(productId);
 		User user = userService.findUserById(userId);
 
