@@ -6,11 +6,14 @@ import antigravity.entity.ProductHits;
 import antigravity.entity.User;
 import antigravity.exception.AlreadyBookmarkException;
 import antigravity.exception.NotFoundProductException;
+import antigravity.payload.ProductResponse;
 import antigravity.repository.BookmarkRepository;
 import antigravity.repository.ProductHitsRepository;
 import antigravity.repository.ProductRepository;
 import antigravity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,6 +56,10 @@ public class BookmarkService {
         }
 
         throw new AlreadyBookmarkException("이미 찜에 등록된 상품입니다.");
+    }
+
+    public Page<ProductResponse> getUserBookmark(Boolean liked, Pageable pageable, Long userId) {
+        return bookmarkRepository.findByLikedAndUserId(liked, pageable, userId);
     }
 
     private Product productValidation(Long productId){

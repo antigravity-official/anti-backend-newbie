@@ -1,27 +1,49 @@
 package antigravity.controller;
 
-
+import antigravity.entity.Bookmark;
+import antigravity.entity.ProductHits;
+import antigravity.entity.User;
+import antigravity.repository.BookmarkRepository;
+import antigravity.repository.ProductHitsRepository;
+import antigravity.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 public class BookmarkControllerTest {
+
+    @Autowired
+    private BookmarkRepository bookmarkRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ProductHitsRepository productHitsRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -60,5 +82,44 @@ public class BookmarkControllerTest {
 
         mockMvc.perform(post(BASE_URL+"/liked/"+productId))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("찜 상품 liked true 조회")
+    public void userBookmarkGetLikedTrueSuccessTest() throws Exception {
+        Boolean liked = true;
+        Integer userId = 1;
+
+        mockMvc.perform(get(BASE_URL+"/liked/"+liked)
+                .header("X-USER-ID",userId)
+                .param("page","0")
+                .param("size","2"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("찜 상품 liked false 조회")
+    public void userBookmarkGetLikedFalseSuccessTest() throws Exception {
+        Boolean liked = false;
+        Integer userId = 1;
+
+        mockMvc.perform(get(BASE_URL+"/liked/"+liked)
+                        .header("X-USER-ID",userId)
+                        .param("page","0")
+                        .param("size","2"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("찜 상품 liked null 조회")
+    public void userBookmarkGetLikedNullSuccessTest() throws Exception {
+        Boolean liked = null;
+        Integer userId = 1;
+
+        mockMvc.perform(get(BASE_URL+"/liked/"+liked)
+                        .header("X-USER-ID",userId)
+                        .param("page","0")
+                        .param("size","2"))
+                .andExpect(status().isOk());
     }
 }
