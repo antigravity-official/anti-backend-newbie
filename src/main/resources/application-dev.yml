@@ -8,6 +8,7 @@ spring:
     password:
     driverClassName: org.h2.Driver
 
+
   # H2 Settings
   h2:
     console:
@@ -23,3 +24,12 @@ spring:
       schema-locations: classpath*:/${database}/schema.sql
       data-locations: classpath*:/${database}/data.sql
       platform: h2
+
+  jpa:
+    defer-datasource-initialization: true
+
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
