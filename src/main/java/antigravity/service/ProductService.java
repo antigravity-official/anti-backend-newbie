@@ -4,8 +4,17 @@ package antigravity.service;
 import antigravity.payload.PostResponse;
 import antigravity.payload.ProductResponse;
 import antigravity.repository.ProductRepository;
+import io.github.bucket4j.Bandwidth;
+import io.github.bucket4j.Bucket;
+import io.github.bucket4j.Bucket4j;
+import io.github.bucket4j.Refill;
+import java.time.Duration;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,7 +26,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final Map<String, Bucket> cache = new ConcurrentHashMap<>();
+    private String getHost(HttpServletRequest httpServletRequest){
+        return httpServletRequest.getHeader("Host");
+    }
 
+    public Bucket resolveBucket(HttpServletRequest httpServletRequest) {
+        return cache.computeIfAbsent(getHost(httpServletRequest), this::newBucket);
+    }
+
+    private Bucket newBucket(String apiKey) {
+        return Bucket4j.builder()
+                .addLimit(Bandwidth.classic(1000, Refill.intervally(10, Duration.ofSeconds(10))))
+                .build();
+    }
 
     public ResponseEntity<PostResponse> like(long userId, long productId) {
 
