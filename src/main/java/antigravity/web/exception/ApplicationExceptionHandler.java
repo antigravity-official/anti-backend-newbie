@@ -1,7 +1,7 @@
 package antigravity.web.exception;
 
 import antigravity.infra.exception.ApplicationRuntimeException;
-import antigravity.web.payload.common.ApplicationResponseEntity;
+import antigravity.web.common.ApplicationResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 

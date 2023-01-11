@@ -1,4 +1,4 @@
-package antigravity.web.payload.common;
+package antigravity.web.common;
 
 public interface ResponseMessages {
 

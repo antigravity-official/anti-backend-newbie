@@ -1,4 +1,4 @@
-package antigravity.web.payload.common;
+package antigravity.web.common;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
 package antigravity.infra.exception;
 
-import antigravity.web.dto.common.ResponseMessages;
+import antigravity.web.common.ResponseMessages;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

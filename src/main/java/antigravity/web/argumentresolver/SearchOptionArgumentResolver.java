@@ -1,6 +1,6 @@
 package antigravity.web.argumentresolver;
 
-import antigravity.web.dto.request.LikeStatus;
+import antigravity.domain.product.LikeStatus;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;

@@ -1,4 +1,4 @@
-package antigravity.web.payload.common;
+package antigravity.web.common;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
