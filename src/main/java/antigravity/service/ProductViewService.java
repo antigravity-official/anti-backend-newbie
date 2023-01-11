@@ -17,4 +17,10 @@ public class ProductViewService {
         ProductViewCount productViewCount = productViewCountRepository.findById(productId).get();
         productViewCount.setCount(productViewCount.getCount() + 1);
     }
+
+    public Long getViewCount(Long productId) {
+        return productViewCountRepository.findById(productId)
+                .orElseGet(() -> ProductViewCount.builder().build())
+                .getCount();
+    }
 }

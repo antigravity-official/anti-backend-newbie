@@ -1,10 +1,16 @@
 package antigravity.service;
 
+import antigravity.dto.LikeHistorySearchCondition;
 import antigravity.entity.LikeHistory;
 import antigravity.exception.ExistLikeHistoryException;
+import antigravity.payload.ProductResponse;
 import antigravity.repository.LikeHistoryRepository;
+import antigravity.router.ProductResponseRouter;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +26,8 @@ public class LikeHistoryService {
 
     private final ProductViewService viewService;
 
+    private final ProductResponseRouter productResponseRouter;
+
     @Transactional
     public void addNotDuplicatedLikeHistory(Long productId, Long memberId) {
         if (likeHistoryQueryService.exists(memberId, productId)) {
@@ -31,5 +39,12 @@ public class LikeHistoryService {
                 .build());
         log.info("memberId :{} productId :{} Liked 저장 시도", memberId, productId);
         viewService.addCountOne(productId);
+    }
+
+    public List<ProductResponse> getLikeHistoryList(
+            LikeHistorySearchCondition condition,
+            Long memberId) {
+        Pageable pageable = PageRequest.of(condition.getPage(), condition.getSize());
+        return productResponseRouter.getMatchList(condition.getLike(), memberId, pageable);
     }
 }
