@@ -1,6 +1,7 @@
 package antigravity.entity;
 
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 
@@ -16,14 +17,14 @@ public class ProductLike {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @Column(name = "product_like_status")
+    @Column(name = "product_like_status", nullable = false)
     private LikeStatus likeStatus;
 
     @Builder

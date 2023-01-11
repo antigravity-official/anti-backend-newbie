@@ -47,9 +47,10 @@ public class ProductController {
      */
     @GetMapping
     public ResponseEntity<List<ProductSearchResponse>> likedProductSearch(@RequestHeader(name = "X-USER-ID") Long userId,
-                                                                          @Valid ProductSearchRequest productSearchRequest,
+                                                                          ProductSearchRequest productSearchRequest,
                                                                           Pageable pageable) {
-        productSearchService.searchLikedProduct(userId, productSearchRequest.getLiked(), pageable);
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
+        List<ProductSearchResponse> responseList =
+                productSearchService.searchLikedProduct(userId, productSearchRequest.getLiked(), pageable);
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 }

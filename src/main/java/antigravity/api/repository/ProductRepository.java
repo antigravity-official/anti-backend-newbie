@@ -1,7 +1,7 @@
 package antigravity.api.repository;
 
 import antigravity.entity.Product;
-import org.springframework.data.domain.Pageable;
+import antigravity.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,14 +13,14 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query("select distinct p FROM Product p left join fetch p.productLikes " +
-            "where p.id = :userId")
-    Optional<Product> findById(@Param("userId") Long userId);
+    @Query("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.productLikes")
+    List<Product> findAllProduct();
 
-    @Query("select distinct p FROM Product p left join fetch p.productLikes")
-    List<Product> findAllProduct(Pageable pageable);
+    @Query("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.productLikes " +
+            "WHERE p.id = :productId")
+    Optional<Product> findById(@Param("productId") Long productId);
 
-    @Query("select distinct p FROM Product p left join fetch p.productLikes " +
-            "WHERE NOT EXISTS (select pl FROM ProductLike pl WHERE pl.user.id = :userId)")
-    List<Product> findProductsNotInProductLike(@Param("userId") Long userId, Pageable pageable);
+    @Query("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.productLikes " +
+            "WHERE p NOT IN (SELECT pl.product FROM ProductLike pl WHERE pl.user = :user) ")
+    List<Product> findProductsNotInProductLike(@Param("user") User user);
 }
