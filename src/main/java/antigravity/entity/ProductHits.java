@@ -36,8 +36,7 @@ public class ProductHits {
     }
 
     public long increaseHits(long hits){
-        hits+=1;
-        this.hits = hits;
-        return hits;
+        this.hits = hits+1;
+        return this.hits;
     }
 }

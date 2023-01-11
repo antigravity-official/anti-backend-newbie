@@ -1,7 +1,6 @@
 package antigravity.service;
 
 import antigravity.entity.Bookmark;
-import antigravity.entity.Product;
 import antigravity.entity.ProductHits;
 import antigravity.entity.User;
 import antigravity.exception.AlreadyBookmarkException;
@@ -39,9 +38,7 @@ public class BookmarkService {
         Optional<Bookmark> optionalBookmark = bookmarkRepository.findByUserIdAndProductId(userId,productId);
 
         if(optionalBookmark.isEmpty()){
-            Bookmark bookmark = Bookmark.bookmarkBuilder(productId, user);
-
-            bookmarkRepository.save(bookmark);
+            bookmarkRepository.save(Bookmark.bookmarkBuilder(productId, user));
 
             Optional<ProductHits> optionalProductHits = productHitsRepository.findByProductId(productId);
 
@@ -50,9 +47,7 @@ public class BookmarkService {
                 return productHits.increaseHits(productHits.getHits());
             }
 
-            ProductHits productHits = productHitsRepository.save(ProductHits.productHitsBuilder(productId));
-
-            return productHits.getHits();
+            return productHitsRepository.save(ProductHits.productHitsBuilder(productId)).getHits();
         }
 
         throw new AlreadyBookmarkException("이미 찜에 등록된 상품입니다.");
@@ -62,9 +57,9 @@ public class BookmarkService {
         return bookmarkRepository.findByLikedAndUserId(liked, pageable, userId);
     }
 
-    private Product productValidation(Long productId){
-        return productRepository.findById(productId)
-                .orElseThrow(() -> new NotFoundProductException("등록되지 않은 상품입니다."));
+    private void productValidation(Long productId){
+        productRepository.findById(productId)
+            .orElseThrow(() -> new NotFoundProductException("등록되지 않은 상품입니다."));
     }
 
     private User userValidation(Long userId){
