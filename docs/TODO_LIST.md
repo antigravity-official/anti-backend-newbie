@@ -12,7 +12,7 @@
 
 - [x] user가 찜을햇다는 정보를 저장한다.
     - [x] 잘못된 {productId}로 요청을 했거나 이미 찜한 상품일 경우 400 Bad Request 로 응답합니다. #각각에 맞는 NotFoundXXXException
-- [] 정상적으로 등록이 완료되면,201로 응답한다.
+- [x] 정상적으로 등록이 완료되면,201로 응답한다.
 
 ## ViewCountAOP
 
@@ -27,5 +27,5 @@ aop에 트랙잭션이 제대로 적용되지않아서, service레이어의 호�
 -[x] liked=false 이면 찜하지 않은 상품만 조회
 -[x] liked=true 이면 {user}가 찜한 상품만 조회합니다.
 -[x] 잘못된 파라미터가 들어오면 400 Bad Request 로 응답합니다.
--[ ] 정상인 경우 200 OK 로 응답하며, 응답 본문은 antigravity.payload.ProductResponse 를 참고하여 작성합니다.
+-[x] 정상인 경우 200 OK 로 응답하며, 응답 본문은 antigravity.payload.ProductResponse 를 참고하여 작성합니다.
    
