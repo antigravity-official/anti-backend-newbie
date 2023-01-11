@@ -1,32 +1,19 @@
 package antigravity.repository;
 
 import antigravity.entity.Product;
-import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import java.util.List;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-@RequiredArgsConstructor
 @Repository
-public class ProductRepository {
+public interface ProductRepository extends JpaRepository<Product, Long> {
+    @Query("select p from Product p where p.id not in (select p.id from Product p inner join LikeHistory h on p = h.product where h.member.id = :memberId)")
+    List<Product> getNotLikeProduct(@Param("memberId") Long memberId, Pageable pageable);
 
-    private final NamedParameterJdbcTemplate jdbcTemplate;
-
-    // 예시 메서드입니다.
-    public Product findById(Long id) {
-        String query = "SELECT id, sku, name, price, quantity, created_at" +
-                "       FROM product WHERE id = :id";
-        MapSqlParameterSource params = new MapSqlParameterSource("id", id);
-
-        return jdbcTemplate.queryForObject(query, params, (rs, rowNum) ->
-                Product.builder()
-                        .id(rs.getLong("id"))
-                        .sku(rs.getString("sku"))
-                        .name(rs.getString("name"))
-                        .price(rs.getBigDecimal("price"))
-                        .quantity(rs.getInt("quantity"))
-                        .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
-                        .build());
-    }
+    @Query("select p from Product p inner join LikeHistory h on p = h.product where h.member.id = :memberId")
+    List<Product> getLikeProduct(@Param("memberId") Long memberId, Pageable pageable);
 
 }
