@@ -3,20 +3,13 @@ package antigravity.service;
 import antigravity.entity.*;
 import antigravity.exception.AlreadyBookmarkException;
 import antigravity.exception.NotFoundProductException;
-import antigravity.exception.NotFoundUserException;
 import antigravity.repository.BookmarkRepository;
 import antigravity.repository.ProductHitsRepository;
 import antigravity.repository.ProductRepository;
 import antigravity.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,12 +19,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @Transactional
 @SpringBootTest
