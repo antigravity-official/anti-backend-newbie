@@ -1,7 +1,9 @@
 package antigravity.user.repository;
 
 
+import antigravity.global.exception.AntiException;
 import antigravity.user.entity.User;
+import antigravity.user.exception.UserErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -11,17 +13,20 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
 public class UserRepository {
     private final NamedParameterJdbcTemplate jdbcTemplate;
     GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-    public Optional<User> findById(Long id) {
-        String query = "SELECT * FROM user WHERE id = :id";
-        MapSqlParameterSource params = new MapSqlParameterSource("id", id);
-        return Optional.ofNullable(jdbcTemplate.queryForObject(query, params, userRowMapper()));
+    public User findById(Long id) {
+        try{
+            String query = "SELECT * FROM user WHERE id = :id";
+            MapSqlParameterSource params = new MapSqlParameterSource("id", id);
+            return jdbcTemplate.queryForObject(query, params, userRowMapper());
+        }catch (Exception e) {
+            throw new AntiException(UserErrorCode.USER_NOT_EXIST);
+        }
     }
 
     public Long save(User user) {

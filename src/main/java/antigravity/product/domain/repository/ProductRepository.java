@@ -1,7 +1,9 @@
 package antigravity.product.domain.repository;
 
 
+import antigravity.global.exception.AntiException;
 import antigravity.product.domain.entity.Product;
+import antigravity.product.exception.ProductErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -37,10 +39,14 @@ public class ProductRepository {
         return namedParameterJdbcTemplate.queryForObject(sql, param, Long.class);
     }
 
-    public Optional<Product> findById(Long id) {
-        String query = "SELECT * FROM product WHERE id = :id";
-        MapSqlParameterSource params = new MapSqlParameterSource("id", id);
-        return Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(query, params, productRowMapper()));
+    public Product findById(Long id) {
+        try {
+            String query = "SELECT * FROM product WHERE id = :id";
+            MapSqlParameterSource params = new MapSqlParameterSource("id", id);
+            return namedParameterJdbcTemplate.queryForObject(query, params, productRowMapper());
+        }catch (Exception e) {
+            throw new AntiException(ProductErrorCode.PRODUCT_NOT_EXIST);
+        }
     }
 
     public Integer countProduct() {

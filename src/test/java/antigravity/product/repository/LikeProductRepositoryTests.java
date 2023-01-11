@@ -31,7 +31,7 @@ public class LikeProductRepositoryTests {
     void saveAndFind() {
         //when
         Long id = likeProductRepository.save(likeProduct);
-        LikeProduct findLikeProduct = likeProductRepository.findById(id).get();
+        LikeProduct findLikeProduct = likeProductRepository.findById(id);
 
         //then
         assertEquals(likeProduct.getProductId(), findLikeProduct.getProductId());

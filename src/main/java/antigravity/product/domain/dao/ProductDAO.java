@@ -18,14 +18,15 @@ import java.util.List;
 public class ProductDAO {
     private final ProductRepository productRepository;
     public void validateExistProduct(Long productId) {
-        productRepository.findById(productId).orElseThrow(() -> new AntiException(ProductErrorCode.PRODUCT_NOT_EXIST));
+        productRepository.findById(productId);
     }
     public Page<Product> findAllProduct(Pageable pageable) {
         return productRepository.findAll(pageable);
     }
 
     public Product findById(Long productId) {
-        return productRepository.findById(productId).orElseThrow(() -> new AntiException(ProductErrorCode.PRODUCT_NOT_EXIST));}
+        return productRepository.findById(productId);
+    }
     public Page<Product> findAllNotDipProduct(List<Long> dipProductIds, Pageable pageable) {
         return productRepository.findAllNotDipProduct(dipProductIds, pageable);
     }

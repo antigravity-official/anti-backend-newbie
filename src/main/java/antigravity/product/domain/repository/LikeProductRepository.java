@@ -1,6 +1,8 @@
 package antigravity.product.domain.repository;
 
+import antigravity.global.exception.AntiException;
 import antigravity.product.domain.entity.LikeProduct;
+import antigravity.product.exception.ProductErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -15,7 +17,6 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
@@ -37,10 +38,14 @@ public class LikeProductRepository {
         jdbcTemplate.update(sql, new MapSqlParameterSource(params),generatedKeyHolder);
         return (long)generatedKeyHolder.getKeys().get("id");
     }
-    public Optional<LikeProduct> findById(Long id) {
-        String query = "SELECT * FROM like_product WHERE id = :id";
-        MapSqlParameterSource params = new MapSqlParameterSource("id", id);
-        return Optional.ofNullable(jdbcTemplate.queryForObject(query, params, dipProductRowMapper()));
+    public LikeProduct findById(Long id) {
+        try {
+            String query = "SELECT * FROM like_product WHERE id = :id";
+            MapSqlParameterSource params = new MapSqlParameterSource("id", id);
+            return jdbcTemplate.queryForObject(query, params, dipProductRowMapper());
+        }catch (Exception e) {
+            throw new AntiException(ProductErrorCode.LIKE_PRODUCT_NOT_EXIST);
+        }
     }
 
     public int countDipProductByProductId(long productId) {

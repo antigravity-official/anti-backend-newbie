@@ -9,7 +9,8 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum ProductErrorCode implements ErrorCode {
     PRODUCT_ALREADY_LIKE(HttpStatus.BAD_REQUEST, "이미 찜한 상품입니다."),
-    PRODUCT_NOT_EXIST(HttpStatus.BAD_REQUEST, "해당 아이디를 가진 상품이 존재하지 않습니다.");
+    PRODUCT_NOT_EXIST(HttpStatus.BAD_REQUEST, "해당 아이디를 가진 상품이 존재하지 않습니다."),
+    LIKE_PRODUCT_NOT_EXIST(HttpStatus.BAD_REQUEST, "해당 아이디를 가진 찜 상품이 존재하지 않습니다.");
     private final HttpStatus errorCode;
     private final String message;
 }

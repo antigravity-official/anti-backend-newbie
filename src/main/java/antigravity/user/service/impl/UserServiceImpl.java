@@ -1,7 +1,5 @@
 package antigravity.user.service.impl;
 
-import antigravity.global.exception.AntiException;
-import antigravity.user.exception.UserErrorCode;
 import antigravity.user.repository.UserRepository;
 import antigravity.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +12,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void validateExistUser(Integer userId) {
-        userRepository.findById((long)userId).orElseThrow(() -> new AntiException(UserErrorCode.USER_NOT_EXIST));
+        userRepository.findById((long)userId);
     }
 }
