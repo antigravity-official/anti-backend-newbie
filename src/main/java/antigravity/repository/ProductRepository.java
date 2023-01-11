@@ -1,32 +1,16 @@
 package antigravity.repository;
 
+
 import antigravity.entity.Product;
-import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
-@RequiredArgsConstructor
-@Repository
-public class ProductRepository {
+public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    private final NamedParameterJdbcTemplate jdbcTemplate;
+  @Modifying
+  @Query("update Product p set p.viewed = p.viewed + 1 where p.id = :productId")    int updateView(Long productId);
 
-    // 예시 메서드입니다.
-    public Product findById(Long id) {
-        String query = "SELECT id, sku, name, price, quantity, created_at" +
-                "       FROM product WHERE id = :id";
-        MapSqlParameterSource params = new MapSqlParameterSource("id", id);
 
-        return jdbcTemplate.queryForObject(query, params, (rs, rowNum) ->
-                Product.builder()
-                        .id(rs.getLong("id"))
-                        .sku(rs.getString("sku"))
-                        .name(rs.getString("name"))
-                        .price(rs.getBigDecimal("price"))
-                        .quantity(rs.getInt("quantity"))
-                        .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
-                        .build());
-    }
 
 }
