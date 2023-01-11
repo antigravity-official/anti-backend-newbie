@@ -34,7 +34,7 @@ public class DipRepositoryTests {
         DipProduct findDipProduct = dipProductRepository.findById(id).get();
 
         //then
-        assertEquals(id, findDipProduct.getProductId());
+        assertEquals(dipProduct.getProductId(), findDipProduct.getProductId());
     }
 
     @Test
@@ -44,7 +44,20 @@ public class DipRepositoryTests {
         for (int i = 0; i < 10; i++) {
             dipProductRepository.save(dipProduct);
         }
-        int cnt = dipProductRepository.countByUserId(1);
+        int cnt = dipProductRepository.countDipProductByUserId(1);
+
+        //then
+        assertEquals(10, cnt);
+    }
+
+    @Test
+    @DisplayName("상품아이디로 찜 상품 개수를 찾을 수 있다.")
+    void countOfDipProductByProductId() {
+        //when
+        for (int i = 0; i < 10; i++) {
+            dipProductRepository.save(dipProduct);
+        }
+        int cnt = dipProductRepository.countDipProductByProductId(1L);
 
         //then
         assertEquals(10, cnt);

@@ -12,10 +12,14 @@ import antigravity.product.web.dto.ProductResponse;
 import antigravity.user.exception.UserErrorCode;
 import antigravity.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +58,27 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponse> findProductList(Integer userId, boolean liked, Pageable pageable) {
-        return null;
+    public Page<ProductResponse> findProductList(Integer userId, Boolean liked, Pageable pageable) {
+        // 모든 상품을 조회
+        if (liked == null) {
+            Page<Product> products = productRepository.findAll(pageable);
+            Map<Long, ProductResponse> productMap = new HashMap<>();
+
+            //어자피 len(Product) >= len(dipProduct) 이므로 pageable 똑같이 써도 상관X
+            dipProductRepository.findAllByUserId(userId, pageable)
+                    .map(dipProduct -> ProductResponse.createDipProduct(productRepository.findById(dipProduct.getProductId()).get(), dipProductRepository.countDipProductByProductId(dipProduct.getProductId())))
+                    .forEach(productResponse -> productMap.put(productResponse.getId(), productResponse));
+
+            return products.map(product -> productMap.getOrDefault(product.getId(), ProductResponse.createNotDipProduct(product,dipProductRepository.countDipProductByProductId(product.getId()))));
+        } else if (liked == true) { // 찜한 상품을 조회
+            return dipProductRepository.findAllByUserId(userId, pageable)
+                    .map(dipProduct -> ProductResponse.createDipProduct(productRepository.findById(dipProduct.getProductId()).get(), dipProductRepository.countDipProductByProductId(dipProduct.getProductId())));
+        } else { // 찜하지 않은 상품만 조회
+            Page<DipProduct> dipProducts = dipProductRepository.findAllByUserId(userId, pageable);
+            List<Long> dipProductIds = dipProducts.stream().map(DipProduct::getProductId).collect(Collectors.toList());
+            return productRepository.findAllNotDipProduct(dipProductIds, pageable)
+                    .map(notDipProduct -> ProductResponse.createNotDipProduct(notDipProduct, dipProductRepository.countDipProductByProductId(notDipProduct.getId())));
+
+        }
     }
 }

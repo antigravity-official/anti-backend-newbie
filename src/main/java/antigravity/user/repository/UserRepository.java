@@ -33,13 +33,10 @@ public class UserRepository {
         return (long)generatedKeyHolder.getKeys().get("id");
     }
     private RowMapper<User> userRowMapper() {
-        return (rs, rowNum) -> {
-            User user = User.builder()
-                    .id(rs.getLong("id"))
-                    .name(rs.getString("name"))
-                    .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
-                    .build();
-            return user;
-        };
+        return (rs, rowNum) -> User.builder()
+                .id(rs.getLong("id"))
+                .name(rs.getString("name"))
+                .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+                .build();
     }
 }

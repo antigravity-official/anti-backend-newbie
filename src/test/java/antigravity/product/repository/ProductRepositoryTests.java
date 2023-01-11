@@ -1,25 +1,34 @@
 package antigravity.product.repository;
 
+import antigravity.product.domain.entity.DipProduct;
 import antigravity.product.domain.entity.Product;
+import antigravity.product.domain.repository.DipProductRepository;
 import antigravity.product.domain.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
 public class ProductRepositoryTests {
-
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private DipProductRepository dipProductRepository;
     Product product;
     @BeforeEach
     void setting() {
@@ -66,5 +75,66 @@ public class ProductRepositoryTests {
         assertEquals(findProduct.getViewed(), 100L);
     }
 
+    @Test
+    @DisplayName("모든 상품을 찾을 수 있다.")
+    void findAllProductById() {
+        //when
+        for (int i = 0; i < 100; i++) {
+            productRepository.save(product);
+        }
+        Page<Product> products = productRepository.findAll(PageRequest.of(0, 10));
+        //then
+        assertEquals(10, products.getSize());
+        assertEquals(0,products.getNumber());
+    }
+
+    @Test
+    @DisplayName("찜하지 않은 상품을 찾을 수 있다.")
+    void findAllNotDipProductById() {
+        List<Long> dipProductList = new ArrayList<>();
+
+        //when
+        for (int i = 0; i < 100; i++) {
+            productRepository.save(product);
+        }
+
+        for (int i = 0; i < 20; i++) {
+            DipProduct dipProduct = DipProduct.builder()
+                    .userId(1)
+                    .productId(Long.valueOf(i+1))
+                    .build();
+            dipProductList.add(dipProductRepository.save(dipProduct));
+        }
+
+        Iterator it = dipProductList.iterator();
+        while (it.hasNext()) {
+            System.out.print(it.next() +" ");
+        }
+
+        Page<Product> products = productRepository.findAllNotDipProduct(dipProductList, PageRequest.of(0, 10));
+
+        it = products.iterator();
+        System.out.println();
+        while(it.hasNext()) {
+            Product p = (Product) it.next();
+            System.out.print(p.getId()+" ");
+        }
+        //then
+        assertEquals(10, products.getSize());
+        assertEquals(0,products.getNumber());
+    }
+
+    @Test
+    @DisplayName("상품 개수를 찾을 수 있다.")
+    void countOfDipProductByProductId() {
+        //when
+        for (int i = 0; i < 10; i++) {
+            productRepository.save(product);
+        }
+        int cnt = productRepository.countProduct();
+
+        //then
+        assertEquals(33, cnt);
+    }
 
 }

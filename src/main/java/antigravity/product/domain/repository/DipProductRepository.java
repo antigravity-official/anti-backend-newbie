@@ -43,27 +43,31 @@ public class DipProductRepository {
         return Optional.ofNullable(jdbcTemplate.queryForObject(query, params, dipProductRowMapper()));
     }
 
-    public int countByUserId(int userId) {
+    public int countDipProductByProductId(long productId) {
+        String sql = "select count(*) from dip_product where product_id = :product_id";
+        MapSqlParameterSource param = new MapSqlParameterSource("product_id", productId);
+        return jdbcTemplate.queryForObject(sql, param, Integer.class);
+    }
+
+    public int countDipProductByUserId(int userId) {
         String sql = "select count(*) from dip_product where user_id = :user_id";
         MapSqlParameterSource param = new MapSqlParameterSource("user_id", userId);
         return jdbcTemplate.queryForObject(sql, param, Integer.class);
     }
 
+    // 유저가 찜한 상품 찾기
     public Page<DipProduct> findAllByUserId(int userId, Pageable pageable) {
         Sort.Order order = !pageable.getSort().isEmpty() ? pageable.getSort().toList().get(0) : Sort.Order.by("id");
         List<DipProduct> dipProducts = jdbcTemplate.query("SELECT * FROM DIP_PRODUCT WHERE user_id = "+userId+" ORDER BY " + order.getProperty() + " " + order.getDirection().name() + " LIMIT " + pageable.getPageSize()
         +" OFFSET "+ pageable.getOffset(),dipProductRowMapper());
-        return new PageImpl<DipProduct>(dipProducts, pageable, countByUserId(userId));
+        return new PageImpl<DipProduct>(dipProducts, pageable, countDipProductByUserId(userId));
     }
 
     private RowMapper<DipProduct> dipProductRowMapper() {
-        return (rs, rowNum) -> {
-            DipProduct dipProduct = DipProduct.builder()
-                    .id(rs.getLong("id"))
-                    .userId(rs.getInt("user_id"))
-                    .productId(rs.getLong("product_id"))
-                    .build();
-            return dipProduct;
-        };
+        return (rs, rowNum) -> DipProduct.builder()
+                .id(rs.getLong("id"))
+                .userId(rs.getInt("user_id"))
+                .productId(rs.getLong("product_id"))
+                .build();
     }
 }
