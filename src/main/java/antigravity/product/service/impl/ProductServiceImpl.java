@@ -29,25 +29,22 @@ public class ProductServiceImpl implements ProductService {
     private final LikeProductDAO likeProductDAO;
     private final ProductDAO productDAO;
     @Override
-    public Page<ProductResponse> findProductList(Integer userId, Boolean liked, Pageable pageable) {
-        // 모든 상품을 조회
-        if (liked == null) {
-            Page<Product> products = productDAO.findAllProduct(pageable);
-            Map<Long, ProductResponse> productMap = new HashMap<>();
+    public Page<ProductResponse> findAllProductList(Integer userId, Pageable pageable) {
+        Page<Product> products = productDAO.findAllProduct(pageable);
+        Map<Long, ProductResponse> productMap = new HashMap<>();
 
-            //어자피 len(Product) >= len(dipProduct) 이므로 pageable 똑같이 써도 상관X
-            likeProductDAO.findAllByUserId(userId, pageable).map(dipProduct ->
-                    ProductResponse.createDipProduct(productDAO.findById(dipProduct.getProductId()), likeProductDAO.calculateTotalDip(dipProduct.getProductId())))
-                    .forEach(productResponse -> productMap.put(productResponse.getId(), productResponse));
-            return products.map(product -> productMap.getOrDefault(product.getId(), ProductResponse.createNotDipProduct(product, likeProductDAO.calculateTotalDip(product.getId()))));
-        } else if (liked) { // 찜한 상품을 조회
-            return likeProductDAO.findAllByUserId(userId,pageable).map(dipProduct ->
-                    ProductResponse.createDipProduct(productDAO.findById(dipProduct.getProductId()), likeProductDAO.calculateTotalDip(dipProduct.getProductId())));
-        } else { // 찜하지 않은 상품만 조회
-            Page<LikeProduct> dipProducts = likeProductDAO.findAllByUserId(userId,pageable);
-            List<Long> dipProductIds = dipProducts.stream().map(LikeProduct::getProductId).collect(Collectors.toList());
-            return productDAO.findAllNotDipProduct(dipProductIds, pageable)
-                    .map(notDipProduct -> ProductResponse.createNotDipProduct(notDipProduct, likeProductDAO.calculateTotalDip(notDipProduct.getId())));
-        }
+        //어자피 len(Product) >= len(dipProduct) 이므로 pageable 똑같이 써도 상관X
+        likeProductDAO.findAllByUserId(userId, pageable).map(dipProduct ->
+                ProductResponse.createDipProduct(productDAO.findById(dipProduct.getProductId()), likeProductDAO.calculateTotalDip(dipProduct.getProductId())))
+                .forEach(productResponse -> productMap.put(productResponse.getId(), productResponse));
+        return products.map(product -> productMap.getOrDefault(product.getId(), ProductResponse.createNotDipProduct(product, likeProductDAO.calculateTotalDip(product.getId()))));
+    }
+
+    @Override
+    public Page<ProductResponse> findNotLikeProductList(Integer userId, Pageable pageable) {
+        Page<LikeProduct> dipProducts = likeProductDAO.findAllByUserId(userId,pageable);
+        List<Long> dipProductIds = dipProducts.stream().map(LikeProduct::getProductId).collect(Collectors.toList());
+        return productDAO.findAllNotDipProduct(dipProductIds, pageable)
+                .map(notDipProduct -> ProductResponse.createNotDipProduct(notDipProduct, likeProductDAO.calculateTotalDip(notDipProduct.getId())));
     }
 }

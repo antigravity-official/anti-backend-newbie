@@ -80,7 +80,7 @@ public class ProductControllerTests {
     @DisplayName("찜 상품을 등록할 수 있다.")
     void dipProduct() throws Exception {
         //when
-        when(likeProductService.createDip(any(), any())).thenReturn(likeProductResponse);
+        when(likeProductService.createLikeProduct(any(), any())).thenReturn(likeProductResponse);
 
         //then
         mockMvc.perform(post("/products/liked/1")

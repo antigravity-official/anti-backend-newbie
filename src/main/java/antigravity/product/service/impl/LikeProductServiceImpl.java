@@ -9,6 +9,7 @@ import antigravity.product.exception.ProductErrorCode;
 import antigravity.product.service.LikeProductService;
 import antigravity.product.service.ProductService;
 import antigravity.product.web.dto.LikeProductResponse;
+import antigravity.product.web.dto.ProductResponse;
 import antigravity.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,9 +25,16 @@ public class LikeProductServiceImpl implements LikeProductService {
     private final ViewServiceImpl viewService;
     private final UserService userService;
     private final ProductDAO productDAO;
+
+    @Override
+    public Page<ProductResponse> findLikeProduct(Integer userId, Pageable pageable) {
+        return likeProductDAO.findAllByUserId(userId,pageable).map(dipProduct ->
+                ProductResponse.createDipProduct(productDAO.findById(dipProduct.getProductId()), likeProductDAO.calculateTotalDip(dipProduct.getProductId())));
+    }
+
     @Override
     @Transactional
-    public LikeProductResponse createDip(Integer userId, Long productId) {
+    public LikeProductResponse createLikeProduct(Integer userId, Long productId) {
         // 유저 존재 X
         userService.validateExistUser(userId);
 
