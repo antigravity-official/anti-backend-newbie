@@ -1,5 +1,6 @@
 package antigravity.repository;
 
+import antigravity.DataBaseCleanUp;
 import antigravity.entity.LikeHistory;
 import antigravity.entity.Member;
 import antigravity.entity.Product;
@@ -12,15 +13,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
 
 @SpringBootTest
 class ProductRepositoryTest {
 
     @Autowired
     LikeHistoryRepository likeHistoryRepository;
+
     @Autowired
-    List<? extends CrudRepository> crudRepositories;
+    DataBaseCleanUp dataBaseCleanUp;
 
     @Autowired
     MemberRepository memberRepository;
@@ -33,8 +34,7 @@ class ProductRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        likeHistoryRepository.deleteAll();
-        crudRepositories.stream().forEach(CrudRepository::deleteAll);
+        dataBaseCleanUp.cleanUp();
         Member member = Member.builder().email("test").name("test").build();
         alreadySaveMember = memberRepository.save(member);
         Product product = Product.builder().sku("test").price(BigDecimal.ONE).name("testprodcut").quantity(10).build();

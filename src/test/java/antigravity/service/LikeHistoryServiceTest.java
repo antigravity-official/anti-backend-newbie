@@ -1,5 +1,6 @@
 package antigravity.service;
 
+import antigravity.DataBaseCleanUp;
 import antigravity.common.BaseException;
 import antigravity.entity.Member;
 import antigravity.entity.Product;
@@ -8,14 +9,12 @@ import antigravity.repository.MemberRepository;
 import antigravity.repository.ProductRepository;
 import antigravity.repository.ProductViewCountRepository;
 import java.math.BigDecimal;
-import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.repository.CrudRepository;
 
 
 @SpringBootTest
@@ -24,8 +23,7 @@ class LikeHistoryServiceTest {
     @Autowired
     LikeHistoryRepository likeHistoryRepository;
     @Autowired
-    List<? extends CrudRepository> crudRepositories;
-
+    DataBaseCleanUp dataBaseCleanUp;
     @Autowired
     MemberRepository memberRepository;
 
@@ -43,8 +41,7 @@ class LikeHistoryServiceTest {
 
     @BeforeEach
     public void setup() {
-        likeHistoryRepository.deleteAll();
-        crudRepositories.stream().forEach(CrudRepository::deleteAll);
+        dataBaseCleanUp.cleanUp();
         Member member = Member.builder().email("test").name("test").build();
         alreadySaveMember = memberRepository.save(member);
         Product product = Product.builder().sku("test").price(BigDecimal.ONE).name("testprodcut").quantity(10).build();

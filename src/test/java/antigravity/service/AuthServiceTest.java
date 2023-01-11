@@ -1,16 +1,15 @@
 package antigravity.service;
 
+import antigravity.DataBaseCleanUp;
 import antigravity.common.BaseException;
 import antigravity.entity.Member;
 import antigravity.repository.MemberRepository;
-import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.repository.CrudRepository;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -20,11 +19,11 @@ class AuthServiceTest {
     @Autowired
     MemberRepository memberRepository;
     @Autowired
-    List<? extends CrudRepository> crudRepositories;
+    DataBaseCleanUp dataBaseCleanUp;
 
     @BeforeEach
     public void setUp() {
-        crudRepositories.stream().forEach(CrudRepository::deleteAll);
+        dataBaseCleanUp.cleanUp();
         Member member = Member.builder().id(1L).email("test").build();
         memberRepository.save(member);
         authService = new AuthService(memberRepository);
