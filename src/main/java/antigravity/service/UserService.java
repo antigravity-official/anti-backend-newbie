@@ -1,6 +1,7 @@
 package antigravity.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import antigravity.entity.User;
 import antigravity.exception.AntigravityException;
@@ -14,6 +15,7 @@ public class UserService {
 
 	private final UserRepository userRepository;
 
+	@Transactional(readOnly = true)
 	public User findUserById(Long userId) {
 		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new AntigravityException(ErrorCode.USER_ID_NOT_FOUND,
