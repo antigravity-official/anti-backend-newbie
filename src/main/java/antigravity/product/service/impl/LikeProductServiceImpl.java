@@ -1,6 +1,8 @@
 package antigravity.product.service.impl;
 
 import antigravity.global.exception.AntiException;
+import antigravity.product.domain.dao.LikeProductDAO;
+import antigravity.product.domain.dao.ProductDAO;
 import antigravity.product.domain.entity.LikeProduct;
 import antigravity.product.domain.repository.LikeProductRepository;
 import antigravity.product.exception.ProductErrorCode;
@@ -9,6 +11,8 @@ import antigravity.product.service.ProductService;
 import antigravity.product.web.dto.LikeProductResponse;
 import antigravity.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,10 +20,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class LikeProductServiceImpl implements LikeProductService {
-    private final LikeProductRepository likeProductRepository;
+    private final LikeProductDAO likeProductDAO;
     private final ViewServiceImpl viewService;
     private final UserService userService;
-    private final ProductService productService;
+    private final ProductDAO productDAO;
     @Override
     @Transactional
     public LikeProductResponse createDip(Integer userId, Long productId) {
@@ -27,16 +31,16 @@ public class LikeProductServiceImpl implements LikeProductService {
         userService.validateExistUser(userId);
 
         // 상품 존재 X
-        productService.validateExistProduct(productId);
+        productDAO.validateExistProduct(productId);
 
         // 이미 찜했다면
-        checkAlreadyDip(userId, productId);
+        likeProductDAO.checkAlreadyDip(userId, productId);
 
         // 조회수 처리
         Long viewCnt = viewService.addViewCntToRedis(productId);
 
         // 찜한 상품 저장
-        likeProductRepository.save(LikeProduct.builder()
+        likeProductDAO.saveLikeProduct(LikeProduct.builder()
                 .productId(productId)
                 .userId(userId).build());
 
@@ -47,10 +51,4 @@ public class LikeProductServiceImpl implements LikeProductService {
                 .build();
     }
 
-    @Override
-    public void checkAlreadyDip(Integer userId, Long productId) {
-        if(likeProductRepository.existsDipProductByUserIdAndProductId(userId, productId) > 0) {
-            throw new AntiException(ProductErrorCode.PRODUCT_ALREADY_LIKE);
-        }
-    }
 }
