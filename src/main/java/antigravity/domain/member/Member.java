@@ -1,5 +1,6 @@
 package antigravity.domain.member;
 
+import antigravity.domain.common.BaseTimeEntity;
 import antigravity.domain.product.Product;
 import antigravity.domain.product.ProductLike;
 import java.time.LocalDateTime;
@@ -15,13 +16,15 @@ import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "update member set deleted_at = now() where id = ?")
 @Where(clause = "deleted_at is null")
-public class Member {
+public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +32,6 @@ public class Member {
 
     private String email;
     private String name;
-    private LocalDateTime createdAt;
     private LocalDateTime deletedAt;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
