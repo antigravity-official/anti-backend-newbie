@@ -28,7 +28,7 @@ import antigravity.repository.UserRepository;
 class LikedProductServiceTest {
 
 	@Autowired
-	private LikedProductService likedProductService;
+	private ProductService likedProductService;
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired

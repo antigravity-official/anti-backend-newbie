@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class LikedProductService {
+public class ProductService {
 	private final ProductRepository productRepository;
 	private final LikedProductRepository likedProductRepository;
 	private final UserRepository userRepository;

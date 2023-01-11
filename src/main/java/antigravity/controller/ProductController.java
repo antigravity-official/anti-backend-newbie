@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import antigravity.payload.LikedProductResponse;
-import antigravity.payload.ProductResponse;
-import antigravity.service.LikedProductService;
+import antigravity.service.ProductService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -18,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/products")
 public class ProductController {
 
-	private final LikedProductService likedProductService;
+	private final ProductService likedProductService;
 
 	// TODO 찜 상품 등록 API
 	@PostMapping("/liked/{productId}")
@@ -29,4 +28,10 @@ public class ProductController {
 				productId, userId.longValue());
 	}
 	// TODO 찜 상품 조회 API
+
+	@GetMapping
+	public ResponseEntity<?> getProducts() {
+
+		return null;
+	}
 }
