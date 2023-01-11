@@ -3,7 +3,9 @@ package antigravity.api.service;
 import antigravity.api.repository.ProductLikeRepository;
 import antigravity.api.repository.ProductRepository;
 import antigravity.api.repository.UserRepository;
+import antigravity.entity.LikeStatus;
 import antigravity.entity.Product;
+import antigravity.entity.ProductLike;
 import antigravity.entity.User;
 import antigravity.exception.CustomException;
 import antigravity.exception.ErrorCode;
@@ -22,9 +24,9 @@ public class ProductLikeService {
 
     // TODO: 2023-01-10 동시성 이슈를 위해서 Lock 고려, 과제 2 다하고 돌아오자.
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = RuntimeException.class)
-    public void addLikedProduct(Integer userId, Long productId) {
+    public void addLikedProduct(Long userId, Long productId) {
 
-        User findUser = userRepository.findById(userId.longValue())
+        User findUser = userRepository.findById(userId)
                 .orElseThrow(() -> {
                     throw new CustomException(ErrorCode.USER_NOT_FOUND);
                 });
@@ -39,8 +41,19 @@ public class ProductLikeService {
         if (isLikedProduct) {
             throw new CustomException(ErrorCode.CAN_NOT_LIKE);
         } else {
-            findProduct.incrementHits();
+            ProductLike createProductLike = createProductLikeUser(findUser, findProduct);
+            productLikeRepository.save(createProductLike);
+            findProduct.incrementView();
         }
+
         productRepository.save(findProduct);
+    }
+
+    private ProductLike createProductLikeUser(User user, Product product) {
+        return ProductLike.builder()
+                .user(user)
+                .product(product)
+                .likeStatus(LikeStatus.LIKE)
+                .build();
     }
 }

@@ -1,8 +1,6 @@
 package antigravity.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -10,7 +8,7 @@ import javax.persistence.*;
 @Getter
 @Table(name = "product_like")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProductLike extends BaseEntity{
+public class ProductLike {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,4 +25,11 @@ public class ProductLike extends BaseEntity{
 
     @Column(name = "product_like_status")
     private LikeStatus likeStatus;
+
+    @Builder
+    public ProductLike(User user, Product product, LikeStatus likeStatus) {
+        this.user = user;
+        this.product = product;
+        this.likeStatus = LikeStatus.LIKE;
+    }
 }
