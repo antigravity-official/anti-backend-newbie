@@ -29,9 +29,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 
+@ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -149,7 +151,7 @@ class ProductControllerGetLikeHistoryListTest {
                         .params(requestParams)
                         .header("X-USER-ID", alreadySaveMember.getId() + id)
         ).andReturn().getResponse();
-       
+
         Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         Assertions.assertThat(response.getContentAsString(StandardCharsets.UTF_8)).contains(message);
 

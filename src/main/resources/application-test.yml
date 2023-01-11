@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=mysql;NON_KEYWORDS=USER
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+
+  # H2 Settings
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      properties:
+        hibernate:
+          format_sql: true
+          show_sql: true
+      ddl-auto: create
+    generate-ddl: true

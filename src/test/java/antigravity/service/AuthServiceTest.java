@@ -9,12 +9,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
-@DataJpaTest
+@ActiveProfiles("test")
+@SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class AuthServiceTest {
-
+    @Autowired
     AuthService authService;
     @Autowired
     MemberRepository memberRepository;
@@ -26,7 +28,6 @@ class AuthServiceTest {
         dataBaseCleanUp.cleanUp();
         Member member = Member.builder().id(1L).email("test").build();
         memberRepository.save(member);
-        authService = new AuthService(memberRepository);
     }
 
     @Test
