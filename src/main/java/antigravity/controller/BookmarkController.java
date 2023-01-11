@@ -1,8 +1,10 @@
 package antigravity.controller;
 
-import antigravity.entity.Bookmark;
+import antigravity.payload.ProductResponse;
 import antigravity.service.BookmarkService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +28,13 @@ public class BookmarkController {
     }
 
     // TODO 찜 상품 조회 API
+    @GetMapping("/liked/{liked}")
+    public ResponseEntity<Page<ProductResponse>> userBookmarkGet(
+            @RequestHeader("X-USER-ID") Integer userId,
+            @RequestParam(value = "liked", required = false) Boolean liked,
+            Pageable pageable){
 
-
-
+        return ResponseEntity
+                .ok(bookmarkService.getUserBookmark(liked,pageable, Long.valueOf(userId)));
+    }
 }
