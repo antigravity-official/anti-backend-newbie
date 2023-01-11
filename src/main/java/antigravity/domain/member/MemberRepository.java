@@ -7,7 +7,7 @@ public interface MemberRepository {
 
     Member save(Member member);
 
-    Optional<Member> findById(Long userId);
+    Optional<Member> findById(Long memberId);
 
     List<Member> findAll();
 

@@ -27,8 +27,8 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     @Transactional
-    public void likeProduct(Long userId, Long productId) {
-        Member member = memberRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+    public void likeProduct(Long memberId, Long productId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(UserNotFoundException::new);
         Product product = productRepository.findById(productId)
             .orElseThrow(ProductNotFoundException::new);
 
@@ -40,10 +40,10 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public ProductListResponse searchProducts(Long userId, LikeStatus likeStatus, Pageable pageable) {
+    public ProductListResponse searchProducts(Long memberId, LikeStatus likeStatus, Pageable pageable) {
 
-        Member member = findMember(userId);
-        Page<Product> products = productRepository.findProductsByStatus(userId, likeStatus,
+        Member member = findMember(memberId);
+        Page<Product> products = productRepository.findProductsByStatus(memberId, likeStatus,
             pageable);
 
         List<ProductResponse> productResponses = convertToDto(products.getContent(), member,

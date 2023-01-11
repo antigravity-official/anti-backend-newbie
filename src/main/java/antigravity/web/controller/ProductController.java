@@ -23,18 +23,18 @@ public class ProductController {
 
     // TODO 찜 상품 등록 API
     @PostMapping("/products/liked/{productId}")
-    public ApplicationResponseEntity<Void> add(@UserInfo Long userId, @PathVariable Long productId) {
+    public ApplicationResponseEntity<Void> add(@UserInfo Long memberId, @PathVariable Long productId) {
 
-        productService.likeProduct(userId, productId);
+        productService.likeProduct(memberId, productId);
         return new ApplicationResponseEntity<>(SuccessMessages.PRODUCT_LIKE_SUCCESS,
             HttpStatus.CREATED);
     }
 
     // TODO 찜 상품 조회 API
     @GetMapping("/products/liked")
-    public ApplicationResponseEntity<ProductListResponse> searchProducts(@UserInfo Long userId, LikeStatus likeStatus, @PageableDefault Pageable pageable) {
+    public ApplicationResponseEntity<ProductListResponse> searchProducts(@UserInfo Long memberId, LikeStatus likeStatus, @PageableDefault Pageable pageable) {
 
-        ProductListResponse products = productService.searchProducts(userId, likeStatus, pageable);
+        ProductListResponse products = productService.searchProducts(memberId, likeStatus, pageable);
         return new ApplicationResponseEntity<>(SuccessMessages.SEARCH_PRODUCTS_SUCCESS, products,
             HttpStatus.CREATED);
     }

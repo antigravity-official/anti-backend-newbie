@@ -5,6 +5,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface ProductRepositoryCustom {
 
-    Page<Product> findProductsByStatus(Long userId, LikeStatus liked, Pageable pageable);
+    Page<Product> findProductsByStatus(Long memberId, LikeStatus liked, Pageable pageable);
 
 }
