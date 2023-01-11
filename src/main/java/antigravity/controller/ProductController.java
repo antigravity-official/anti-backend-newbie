@@ -1,5 +1,7 @@
 package antigravity.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import antigravity.payload.LikedProductResponse;
+import antigravity.payload.ProductResponse;
 import antigravity.payload.ProductSearch;
 import antigravity.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +34,7 @@ public class ProductController {
 	// TODO 찜 상품 조회 API
 
 	@GetMapping
-	public ResponseEntity<?> getProducts(
+	public ResponseEntity<List<ProductResponse>> getProducts(
 			@RequestHeader("X-USER-ID") Integer userId,
 			@ModelAttribute ProductSearch productSearch) {
 
