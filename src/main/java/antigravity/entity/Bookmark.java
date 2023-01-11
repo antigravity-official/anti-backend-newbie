@@ -29,4 +29,11 @@ public class Bookmark {
         this.productId = productId;
         this.user = user;
     }
+
+    public static Bookmark bookmarkBuilder(Long productId, User user){
+        return Bookmark.builder()
+                .productId(productId)
+                .user(user)
+                .build();
+    }
 }
