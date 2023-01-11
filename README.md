@@ -31,7 +31,7 @@
 - `liked=false` 이면 찜하지 않은 상품만 조회
 - `liked=true` 이면 {user}가 찜한 상품만 조회합니다.
 - 잘못된 파라미터가 들어오면 `400 Bad Request` 로 응답합니다.
-- 정상인 경우 `200 OK` 로 응답하며, 응답 본문은 `antigravity.payload.ProductResponse` 를 참고하여 작성합니다.
+- 정상인 경우 `200 OK` 로 응답하며, 응답 본문은 `antigravity/product/web/dto` 를 참고하여 작성합니다.
 - 한 상품의 응답 `json` 명세는 기본적으로 다음과 같습니다. 아래 명세를 바탕으로 **페이징 된 전체 응답 객체**를 구성 해주세요.
 
 ```json
