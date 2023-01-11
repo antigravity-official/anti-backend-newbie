@@ -46,7 +46,7 @@ public class ProductRepositoryTests {
     void saveAndFind() throws Exception {
         //when
         Long id = productRepository.save(product);
-        Product findProduct = productRepository.findById(id).get();
+        Product findProduct = productRepository.findById(id);
 
         //then
         assertEquals(id, findProduct.getId());
@@ -69,7 +69,7 @@ public class ProductRepositoryTests {
         Long id = productRepository.save(product);
         productRepository.updateViewCntFromRedis(id, 100L);
 
-        Product findProduct = productRepository.findById(id).get();
+        Product findProduct = productRepository.findById(id);
 
         //then
         assertEquals(findProduct.getViewed(), 100L);

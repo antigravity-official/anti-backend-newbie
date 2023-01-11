@@ -31,8 +31,6 @@ public class LikeProductServiceImpl implements LikeProductService {
     @Override
     @Transactional
     public LikeProductResponse createLikeProduct(Integer userId, Long productId) {
-        // 유저 존재 X
-        userService.validateExistUser(userId);
 
         // 상품 존재 X
         productDAO.validateExistProduct(productId);

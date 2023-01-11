@@ -17,7 +17,6 @@ public class ProductPresenter {
     private final UserService userService;
 
     public Page<ProductResponse> showProducts(Integer userId, Boolean liked, Pageable pageable) {
-        userService.validateExistUser(userId);
         //전체 조회
         if(liked == null) {
             return productService.findAllProductList(userId, pageable);

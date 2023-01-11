@@ -94,7 +94,6 @@ public class LikeProductServiceTests {
     @DisplayName("상품을 찜할 수 있다.")
     void dipProduct() {
         //mocking
-        willDoNothing().given(userService).validateExistUser(any());
         willDoNothing().given(productDAO).validateExistProduct(any());
         willDoNothing().given(likeProductDAO).checkAlreadyDip(any(),any());
         given(viewService.addViewCntToRedis(any())).willReturn(1L);

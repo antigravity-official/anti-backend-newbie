@@ -1,10 +1,12 @@
 package antigravity.global.config;
 
+import antigravity.global.UserInterceptor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.data.web.SortHandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
@@ -20,5 +22,12 @@ public class WebConfig implements WebMvcConfigurer {
         pageableArgumentResolver.setSizeParameterName("size");
         argumentResolvers.add(pageableArgumentResolver);
     }
-
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(userInterceptor());
+    }
+    @Bean
+    public UserInterceptor userInterceptor(){
+        return new UserInterceptor();
+    }
 }

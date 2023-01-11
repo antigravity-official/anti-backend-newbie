@@ -30,7 +30,7 @@ public class UserRepositoryTest {
     void saveAndFind() {
         //when
         Long id = userRepository.save(user);
-        User findUser = userRepository.findById(id).get();
+        User findUser = userRepository.findById(id);
 
         //then
         assertEquals(id, findUser.getId());

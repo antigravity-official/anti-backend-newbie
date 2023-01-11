@@ -2,10 +2,10 @@ package antigravity.product.web;
 
 import antigravity.product.domain.entity.Product;
 import antigravity.product.service.LikeProductService;
-import antigravity.product.service.ProductService;
 import antigravity.product.web.dto.LikeProductResponse;
 import antigravity.product.web.dto.ProductResponse;
 import antigravity.product.web.presenter.ProductPresenter;
+import antigravity.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,6 +32,8 @@ public class ProductControllerTests {
     MockMvc mockMvc;
     @MockBean
     private ProductPresenter productPresenter;
+    @MockBean
+    private UserService userService;
     @MockBean
     private LikeProductService likeProductService;
     LikeProductResponse likeProductResponse;
