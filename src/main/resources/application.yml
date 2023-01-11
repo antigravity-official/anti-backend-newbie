@@ -4,3 +4,10 @@ server:
 spring:
   profiles:
     active: dev
+
+ratelimiter:
+  instances:
+    productService:
+      limitForPeriod: 10
+      limitRefreshPeriod: 1s
+      timeoutDuration: 0

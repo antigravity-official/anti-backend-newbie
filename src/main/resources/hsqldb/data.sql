@@ -32,3 +32,9 @@ INSERT INTO `user` (`email`, `name`)
 VALUES ('user2@antigravity.kr', '회원2'),
        ('user3@antigravity.kr', '회원3'),
        ('user4@antigravity.kr', '회원4');
+
+INSERT INTO `liked` (`userId`, `productId`)
+VALUES (2, 1);
+
+UPDATE `product` SET `hits` = 1 WHERE `id` = 1
+
