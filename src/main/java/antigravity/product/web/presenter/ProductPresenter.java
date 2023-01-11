@@ -15,11 +15,14 @@ public class ProductPresenter {
     private final LikeProductService likeProductService;
 
     public Page<ProductResponse> showProducts(Integer userId, Boolean liked, Pageable pageable) {
+        //전체 조회
         if(liked == null) {
             return productService.findAllProductList(userId, pageable);
-        } else if (liked) {
+        }
+        else if (liked) { // 찜한 제품만 조회
             return likeProductService.findLikeProduct(userId,pageable);
-        } else {
+        }
+        else { // 찜하지 않은 제품만 조회
             return productService.findNotLikeProductList(userId, pageable);
         }
     }

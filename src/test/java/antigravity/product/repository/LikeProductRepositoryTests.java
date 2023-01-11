@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-public class LikeRepositoryTests {
+public class LikeProductRepositoryTests {
     @Autowired
     LikeProductRepository likeProductRepository;
     LikeProduct likeProduct;

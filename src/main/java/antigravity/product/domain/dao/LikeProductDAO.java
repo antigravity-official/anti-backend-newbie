@@ -28,7 +28,7 @@ public class LikeProductDAO {
     public Page<LikeProduct> findAllByUserId(Integer userId, Pageable pageable) {
         return likeProductRepository.findAllByUserId(userId, pageable);
     }
-
+    @Transactional
     public Long saveLikeProduct(LikeProduct likeProduct) {
         return likeProductRepository.save(likeProduct);
     }

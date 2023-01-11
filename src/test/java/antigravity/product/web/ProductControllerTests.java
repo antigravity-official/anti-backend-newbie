@@ -5,6 +5,7 @@ import antigravity.product.service.LikeProductService;
 import antigravity.product.service.ProductService;
 import antigravity.product.web.dto.LikeProductResponse;
 import antigravity.product.web.dto.ProductResponse;
+import antigravity.product.web.presenter.ProductPresenter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,7 @@ public class ProductControllerTests {
     @Autowired
     MockMvc mockMvc;
     @MockBean
-    private ProductService productService;
+    private ProductPresenter productPresenter;
     @MockBean
     private LikeProductService likeProductService;
     LikeProductResponse likeProductResponse;
@@ -93,7 +94,7 @@ public class ProductControllerTests {
     @DisplayName("모든 상품을 조회할 수 있다.")
     void findAllProduct() throws Exception {
         //when
-        when(productService.findProductList(any(), eq(null), any()))
+        when(productPresenter.showProducts(any(), eq(null), any()))
                 .thenReturn(new PageImpl<>(allResponses));
 
         //then
@@ -107,7 +108,7 @@ public class ProductControllerTests {
     @DisplayName("모든 상품을 10개씩 조회할 수 있다.")
     void findAllProductOnly10() throws Exception {
         //when
-        when(productService.findProductList(any(), eq(null), any()))
+        when(productPresenter.showProducts(any(), eq(null), any()))
                 .thenReturn(new PageImpl<>(allResponses.subList(0,10)));
 
         //then
@@ -122,7 +123,7 @@ public class ProductControllerTests {
     @DisplayName("찜한 상품을 조회할 수 있다.")
     void findAllDipProduct() throws Exception {
         //when
-        when(productService.findProductList(any(), eq(true), any()))
+        when(productPresenter.showProducts(any(), eq(true), any()))
                 .thenReturn(new PageImpl<>(dipProductResponses.subList(5,10)));
 
         //then
@@ -139,7 +140,7 @@ public class ProductControllerTests {
     @DisplayName("찜하지 않은 상품을 조회할 수 있다.")
     void findAllNotDipProduct() throws Exception {
         //when
-        when(productService.findProductList(any(), eq(false), any()))
+        when(productPresenter.showProducts(any(), eq(false), any()))
                 .thenReturn(new PageImpl<>(notDipProductResponses));
 
         //then

@@ -1,13 +1,9 @@
 package antigravity.product.service.impl;
 
-import antigravity.global.exception.AntiException;
 import antigravity.product.domain.dao.LikeProductDAO;
 import antigravity.product.domain.dao.ProductDAO;
 import antigravity.product.domain.entity.LikeProduct;
-import antigravity.product.domain.repository.LikeProductRepository;
-import antigravity.product.exception.ProductErrorCode;
 import antigravity.product.service.LikeProductService;
-import antigravity.product.service.ProductService;
 import antigravity.product.web.dto.LikeProductResponse;
 import antigravity.product.web.dto.ProductResponse;
 import antigravity.user.service.UserService;
