@@ -45,6 +45,8 @@ public class LikeHistoryService {
             LikeHistorySearchCondition condition,
             Long memberId) {
         Pageable pageable = PageRequest.of(condition.getPage(), condition.getSize());
-        return productResponseRouter.getMatchList(condition.getLike(), memberId, pageable);
+        log.info("memberId:{},  좋아하는 여부:{},size:{},page:{}", memberId, condition.getLiked(), condition.getSize(),
+                condition.getPage());
+        return productResponseRouter.getMatchList(condition.getLiked(), memberId, pageable);
     }
 }
