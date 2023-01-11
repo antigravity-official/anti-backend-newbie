@@ -4,7 +4,6 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.BDDMockito.willThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,8 +41,7 @@ class ProductControllerTest {
         mockMvc.perform(
                         post("/products/liked/{productId}", productId)
                                 .header("X-USER-ID", userId)
-                ).andExpect(status().isCreated())
-                .andDo(print());
+                ).andExpect(status().isCreated());
 
         then(likeProductService).should().like(productId, userId);
 
@@ -62,8 +60,7 @@ class ProductControllerTest {
                 )
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errorCode").value(HttpStatus.BAD_REQUEST.toString()))
-                .andExpect(jsonPath("$.errorMessage").value("인증 정보가 존재하지 않습니다."))
-                .andDo(print());
+                .andExpect(jsonPath("$.errorMessage").value("인증 정보가 존재하지 않습니다."));
     }
 
     @Test
@@ -81,8 +78,7 @@ class ProductControllerTest {
                                 .header("X-USER-ID", userId)
                 ).andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errorCode").value(HttpStatus.BAD_REQUEST.toString()))
-                .andExpect(jsonPath("$.errorMessage").value("해당 고객을 찾을 수 없습니다."))
-                .andDo(print());
+                .andExpect(jsonPath("$.errorMessage").value("해당 고객을 찾을 수 없습니다."));
     }
 
     @Test
@@ -100,8 +96,7 @@ class ProductControllerTest {
                                 .header("X-USER-ID", userId)
                 ).andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errorCode").value(HttpStatus.BAD_REQUEST.toString()))
-                .andExpect(jsonPath("$.errorMessage").value("삭제된 고객입니다."))
-                .andDo(print());
+                .andExpect(jsonPath("$.errorMessage").value("삭제된 고객입니다."));
     }
 
 }
