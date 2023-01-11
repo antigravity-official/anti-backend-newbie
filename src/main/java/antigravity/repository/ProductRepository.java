@@ -5,9 +5,6 @@ import antigravity.entity.Product;
 import antigravity.payload.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.relational.core.sql.In;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -21,7 +18,7 @@ import java.util.Map;
 public class ProductRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
-    private final JdbcTemplate jdbcTemplate2;
+
 
     // 예시 메서드입니다.
     public Product findById(Long id) {
@@ -130,6 +127,7 @@ public class ProductRepository {
                         "FROM product po " +
                         "Inner join favorite fv on (po.id = fv.product_id)" +
                         "WHERE fv.user_id = :id " +
+                        "AND po.deleted_at is null " +
                         "LIMIT :page, :size";
             }else {
                 // 찜하지 않은 상품 조회
@@ -138,6 +136,7 @@ public class ProductRepository {
                         "FROM product po " +
                         "LEFT JOIN favorite fa on (po.id = fa.product_id) " +
                         "WHERE fa.product_id is null " +
+                        "AND po.deleted_at is null " +
                         "LIMIT :page, :size";
             }
 
@@ -188,6 +187,7 @@ public class ProductRepository {
                         "WHERE fv.user_id = :id " +
                         "AND fv.product_id = po.id)) as liked " +
                     "FROM product po " +
+                    "WHERE po.deleted_at is null " +
                     "LIMIT :page, :size";
 
             MapSqlParameterSource params = new MapSqlParameterSource("id", id)
