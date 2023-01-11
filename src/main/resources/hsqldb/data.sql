@@ -25,10 +25,24 @@ VALUES ('G2000000521', '에어러블업 브라(VBR0945)', 73000, 10, '2022-10-11
        ('G2000000523', '기능성 등살 보정브라(VGBM110)', 99000, 10, '2022-10-11 13:02:33'),
        ('G2000000525', 'No4. 더핏세트', 51000, 10, '2021-11-11 13:02:33');
 
-INSERT INTO `user` (`email`, `name`, `deleted_at`)
+INSERT INTO `users` (`email`, `name`, `deleted_at`)
 VALUES ('user1@antigravity.kr', '회원1', '2021-10-10 16:11:23');
 
-INSERT INTO `user` (`email`, `name`)
+INSERT INTO `users` (`email`, `name`)
 VALUES ('user2@antigravity.kr', '회원2'),
        ('user3@antigravity.kr', '회원3'),
        ('user4@antigravity.kr', '회원4');
+
+INSERT INTO `product_like` (`product_id`, `user_id`, `like_status`)
+VALUES (1, 2, 'LIKE'),
+       (2, 2, 'LIKE'),
+       (3, 2, 'LIKE'),
+       (1, 3, 'LIKE'),
+       (2, 3, 'LIKE'),
+       (5, 4, 'LIKE');
+
+INSERT INTO `product_like` (`product_id`, `user_id`, `like_status`, `deleted_at`)
+VALUES (3, 1, 'LIKE','2021-10-10 16:11:23'),
+       (7, 1, 'LIKE', '2021-10-10 16:11:23'),
+       (21, 4, 'LIKE','2022-10-11 13:02:33'),
+       (23, 1, 'LIKE', '2021-10-10 16:11:23');
