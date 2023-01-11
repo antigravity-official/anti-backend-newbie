@@ -1,24 +1,74 @@
 package antigravity.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-@Builder
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.UpdateTimestamp;
+
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 @ToString
 @Getter
-public class Product {
+@Entity
+@Table(name = "product")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Product extends BaseTimeEntity {
 
-    private Long id;
-    private String sku;
-    private String name;
-    private BigDecimal price;
-    private Integer quantity;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private LocalDateTime deletedAt;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "product_id")
+	private Long id;
 
+	@Column(length = 60)
+	private String sku;
+
+	@Column(length = 125, nullable = false)
+	private String name;
+
+	@Column(nullable = false)
+	private BigDecimal price;
+
+	@Column(name = "product_views")
+	private int views;
+
+	@Column(nullable = false)
+	private Integer quantity;
+
+	@Column(name = "updated_at")
+	@UpdateTimestamp
+	private LocalDateTime updatedAt;
+
+	@OneToMany(
+			mappedBy = "product",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true)
+	private List<LikedProduct> ProductLiked = new ArrayList<>();
+
+	@Builder
+	public Product(String sku, String name, BigDecimal price, int views, Integer quantity) {
+		this.sku = sku;
+		this.name = name;
+		this.price = price;
+		this.views = views;
+		this.quantity = quantity;
+	}
+
+	public void increaseViews() {
+		this.views += 1;
+	}
 }
