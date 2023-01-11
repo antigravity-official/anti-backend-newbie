@@ -13,7 +13,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 @Component
 @RequiredArgsConstructor
 public class MemberArgumentResolver implements HandlerMethodArgumentResolver {
-    private static final String USER_ID = "X-USER_ID";
+    private static final String USER_ID = "X-USER-ID";
     private final AuthService authService;
 
     @Override
