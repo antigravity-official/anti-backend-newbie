@@ -1,12 +1,8 @@
 package antigravity.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -17,7 +13,6 @@ import java.util.Set;
 @Getter
 @Table(name = "product")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
 public class Product extends BaseEntity {
 
     @Id

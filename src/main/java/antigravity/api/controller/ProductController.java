@@ -1,6 +1,5 @@
 package antigravity.api.controller;
 
-
 import antigravity.api.service.ProductLikeService;
 import antigravity.api.service.ProductSearchService;
 import antigravity.payload.request.ProductLikedRequest;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController

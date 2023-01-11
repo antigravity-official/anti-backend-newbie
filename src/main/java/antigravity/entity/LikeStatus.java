@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum LikeStatus {
 
-    NONE("NONE",0),
+    NONE("NONE", 0),
     LIKE("LIKE", 1);
 
     private final String desc;
