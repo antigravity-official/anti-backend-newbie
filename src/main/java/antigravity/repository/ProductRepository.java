@@ -1,17 +1,19 @@
 package antigravity.repository;
 
-import antigravity.entity.Favorite;
+import antigravity.config.PageParam;
 import antigravity.entity.Product;
+import antigravity.payload.ProductResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.relational.core.sql.In;
-import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -19,6 +21,7 @@ import java.util.Map;
 public class ProductRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate2;
 
     // 예시 메서드입니다.
     public Product findById(Long id) {
@@ -43,9 +46,8 @@ public class ProductRepository {
 
     }
 
-    // 중복 코드 제거 필요
     /**
-     * 상품 좋아요 Repository
+     * 찜 상품 등록
      * @date 2023.01.09
      * @author 이상우
      * @param productId
@@ -104,4 +106,114 @@ public class ProductRepository {
 
         return result;
     }
+
+
+    /**
+     * 상품 조회
+     * @date 2023.01.12
+     * @author 이상우
+     * @param pageParam
+     * @param id
+     * @param liked
+     *        liked = false 찜하지 않은 제품 목록
+     *        liked = true 찜한 제품 목록
+     * @return List<ProductResponse>
+     * */
+    public List<ProductResponse> favoriteProductList(PageParam pageParam, Long id, boolean liked){
+        List<ProductResponse> productList;
+        String query;
+        try{
+            // 찜한 상품만 조회
+            if(liked){
+                query = "SELECT " +
+                        " po.id, po.sku, po.name, po.price, po.quantity, po.totalLiked, po.viewed, po.created_at, po.updated_at " +
+                        "FROM product po " +
+                        "Inner join favorite fv on (po.id = fv.product_id)" +
+                        "WHERE fv.user_id = :id " +
+                        "LIMIT :page, :size";
+            }else {
+                // 찜하지 않은 상품 조회
+                query = "SELECT " +
+                        " po.id, po.sku, po.name, po.price, po.quantity, po.totalLiked, po.viewed, po.created_at, po.updated_at " +
+                        "FROM product po " +
+                        "LEFT JOIN favorite fa on (po.id = fa.product_id) " +
+                        "WHERE fa.product_id is null " +
+                        "LIMIT :page, :size";
+            }
+
+
+            MapSqlParameterSource params = new MapSqlParameterSource("id", id)
+                                                .addValue("page", pageParam.getStartPage())
+                                                .addValue("size", pageParam.getSize());
+
+            productList = jdbcTemplate.query(query, params, (rs, rowNum) ->
+                    ProductResponse.builder()
+                            .id(rs.getLong("id"))
+                            .sku(rs.getString("sku"))
+                            .name(rs.getString("name"))
+                            .price(rs.getBigDecimal("price").intValue())
+                            .quantity(rs.getInt("quantity"))
+                            .likes(liked ? true : false)
+                            .totalLiked(rs.getInt("totalliked"))
+                            .viewed(rs.getInt("viewed"))
+                            .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+                            .updatedAt(rs.getTimestamp("updated_at").toLocalDateTime())
+                            .build());
+
+        }catch (EmptyResultDataAccessException error){
+            System.out.println("조회 오류 발생");
+            productList = null;
+        }
+        //like 파라미터가 있는 경우 찜한 상품만 조회
+
+        return productList;
+    }
+
+    /**
+     * 전체 상품 조회 및 찜 상품 true
+     * @date 2023.01.12
+     * @author 이상우
+     * @param param
+     * @param id
+     * @return List<ProductResponse>
+     * */
+    public List<ProductResponse> findAllProductList(PageParam param, Long id){
+        List<ProductResponse> productAllList;
+        try{
+
+            String query = "SELECT " +
+                    "po.id, po.sku, po.name, po.price, po.quantity, po.totalLiked, po.viewed, po.created_at, po.updated_at, " +
+                        "(SELECT EXISTS(select fv.user_id " +
+                        "FROM favorite fv " +
+                        "WHERE fv.user_id = :id " +
+                        "AND fv.product_id = po.id)) as liked " +
+                    "FROM product po " +
+                    "LIMIT :page, :size";
+
+            MapSqlParameterSource params = new MapSqlParameterSource("id", id)
+                    .addValue("page", param.getPage())
+                    .addValue("size", param.getSize());
+
+            productAllList = jdbcTemplate.query(query,params,(rs,rowNum) ->
+                    ProductResponse.builder()
+                            .id(rs.getLong("id"))
+                            .sku(rs.getString("sku"))
+                            .name(rs.getString("name"))
+                            .price(rs.getBigDecimal("price").intValue())
+                            .quantity(rs.getInt("quantity"))
+                            .likes(rs.getBoolean("liked"))
+                            .totalLiked(rs.getInt("totalliked"))
+                            .viewed(rs.getInt("viewed"))
+                            .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+                            .updatedAt(rs.getTimestamp("updated_at").toLocalDateTime())
+                            .build());
+
+        }catch (EmptyResultDataAccessException error){
+            System.out.println("조회 오류");
+            productAllList = null;
+        }
+
+        return productAllList;
+    }
+
 }

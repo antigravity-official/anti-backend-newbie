@@ -1,16 +1,16 @@
 package antigravity.controller;
 
-import antigravity.entity.Product;
+import antigravity.config.PageParam;
+import antigravity.payload.ProductResponse;
 import antigravity.repository.ProductRepository;
 import antigravity.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.gson.GsonProperties;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.util.ResourceBundle;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,7 +18,6 @@ import java.util.ResourceBundle;
 public class ProductController {
 
     private final ProductService productService;
-    private final ProductRepository productRepository;
 
     // TODO 찜 상품 등록 API
     @PostMapping("/liked/{productId}")
@@ -33,9 +32,12 @@ public class ProductController {
 
         // 찜 등록
         String value = productService.createFavorite(userId, productId);
-
         if(value.equals("400")){
             return ResponseEntity.status(400).body("이미 찜을 누른 상품 입니다.");
+        } else if (value.equals("401")) {
+            return ResponseEntity.status(400).body("회원 정보가 존재하지 않습니다.");
+        } else if (value.equals("402")) {
+            return ResponseEntity.status(400).body("상품정보가 존재 하지 않습니다.");
         } else if (value.equals("506")) {
             return ResponseEntity.status(400).body("등록 중 오류가 발생 되었습니다.");
         }
@@ -44,9 +46,30 @@ public class ProductController {
 
     }
 
+    // TODO 찜 상품 조회 API
+    @GetMapping( )
+    public ResponseEntity productView(@RequestParam(required = false) boolean liked,
+                            @ModelAttribute PageParam pageParam,
+                            HttpServletRequest request,
+                            @RequestHeader("X-USER-ID") Long userId){
 
+        List<ProductResponse> productResponseList = null;
 
+        // liked 파라미터가 없는 경우
+        if(request.getQueryString().indexOf("liked") != 0){
+            productResponseList = productService.findAllProductList(pageParam,userId);
 
+        }else if(!liked) {  //liked == false 이면 찜하지 않은 상품만 조회
+            productResponseList = productService.favoriteProductList(pageParam,userId,liked);
+        }else if(liked){
+            // liked가 참인 경우
+            productResponseList = productService.favoriteProductList(pageParam,userId, liked);
+        }
 
+        if(Objects.isNull(productResponseList)){
+            return ResponseEntity.status(400).body("상품 조회중 문제가 발생되었습니다.");
+        }
 
+        return ResponseEntity.status(200).body(productResponseList);
+    }
 }
