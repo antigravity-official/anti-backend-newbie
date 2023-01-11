@@ -27,4 +27,17 @@ public class ProductHits {
         this.productId = productId;
         this.hits = hits;
     }
+
+    public static ProductHits productHitsBuilder(Long productId){
+        return ProductHits.builder()
+                .productId(productId)
+                .hits(1)
+                .build();
+    }
+
+    public long increaseHits(long hits){
+        hits+=1;
+        this.hits = hits;
+        return hits;
+    }
 }
