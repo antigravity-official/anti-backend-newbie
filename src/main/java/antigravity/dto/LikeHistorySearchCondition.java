@@ -2,11 +2,13 @@ package antigravity.dto;
 
 import javax.validation.constraints.Digits;
 import lombok.Getter;
+import lombok.Setter;
 
 
 @Getter
+@Setter
 public class LikeHistorySearchCondition {
-    Boolean like;
+    Boolean liked;
     @Digits(integer = 10, fraction = 0)
     int size;
     @Digits(integer = 10, fraction = 0)
@@ -14,6 +16,6 @@ public class LikeHistorySearchCondition {
 
     protected LikeHistorySearchCondition() {
         size = 1;
-        page = 1;
+        page = 0;
     }
 }
