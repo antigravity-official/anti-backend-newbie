@@ -112,6 +112,7 @@ public class ProductRepository {
                             "FROM heart" +
                             "WHERE member_id = :memberId) h" +
                         "ON (p.id = h.product_id)" +
+                        "ORDER BY p.created_at desc" +
                         "LIMIT :startList, :listSize";
         MapSqlParameterSource params = new MapSqlParameterSource().addValue("memberId", memberId)
                                                                     .addValue("startList", startList)
@@ -152,6 +153,7 @@ public class ProductRepository {
                         "LEFT JOIN heart h" +
                         "ON (p.id = h.product_id)" +
                         "WHERE h.member_id = :memberId" +
+                        "ORDER BY p.created_at desc" +
                         "LIMIT :startList, :listSize";
 
         MapSqlParameterSource params = new MapSqlParameterSource().addValue("memberId", memberId)
@@ -192,6 +194,7 @@ public class ProductRepository {
                         "LEFT JOIN heart h" +
                         "ON (p.id = h.product_id)" +
                         "WHERE h.member_id != :memberId or h.member_id is null" +
+                        "ORDER BY p.created_at desc" +
                         "LIMIT :startList, :listSize";
 
         MapSqlParameterSource params = new MapSqlParameterSource().addValue("memberId", memberId)
