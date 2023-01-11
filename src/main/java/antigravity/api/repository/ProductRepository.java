@@ -17,19 +17,19 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.productLikes")
+    @Query("SELECT DISTINCT p FROM Product p LEFT JOIN p.productLikes pl ON pl.product = p")
     List<Product> findAllProduct(Pageable pageable);
 
-    @Query("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.productLikes " +
+    @Query("SELECT DISTINCT p FROM Product p LEFT JOIN p.productLikes pl ON pl.product = p " +
             "WHERE p.id = :productId")
     Optional<Product> findById(@Param("productId") Long productId);
 
-    @Query("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.productLikes " +
+    @Query("SELECT DISTINCT p FROM Product p LEFT JOIN p.productLikes pl ON pl.product = p " +
             "WHERE p NOT IN (SELECT pl.product FROM ProductLike pl WHERE pl.user = :user) ")
     List<Product> findProductsNotInProductLike(@Param("user") User user,
                                                Pageable pageable);
 
-    @Query("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.productLikes pl " +
+    @Query("SELECT DISTINCT p FROM Product p LEFT JOIN p.productLikes pl ON pl.product = p " +
             "WHERE pl.likeStatus = :likedStatus AND pl.user = :user")
     List<Product> findLikedProductWithUser(@Param("user") User user,
                                            @Param("likedStatus") LikeStatus likedStatus,

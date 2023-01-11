@@ -3,7 +3,9 @@ package antigravity.api.controller;
 import antigravity.api.service.ProductLikeService;
 import antigravity.api.service.ProductSearchService;
 import antigravity.payload.request.ProductLikedRequest;
+import antigravity.payload.request.ProductRequest;
 import antigravity.payload.request.ProductSearchRequest;
+import antigravity.payload.response.ProductBaseResponse;
 import antigravity.payload.response.ProductSearchResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +34,6 @@ public class ProductController {
     @PostMapping("/liked/{productId}")
     public ResponseEntity<HttpStatus> likedProductAdd(@RequestHeader(name = "X-USER-ID") Long userId,
                                                       @Valid ProductLikedRequest productLikedRequest) {
-        System.out.println(productLikedRequest.getProductId());
         productLikeService.addLikedProduct(userId, productLikedRequest.getProductId());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -52,4 +53,20 @@ public class ProductController {
                 productSearchService.searchLikedProduct(userId, productSearchRequest.getLiked(), pageable);
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
+
+    /**
+     * 추가 과제. 단일 상품 조회 API
+     *
+     * @param userId
+     * @param productId
+     * @return User or Product Not Found -> 400 Bad Request, else 201 Created
+     */
+    @GetMapping("/{productId}")
+    public ResponseEntity<ProductBaseResponse> unitProductAdd(@RequestHeader(name = "X-USER-ID") Long userId,
+                                                              @Valid ProductRequest productRequest) {
+        ProductBaseResponse productBaseResponse =
+                productSearchService.searchUnitProduct(productRequest.getProductId());
+        return new ResponseEntity<>(productBaseResponse, HttpStatus.OK);
+    }
+
 }

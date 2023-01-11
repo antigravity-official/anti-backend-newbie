@@ -3,6 +3,7 @@ package antigravity.entity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -36,6 +37,7 @@ public class Product extends BaseEntity {
     private int viewed;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @BatchSize(size = 200)
     private Set<ProductLike> productLikes = new HashSet<>();
 
     public void incrementView() {

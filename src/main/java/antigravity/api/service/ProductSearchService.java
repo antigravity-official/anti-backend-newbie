@@ -6,6 +6,9 @@ import antigravity.entity.LikeStatus;
 import antigravity.entity.Product;
 import antigravity.entity.ProductLike;
 import antigravity.entity.User;
+import antigravity.exception.CustomException;
+import antigravity.exception.ErrorCode;
+import antigravity.payload.response.ProductBaseResponse;
 import antigravity.payload.response.ProductSearchResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +39,16 @@ public class ProductSearchService {
         return Boolean.TRUE.equals(isLiked) ?
                 takeLikedProductWithUserId(findUser, true, pageable) :
                 takeNoLikedProductWithUserId(findUser, false, pageable);
+    }
+
+    @Transactional
+    public ProductBaseResponse searchUnitProduct(Long productId){
+        Product product = productRepository.findByForUpdateByProductId(productId)
+                .orElseThrow(() -> {
+                    throw new CustomException(ErrorCode.PRODUCT_NOT_FOUND);
+                });
+        product.incrementView();
+        return new ProductBaseResponse(product);
     }
 
     @Transactional(readOnly = true)

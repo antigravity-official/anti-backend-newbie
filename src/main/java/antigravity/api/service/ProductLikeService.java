@@ -35,22 +35,9 @@ public class ProductLikeService {
 
         ProductLike createProductLike = createProductLikeUser(findUser, findProduct);
         productLikeRepository.save(createProductLike);
-        updateProductViewWithPessimistic(productId);
-
-        productRepository.save(findProduct);
     }
 
-    @Transactional
-    public void updateProductViewWithPessimistic(Long productId){
-        // 앞단에서 이미 영속화가 되어 있기 때문에, 빠르게 가져올 수 있다.
-        Product product = productRepository.findByForUpdateByProductId(productId)
-                .orElseThrow(() -> {
-                    throw new CustomException(ErrorCode.PRODUCT_NOT_FOUND);
-                });
-        product.incrementView();
-    }
-
-    @Transactional
+    @Transactional(readOnly = true)
     public Product searchProductByProductId(Long productId) {
         return productRepository.findById(productId)
                 .orElseThrow(() -> {
