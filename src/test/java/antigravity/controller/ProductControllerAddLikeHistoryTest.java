@@ -9,8 +9,6 @@ import antigravity.repository.LikeHistoryRepository;
 import antigravity.repository.MemberRepository;
 import antigravity.repository.ProductRepository;
 import antigravity.repository.ProductViewCountRepository;
-import antigravity.service.LikeHistoryService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
@@ -28,24 +26,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 
+/**
+ * ProductController 에 있는 addLikeHistory 테스트
+ */
+
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class ProductControllerTest {
-    static Member alreadySaveMember;
-    static Product alreadySaveProduct;
+class ProductControllerAddLikeHistoryTest {
+    Member alreadySaveMember;
+    Product alreadySaveProduct;
     @Autowired
     MockMvc mockMvc;
-    @Autowired
-    ObjectMapper objectMapper;
     @Autowired
     LikeHistoryRepository likeHistoryRepository;
     @Autowired
     MemberRepository memberRepository;
     @Autowired
     ProductRepository productRepository;
-    @Autowired
-    LikeHistoryService likeHistoryService;
     @Autowired
     ProductViewCountRepository productViewCountRepository;
     @Autowired
