@@ -1,14 +1,8 @@
 package antigravity.domain.product;
 
-import java.util.List;
-import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ProductRepository {
-
-    Product save(Product product);
-
-    Optional<Product> findById(Long productId);
-
-    List<Product> findAll();
+public interface ProductRepository extends JpaRepository<Product, Long>,
+    ProductRepositoryCustom {
 
 }
