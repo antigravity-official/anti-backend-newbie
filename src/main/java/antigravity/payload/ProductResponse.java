@@ -6,10 +6,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @JsonInclude(Include.NON_NULL)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductResponse {
 
     private Long id; // 상품아이디
