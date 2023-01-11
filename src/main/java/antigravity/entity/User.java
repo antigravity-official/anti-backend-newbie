@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -25,10 +27,14 @@ public class User extends BaseTime {
     @Column(length = 45)
     private String name;
 
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Bookmark> bookmarks = new ArrayList<>();
+
     @Builder
-    public User(Long id, String email, String name) {
+    public User(Long id, String email, String name, List<Bookmark> bookmarks) {
         this.id = id;
         this.email = email;
         this.name = name;
+        this.bookmarks = bookmarks;
     }
 }
