@@ -1,0 +1,29 @@
+package antigravity.payload.response;
+
+import antigravity.entity.Product;
+import lombok.Getter;
+
+import java.math.BigDecimal;
+
+@Getter
+public class ProductBaseResponse {
+    private final Long id;
+    private final String sku;
+    private final String name;
+    private final BigDecimal price;
+    private final Integer quantity;
+    private final int viewed;
+    private final String createdAt;
+    private final String updatedAt;
+
+    public ProductBaseResponse(Product product) {
+        this.id = product.getId();
+        this.sku = product.getSku();
+        this.name = product.getName();
+        this.price = product.getPrice();
+        this.quantity = product.getQuantity();
+        this.viewed = product.getViewed();
+        this.createdAt = product.getCreatedAt().toString();
+        this.updatedAt = product.getUpdatedAt().toString();
+    }
+}

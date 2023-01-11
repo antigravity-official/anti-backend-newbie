@@ -18,12 +18,8 @@ public class H2Runner implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
 
         try (Connection connection = dataSource.getConnection()) {
-            System.out.println(connection);
             String URL = connection.getMetaData().getURL();
-            System.out.println(URL);
             String User = connection.getMetaData().getUserName();
-            System.out.println(User);
         }
     }
-
 }

@@ -1,24 +1,46 @@
 package antigravity.entity;
 
-import lombok.Builder;
+import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.ToString;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
-@Builder
-@ToString
+@Entity
 @Getter
-public class Product {
+@Table(name = "product")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Product extends BaseEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    private String sku;
-    private String name;
-    private BigDecimal price;
-    private Integer quantity;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private LocalDateTime deletedAt;
 
+    @Column(name = "sku", nullable = false)
+    private String sku;
+
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "price", nullable = false)
+    private BigDecimal price;
+
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity;
+
+    @Column(columnDefinition = "integer default 0", nullable = false)// 기본 값을 0, null 불가 처리, 동시성 고려
+    private int viewed;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @BatchSize(size = 200)
+    private Set<ProductLike> productLikes = new HashSet<>();
+
+    public void incrementView() {
+        this.viewed += 1;
+    }
 }
