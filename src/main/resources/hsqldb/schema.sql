@@ -11,6 +11,7 @@ CREATE TABLE `product`
     `created_at` datetime       NOT NULL DEFAULT current_timestamp(),
     `updated_at` datetime                DEFAULT current_timestamp(),
     `deleted_at` datetime                DEFAULT NULL,
+    `viewcount`  int                     DEFAULT 0,
     PRIMARY KEY (`id`)
 );
 
@@ -23,3 +24,13 @@ CREATE TABLE `user`
     `deleted_at` datetime              DEFAULT NULL,
     PRIMARY KEY (`id`)
 );
+
+CREATE TABLE `fav`
+(
+    `id`         bigint(20) NOT NULL AUTO_INCREMENT,
+    `userid`     bigint(20) NOT NULL,
+    `productid`  bigint(20) NOT NULL,
+    PRIMARY KEY (`id`)
+);
+
+
