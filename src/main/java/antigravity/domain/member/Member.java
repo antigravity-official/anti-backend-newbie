@@ -42,7 +42,7 @@ public class Member {
 
     public void like(Product product) {
         ProductLike productLike = new ProductLike(product, this);
-
         this.productLikes.add(productLike);
+        product.increaseViewCount();
     }
 }

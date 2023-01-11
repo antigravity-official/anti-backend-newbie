@@ -30,6 +30,7 @@ public class Product {
     private String name;
     private BigDecimal price;
     private Integer quantity;
+    private Integer viewCount;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
@@ -37,18 +38,11 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductLike> likes = new ArrayList<>();
 
-    public Product(String sku, String name, BigDecimal price, Integer quantity) {
-        this.sku = sku;
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
-    }
-
-    public long getViewCount() {
+    public int getLikedCount() {
         return likes.size();
     }
 
-    public void addProductLike(ProductLike productLike) {
-        likes.add(productLike);
+    public void increaseViewCount() {
+        this.viewCount++;
     }
 }
