@@ -3,6 +3,7 @@ package antigravity.product.web;
 import antigravity.product.service.ProductService;
 import antigravity.product.web.dto.DipProductResponse;
 import antigravity.product.web.dto.ProductResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,12 +17,13 @@ import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("/products/liked/")
+@RequiredArgsConstructor
 public class ProductController {
-    private ProductService productService;
+    private final ProductService productService;
 
     // TODO 찜 상품 등록 API
     @PostMapping("{productId}")
-    public ResponseEntity<DipProductResponse> postDipProduct(@RequestHeader("X-USER-ID") Integer userId, @PathVariable @NotNull(message="필수값입니다.") Long productId) {
+    public ResponseEntity<DipProductResponse> dipProduct(@RequestHeader("X-USER-ID") Integer userId, @PathVariable @NotNull(message="필수값입니다.") Long productId) {
         DipProductResponse dip = productService.createDip(userId, productId);
         return ResponseEntity.status(HttpStatus.CREATED).body(dip);
     }
