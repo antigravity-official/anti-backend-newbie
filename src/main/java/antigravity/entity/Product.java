@@ -10,9 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -45,8 +46,17 @@ public class Product extends BaseTimeEntity {
 	private Integer quantity;
 
 	@Column(name = "updated_at")
-	@LastModifiedDate
+	@UpdateTimestamp
 	private LocalDateTime updatedAt;
+
+	@Builder
+	public Product(String sku, String name, BigDecimal price, int views, Integer quantity) {
+		this.sku = sku;
+		this.name = name;
+		this.price = price;
+		this.views = views;
+		this.quantity = quantity;
+	}
 
 	public void increaseViews() {
 		this.views += 1;
