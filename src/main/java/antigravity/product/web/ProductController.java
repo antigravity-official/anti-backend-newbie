@@ -1,5 +1,6 @@
 package antigravity.product.web;
 
+import antigravity.global.UserAnnotation;
 import antigravity.product.service.LikeProductService;
 import antigravity.product.web.dto.LikeProductResponse;
 import antigravity.product.web.dto.ProductResponse;
@@ -24,7 +25,7 @@ import javax.validation.constraints.NotNull;
 public class ProductController {
     private final ProductPresenter productPresenter;
     private final LikeProductService likeProductService;
-
+    @UserAnnotation
     @ApiOperation(value = "Registration Like Product", notes = "찜 상품 등록")
     @PostMapping("{productId}")
     public ResponseEntity<LikeProductResponse> dipProduct(@RequestHeader("X-USER-ID") Integer userId, @PathVariable @NotNull(message="필수값입니다.") Long productId) {
@@ -33,6 +34,7 @@ public class ProductController {
     }
 
     // primitive type은 required = false 불가능
+    @UserAnnotation
     @ApiOperation(value = "Inquiry Like Product", notes = "찜 상품 조회")
     @Validated
     @GetMapping("")
