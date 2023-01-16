@@ -16,6 +16,8 @@ public class Product {
     private String sku;
     private String name;
     private BigDecimal price;
+    private Long viewed;
+    private Long totalLiked;
     private Integer quantity;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

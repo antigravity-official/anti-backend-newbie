@@ -8,6 +8,7 @@ CREATE TABLE `product`
     `name`       varchar(125)   NOT NULL COMMENT '상품명',
     `price`      decimal(12, 2) NOT NULL COMMENT '가격',
     `quantity`   int            NOT NULL COMMENT '재고량',
+    `viewed`     bigInt(20)     NOT NULL DEFAULT 0,
     `created_at` datetime       NOT NULL DEFAULT current_timestamp(),
     `updated_at` datetime                DEFAULT current_timestamp(),
     `deleted_at` datetime                DEFAULT NULL,
@@ -23,3 +24,13 @@ CREATE TABLE `user`
     `deleted_at` datetime              DEFAULT NULL,
     PRIMARY KEY (`id`)
 );
+
+
+CREATE TABLE `like`
+(
+    `user_id`   bigint(20) NOT NULL,
+    `item_id`   bigint(20) NOT NULL,
+    FOREIGN KEY (`user_id`) REFERENCES  `user`(`id`),
+    FOREIGN KEY (`item_id`) REFERENCES  `product`(`id`)
+);
+
