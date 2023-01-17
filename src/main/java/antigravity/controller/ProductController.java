@@ -29,7 +29,6 @@ public class ProductController {
     public ResponseEntity wantProduct(@PathVariable String productId,
                                       @RequestHeader(value = "X-USER-ID") String userNo) {
         try {
-
             //혹시 모를 빈칸 처리
             if (userNo.equals("")) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유저 정보가 유효하지 않음.");
@@ -72,7 +71,7 @@ public class ProductController {
                                         @RequestParam(defaultValue = "1") Integer size,
                                         @RequestParam(required = false) String liked) {
 
-        List<Product> result = null;
+        List<Product> result;
         try {
             if (liked.equals("ture")) {
                 result = productRepository.selectLikeProduct(userNo, page, size);
