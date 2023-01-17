@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @SpringBootTest
 @Transactional
 public class ProductRepositoryTests {
@@ -14,11 +16,10 @@ public class ProductRepositoryTests {
     @Autowired
     private ProductRepository productRepository;
 
-//    @Test
-//    public void findByIdTest() {
-//        Long id = 1L;
-//        Product product = productRepository.findById(id);
-//        Assertions.assertNotNull(product);
-//    }
-
+    @Test
+    public void findByIdTest() {
+        Long id = 1L;
+        Optional<Product> product = productRepository.findById(id);
+        Assertions.assertNotNull(product);
+    }
 }
