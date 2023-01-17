@@ -4,10 +4,12 @@ import antigravity.domain.Product;
 import antigravity.domain.ProductLike;
 import antigravity.domain.User;
 
+import java.util.Optional;
+
 public interface ProductLikeRepository {
 
-    Long save(ProductLike productLike);
-    ProductLike existsByProductAndUser(Product product, User user);
+    ProductLike save(ProductLike productLike);
+    Optional<ProductLike> findByProductAndUser(Product product, User user);
 
 
 }

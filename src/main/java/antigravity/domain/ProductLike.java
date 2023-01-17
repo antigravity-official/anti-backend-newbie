@@ -23,6 +23,16 @@ public class ProductLike {
     private User user;
     private LocalDateTime deletedAt;
 
+    public void recoverLiked() {
+        if (this.deletedAt != null) {
+            throw new RuntimeException();
+        }
+        this.deletedAt = null;
+    }
+    public static ProductLike of(Product product, User user) {
+        return new ProductLike(null, product, user, null);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
