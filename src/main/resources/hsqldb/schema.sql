@@ -1,5 +1,7 @@
 DROP TABLE `product` IF EXISTS;
 DROP TABLE `user` IF EXISTS;
+DROP TABLE `liked` IF EXISTS;
+DROP TABLE `viewed` IF EXISTS;
 
 CREATE TABLE `product`
 (
@@ -22,4 +24,22 @@ CREATE TABLE `user`
     `created_at` datetime     NOT NULL DEFAULT current_timestamp(),
     `deleted_at` datetime              DEFAULT NULL,
     PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `liked`
+(
+    `id`    bigint(20) NOT NULL AUTO_INCREMENT,
+    `user_id`   bigint(20) NOT NULL AUTO_INCREMENT,
+    `product_id` bigint(20) NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY(`user_id`) REFERENCES `user` (`id`),
+    FOREIGN KEY(`product_id`) REFERENCES `product`(`product_id`)
+);
+
+CREATE TABLE `viewed`
+(
+    `id`    bigint(20) NOT NULL AUTO_INCREMENT,
+    `count_viewed`  bigint(20),
+    PRIMARY KEY (`id`),
+    FOREIGN KEY(`id`) REFERENCES `product` ('id')
 );

@@ -4,23 +4,25 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import java.math.BigDecimal;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @Builder
 @ToString
 @Getter
 @Entity
-public class Product {
+public class User {
 
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String sku;
+    private String email;
     private String name;
-    private BigDecimal price;
-    private Integer quantity;
+
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+
+    @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
 }
