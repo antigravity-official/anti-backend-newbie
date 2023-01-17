@@ -2,7 +2,7 @@ package antigravity.controller.error;
 
 import antigravity.constant.ErrorCode;
 import antigravity.exception.GeneralException;
-import antigravity.payload.ProductErrorResponse;
+import antigravity.payload.APIErrorResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +50,7 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
     private ResponseEntity<Object> callSuperInternalExceptionHandler(Exception e, ErrorCode errorCode, HttpHeaders headers, HttpStatus status, WebRequest request) {
         return super.handleExceptionInternal(
                 e,
-                ProductErrorResponse.of(false, errorCode.getCode(), errorCode.getMessage(e)),
+                APIErrorResponse.of(false, errorCode.getCode(), errorCode.getMessage(e)),
                 headers,
                 status,
                 request
