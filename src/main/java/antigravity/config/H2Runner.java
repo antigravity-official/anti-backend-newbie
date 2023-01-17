@@ -1,12 +1,14 @@
 package antigravity.config;
 
-import lombok.RequiredArgsConstructor;
+import java.sql.Connection;
+
+import javax.sql.DataSource;
+
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Component

@@ -9,10 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Transactional
-public class ProductRepositoryTests {
+public class ProductRepositoryImplTests {
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductRepositoryImpl productRepository;
 
     @Test
     public void findByIdTest() {
