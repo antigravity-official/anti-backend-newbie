@@ -2,6 +2,7 @@ package antigravity.entity;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
@@ -17,7 +18,6 @@ public class Product {
     private String name;
     private BigDecimal price;
     private Long viewed;
-    private Long totalLiked;
     private Integer quantity;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

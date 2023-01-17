@@ -4,14 +4,13 @@ import antigravity.entity.Product;
 import antigravity.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -28,32 +27,32 @@ public class ProductController {
 
     // TODO 찜 상품 등록 API
     @PostMapping("/products/liked/{productId}")
-    public ResponseEntity wantProduct(@PathVariable String productId, @RequestBody Map<String,String> map) {
+    public ResponseEntity wantProduct(@PathVariable String productId,
+                                      @RequestHeader(value = "X-USER-ID") String userNo) {
         try {
-            String userNo = map.get("userNo");
-            
+
             //혹시 모를 빈칸 처리
-            if(userNo.equals("")) {
+            if (userNo.equals("")) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유저 정보가 유효하지 않음.");
-            }
-            else {
+            } else {
 
                 //유저 유효성
-                if(productRepository.findUser(userNo) == 0) {
+                if (productRepository.findUser(userNo) == 0) {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유저 정보가 유효하지 않음");
                 }
-                
+
                 //상품 유효성
-                if(productRepository.findById(productId) == 0) {
+                if (productRepository.findById(productId) == 0) {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("상품 정보가 유효하지 않음");
                 }
 
                 // 찜하기 조회
-                if(productRepository.selectLike(userNo,productId) != 0) {
+                if (productRepository.likeCheckSum(userNo, productId) != 0) {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 찜 목록에 있습니다.");
                 }
 
-                if(productRepository.insertLikeProduct(userNo,productId) > 0) {
+                //혹시 모를 트랜젝션 에러
+                if (productRepository.insertLikeProduct(userNo, productId) > 0) {
                     productRepository.updateView(productId);
                 }
 
@@ -65,10 +64,29 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유저 정보가 유효하지 않음");
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("userNo = " + map.get("userNo") + "\nproductId = " + productId);
+        return ResponseEntity.status(HttpStatus.CREATED).body("userNo = " + userNo + "\nproductId = " + productId);
     }
 
     // TODO 찜 상품 조회 API
-    @GetMapping("/products?liked?liked={boolean}&page={integer}&size={integer}")
-    public ResponseEntity selectLikeList(@)
+    @GetMapping("/products")
+    public List<Product> selectLikeList(@RequestHeader(value = "X-USER-ID") String userNo,
+                                        @RequestParam(defaultValue = "1") Integer page,
+                                        @RequestParam(defaultValue = "10") Integer size,
+                                        @RequestParam(required = false) Boolean liked) {
+
+        List<Product> result = null;
+        try {
+            if (liked) {
+                result = productRepository.selectLikeProduct(userNo, page, size);
+
+            } else {
+                result = productRepository.selectDontLikeProduct(userNo, page, size);
+            }
+            log.info("result = {}", result);
+
+        } catch (NullPointerException e) {
+
+        }
+        return result;
+    }
 }
