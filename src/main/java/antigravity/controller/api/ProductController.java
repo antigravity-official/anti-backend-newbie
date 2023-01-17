@@ -1,4 +1,4 @@
-package antigravity.controller;
+package antigravity.controller.api;
 
 public class ProductController {
 
