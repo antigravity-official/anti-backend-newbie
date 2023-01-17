@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -56,7 +55,6 @@ public class ProductController {
                     productRepository.updateView(productId);
                 }
 
-                log.info("{}", productRepository.testSelectLike());
             }
 
         } catch (NullPointerException | HttpMessageNotReadableException e) {
@@ -69,24 +67,22 @@ public class ProductController {
 
     // TODO 찜 상품 조회 API
     @GetMapping("/products")
-    public List<Product> selectLikeList(@RequestHeader(value = "X-USER-ID") String userNo,
+    public ResponseEntity selectLikeList(@RequestHeader(value = "X-USER-ID") String userNo,
                                         @RequestParam(defaultValue = "1") Integer page,
-                                        @RequestParam(defaultValue = "10") Integer size,
-                                        @RequestParam(required = false) Boolean liked) {
+                                        @RequestParam(defaultValue = "1") Integer size,
+                                        @RequestParam(required = false) String liked) {
 
         List<Product> result = null;
         try {
-            if (liked) {
+            if (liked.equals("ture")) {
                 result = productRepository.selectLikeProduct(userNo, page, size);
-
             } else {
                 result = productRepository.selectDontLikeProduct(userNo, page, size);
             }
-            log.info("result = {}", result);
 
         } catch (NullPointerException e) {
-
+            result = productRepository.selectAllProduct(userNo, page, size);
         }
-        return result;
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }

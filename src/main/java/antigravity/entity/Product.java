@@ -17,10 +17,11 @@ public class Product {
     private String sku;
     private String name;
     private BigDecimal price;
-    private Long viewed;
     private Integer quantity;
+    private Long viewed;
+    private boolean liked;
+    private Long totalLiked;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private LocalDateTime deletedAt;
 
 }
