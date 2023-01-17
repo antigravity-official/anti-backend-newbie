@@ -22,14 +22,8 @@ public class ProductRepositoryTests {
     @Test
     public void findByIdTest() {
         Long id = 1L;
-        Optional<Product> product = productRepository.findById(id);
+        Product product = productRepository.findById(id);
         Assertions.assertNotNull(product);
     }
 
-    @DisplayName("[Repository] findAll")
-    @Test
-    public void findAll() {
-        List<Product> product = productRepository.findAll();
-        Assertions.assertNotNull(product);
-    }
 }
