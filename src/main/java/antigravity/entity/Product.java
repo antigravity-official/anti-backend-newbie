@@ -7,9 +7,7 @@ import lombok.ToString;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Builder
-@ToString
-@Getter
+
 public class Product {
 
     private Long id;
