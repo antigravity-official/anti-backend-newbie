@@ -43,4 +43,39 @@ class ErrorCodeTest {
                 arguments(ErrorCode.DATA_ACCESS_ERROR, "Data access error - This is test message.")
         );
     }
+
+    @ParameterizedTest(name = "[{index}] \"{0}\" =====> \"{1}\"")
+    @MethodSource
+    @DisplayName("예러 메시지를 받으면, 해당 에러 메시지로 출력")
+    void givenMessage_whenGettingMessage_thenReturnsmessage(String input, String expected) {
+        // Given
+
+
+        // When
+        String actual = ErrorCode.INTERNAL_ERROR.getMessage(input);
+
+        // Then
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    static Stream<Arguments> givenMessage_whenGettingMessage_thenReturnsmessage() {
+        return Stream.of(
+                arguments(null, ErrorCode.INTERNAL_ERROR.getMessage()),
+                arguments("", ErrorCode.INTERNAL_ERROR.getMessage()),
+                arguments("    ", ErrorCode.INTERNAL_ERROR.getMessage()),
+                arguments("This is test message.", "This is test message.")
+        );
+    }
+
+    @DisplayName("toString() 호출 포맷")
+    @Test
+    void givenErrorCode_whenToString_thenReturnsSimplifiedToString() {
+        // Given
+
+        // When
+        String result = ErrorCode.INTERNAL_ERROR.toString();
+
+        // Then
+        assertThat(result).isEqualTo("INTERNAL_ERROR (20000)");
+    }
 }
