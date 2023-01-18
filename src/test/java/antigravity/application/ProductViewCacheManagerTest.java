@@ -7,11 +7,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@DirtiesContext
 class ProductViewCacheManagerTest {
 
     @Autowired
@@ -21,7 +23,7 @@ class ProductViewCacheManagerTest {
     @Test
     @DisplayName("존재하는 상품이라면 viewCount를 반환한다.")
     void getViewCountTest_success() {
-        productId = 1L;
+        productId = 2L;
         Integer viewCount = productViewCacheManager.getViewCount(productId);
         assertThat(viewCount).isZero();
     }

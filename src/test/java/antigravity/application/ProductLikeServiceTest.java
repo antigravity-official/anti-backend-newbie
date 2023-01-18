@@ -10,11 +10,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import static org.assertj.core.api.Assertions.*;
 
 
 @SpringBootTest
+@DirtiesContext
 class ProductLikeServiceTest {
 
     @Autowired
@@ -31,7 +33,7 @@ class ProductLikeServiceTest {
     void like_success() {
         // given
         userId = 2L;
-        productId = 2L;
+        productId = 10L;
 
         // when
         ProductLikeResponse productRegisterResponse = productLikeService.like(userId, productId);
@@ -46,7 +48,7 @@ class ProductLikeServiceTest {
     void likeTest_DuplicatedLiked_fail() {
         // given
         userId = 2L;
-        productId = 1L;
+        productId = 5L;
         productLikeService.like(userId, productId);
 
         //when & then
@@ -62,7 +64,7 @@ class ProductLikeServiceTest {
     void likeTest_deleted_user_fail() {
         // given
         userId = 1L;
-        productId = 1L;
+        productId = 9L;
         Long notRegisteredUserId = 999L;
 
         //when & then
