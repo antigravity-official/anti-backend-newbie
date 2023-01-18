@@ -1,5 +1,6 @@
-package antigravity.application;
+package antigravity.application.impl;
 
+import antigravity.application.ProductLikeService;
 import antigravity.application.dto.ProductLikeResponse;
 import antigravity.common.exception.NotFoundProductException;
 import antigravity.common.exception.NotFoundUserException;

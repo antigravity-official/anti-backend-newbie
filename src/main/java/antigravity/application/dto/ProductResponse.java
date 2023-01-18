@@ -1,5 +1,6 @@
 package antigravity.application.dto;
 
+import antigravity.domain.Product;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -20,4 +21,21 @@ public class ProductResponse {
     private final Integer viewed; // 상품 조회 수
     private final LocalDateTime createdAt; // 상품 생성일시
     private final LocalDateTime updatedAt; // 상품 수정일시
+
+    public static ProductResponse of(final Product product, final Boolean liked,
+                                     final Integer totalLiked, final Integer viewed) {
+        return new ProductResponse(
+                product.getId(),
+                product.getSku(),
+                product.getName(),
+                product.getPrice(),
+                product.getQuantity(),
+                liked,
+                totalLiked,
+                viewed,
+                product.getCreatedAt(),
+                product.getUpdatedAt()
+        );
+
+    }
 }
