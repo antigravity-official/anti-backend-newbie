@@ -4,11 +4,30 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
-@Builder
-@ToString
-@Getter
+import javax.persistence.*;
+
+//@Builder
+//@ToString
+//@Getter
+@Entity
 public class ProductInfo {
 
+
+    /********************************* PK 필드 *********************************/
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+
+
+    /********************************* PK가 아닌 필드 *********************************/
+    @Column(nullable = false)
     private Integer totalLiked; // 상품이 받은 모든 찜 개수
-    private Integer viewed; // 상품 조회 수
+
+    @Column(nullable = false)
+    private Integer viewed; // 상품 조회 수닌
+
+
+
+    /********************************* 연관관계 매핑 *********************************/
 }

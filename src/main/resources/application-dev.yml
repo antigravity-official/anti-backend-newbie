@@ -23,3 +23,10 @@ spring:
       schema-locations: classpath*:/${database}/schema.sql
       data-locations: classpath*:/${database}/data.sql
       platform: h2
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true

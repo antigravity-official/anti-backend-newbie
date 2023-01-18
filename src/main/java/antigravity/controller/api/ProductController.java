@@ -22,9 +22,10 @@ public class ProductController {
     // TODO: 찜 상품 등록 API
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/liked/{productId}")
-    public APIDataResponse<String> createEvent(@PathVariable Long productId) {
-        boolean result = productService.putInBasket(productId);
+    public APIDataResponse<String> createEvent(@PathVariable("productId") Long productId) {
+        boolean result = productService.insertProductInBasket(productId);
         return APIDataResponse.of(Boolean.toString(result));
+        //return true;
     }
 
 

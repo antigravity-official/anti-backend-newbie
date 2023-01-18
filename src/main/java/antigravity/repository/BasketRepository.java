@@ -1,11 +1,10 @@
 package antigravity.repository;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.stereotype.Repository;
+import antigravity.entity.Basket;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@RequiredArgsConstructor
-@Repository
-public class BasketRepository {
-    private final NamedParameterJdbcTemplate jdbcTemplate;
+
+
+public interface BasketRepository extends JpaRepository<Basket, Long> {
+
 }

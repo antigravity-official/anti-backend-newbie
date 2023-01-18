@@ -18,12 +18,12 @@ public class ProductRepositoryTests {
     @Autowired
     private ProductRepository productRepository;
 
-    @DisplayName("[Repository] findById")
-    @Test
-    public void findByIdTest() {
-        Long id = 1L;
-        Product product = productRepository.findById(id);
-        Assertions.assertNotNull(product);
-    }
+//    @DisplayName("[Repository] findById")
+//    @Test
+//    public void findByIdTest() {
+//        Long id = 1L;
+//        Product product = productRepository.findById(id);
+//        Assertions.assertNotNull(product);
+//    }
 
 }

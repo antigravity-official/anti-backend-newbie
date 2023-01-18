@@ -1,13 +1,16 @@
 package antigravity.repository;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.stereotype.Repository;
 
-@RequiredArgsConstructor
-@Repository
-public class ProductInfoRepository {
+import antigravity.entity.ProductInfo;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-    private final NamedParameterJdbcTemplate jdbcTemplate;
+
+public interface ProductInfoRepository extends JpaRepository<ProductInfo, Long> {
+
+
+
+
 
 }
+
+

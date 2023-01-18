@@ -3,11 +3,15 @@ package antigravity.service;
 import antigravity.constant.ErrorCode;
 import antigravity.exception.GeneralException;
 import antigravity.payload.ProductResponse;
+import antigravity.repository.BasketRepository;
+import antigravity.repository.ProductInfoRepository;
 import antigravity.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 
 
@@ -16,14 +20,18 @@ import java.time.LocalDate;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductInfoRepository productInfoRepository;
+    private final BasketRepository basketRepository;
 
-    public boolean putInBasket(Long productId) {
-        try {
-            return productRepository.insertProduct(productId);
-        }
-        catch (Exception e) {
-            throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
-        }
+    @Transactional
+    public Boolean insertProductInBasket(Long productId) {
+
+//        User user = userRepository.findByApiId(apiId)
+//                .orElseThrow(() ->
+//                        new EntityNotFoundException("User not found"));
+        return true;
+
+
     }
 
 }
