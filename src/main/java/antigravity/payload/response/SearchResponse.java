@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @NoArgsConstructor
@@ -20,20 +20,21 @@ public class SearchResponse {
     private Boolean liked; // 필요한 경우 찜한 상품임을 표시 (찜 여부)
     private Integer totalLiked; // 상품이 받은 모든 찜 개수
     private Integer viewed; // 상품 조회 수
-    private LocalDateTime createdAt; // 상품 생성일시
-    private LocalDateTime updatedAt; // 상품 수정일시
+    private String createdAt; // 상품 생성일시
+    private String updatedAt; // 상품 수정일시
 
     @Builder
     public SearchResponse(Product product, Boolean liked) {
         this.id = product.getId();
         this.sku = product.getSku();
         this.name = product.getName();
-        this.price = product.getPrice();
+        this.price = product.getPrice().setScale(0);
         this.quantity = product.getQuantity();
         this.liked = liked;
         this.totalLiked = product.getTotalLiked();
         this.viewed = product.getViewed();
-        this.createdAt = product.getCreatedAt();
-        this.updatedAt = product.getUpdatedAt();
+        this.createdAt = product.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+        this.updatedAt = product.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
     }
+
 }
