@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class RedisService {
+public class ProductCountingService {
 	private final RedisTemplate<String, String> redisTemplate;
 
 	public Long increaseViewCount(Long productId, Long userId) {
@@ -41,7 +41,7 @@ public class RedisService {
 
 	public Long findProductViewCount(Long productId) {
 		ValueOperations<String, String> operations = redisTemplate.opsForValue();
-		String key = "productView::" + productId;
+		String key = "productViewCount::" + productId;
 
 		if (operations.get(key) == null) {
 			return 0L;
@@ -56,14 +56,17 @@ public class RedisService {
 		String key = "productLike::" + productId;
 		ValueOperations<String, String> operations = redisTemplate.opsForValue();
 
-		if (findLikeCount(productId) == 0L) {
+		if (findProductLikeCount(productId) == 0L) {
+			Long initialValue = 1L;
 			operations.set(key, "1");
+
+			return initialValue;
 		}
 
 		return operations.increment(key);
 	}
 
-	public Long findLikeCount(Long productId) {
+	public Long findProductLikeCount(Long productId) {
 		ValueOperations<String, String> operations = redisTemplate.opsForValue();
 		String key = "productLike::" + productId;
 

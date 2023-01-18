@@ -1,4 +1,4 @@
-package antigravity.payload;
+package antigravity.controller.dto;
 
 import java.math.BigDecimal;
 
@@ -13,6 +13,4 @@ public class CartResponse {
 	private String sku; // 상품 고유값
 	private String name;
 	private BigDecimal price;
-	private Long totalLike;
-
 }
