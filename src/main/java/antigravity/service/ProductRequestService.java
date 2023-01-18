@@ -10,7 +10,6 @@ import antigravity.repository.BasketRepository;
 import antigravity.repository.ProductInfoRepository;
 import antigravity.repository.ProductRepository;
 import antigravity.repository.UserRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +27,8 @@ public class ProductRequestService {
     private final BasketRepository basketRepository;
     private final UserRepository userRepository;
 
+    // TODO : user 별로 api 받기
+    // TODO : page, size 처리
     public List<ProductResponse> getProducts(
             Boolean liked,
             Integer page,

@@ -1,7 +1,6 @@
 package antigravity.entity;
 
 import lombok.*;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 

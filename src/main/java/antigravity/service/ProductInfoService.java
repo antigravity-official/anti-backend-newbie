@@ -1,12 +1,10 @@
 package antigravity.service;
 
 import antigravity.constant.ErrorCode;
-import antigravity.entity.Basket;
 import antigravity.entity.ProductInfo;
 import antigravity.exception.GeneralException;
 import antigravity.repository.ProductInfoRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

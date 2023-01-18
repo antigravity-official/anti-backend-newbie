@@ -1,6 +1,5 @@
 package antigravity.entity;
 
-import antigravity.repository.UserRepository;
 import lombok.*;
 
 import javax.persistence.*;
