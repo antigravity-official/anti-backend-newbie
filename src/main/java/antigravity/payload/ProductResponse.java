@@ -1,8 +1,13 @@
 package antigravity.payload;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 public class ProductResponse {
 
     private Long id; // 상품아이디
@@ -15,4 +20,7 @@ public class ProductResponse {
     private Integer viewed; // 상품 조회 수
     private LocalDateTime createdAt; // 상품 생성일시
     private LocalDateTime updatedAt; // 상품 수정일시
+
+
+
 }

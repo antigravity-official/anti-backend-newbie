@@ -1,0 +1,21 @@
+antigravity/repository/ProductRepository.java
+ antigravity.repository.ProductRepository
+antigravity/config/H2Runner.java
+ antigravity.config.H2Runner
+antigravity/entity/Wanted.java
+ antigravity.entity.Wanted
+ antigravity.entity.Wanted$WantedBuilder
+antigravity/controller/ProductController.java
+ antigravity.controller.ProductController
+antigravity/entity/User.java
+ antigravity.entity.User
+ antigravity.entity.User$UserBuilder
+antigravity/payload/ProductResponse.java
+ antigravity.payload.ProductResponse
+antigravity/entity/Product.java
+ antigravity.entity.Product
+ antigravity.entity.Product$ProductBuilder
+antigravity/AntigravityApplication.java
+ antigravity.AntigravityApplication
+antigravity/Service/ProductService.java
+ antigravity.Service.ProductService

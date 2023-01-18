@@ -17,6 +17,8 @@ public class Product {
     private String name;
     private BigDecimal price;
     private Integer quantity;
+    private Integer viewed;
+    private Boolean Liked;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
