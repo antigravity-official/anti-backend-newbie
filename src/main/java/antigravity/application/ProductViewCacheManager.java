@@ -2,5 +2,7 @@ package antigravity.application;
 
 public interface ProductViewCacheManager {
 
-    void incrementProductViewCount(Long productId);
+    Integer getViewCount(Long productId);
+    Long incrementProductViewCount(Long productId);
+
 }

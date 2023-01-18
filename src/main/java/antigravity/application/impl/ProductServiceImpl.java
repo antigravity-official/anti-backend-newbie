@@ -1,6 +1,7 @@
 package antigravity.application.impl;
 
 import antigravity.application.ProductService;
+import antigravity.application.ProductViewCacheManager;
 import antigravity.application.dto.ProductResponse;
 import antigravity.common.exception.NotFoundUserException;
 import antigravity.domain.Product;
@@ -26,6 +27,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ProductLikeRepository productLikeRepository;
     private final UserRepository userRepository;
+    private final ProductViewCacheManager productViewCacheManager;
 
 
     @Override
@@ -53,22 +55,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private Page<ProductResponse> productToPageResponseWithLikeCondition(Page<Product> products, Boolean likeCondition) {
-        // mock viewCount
-        final Integer viewCount = 1;
 
         return products.map(p -> {
             final Integer totalLiked = productLikeRepository.countByProduct(p);
+            final Integer viewCount = productViewCacheManager.getViewCount(p.getId());
             return ProductResponse.of(p, likeCondition, totalLiked, viewCount);
         });
     }
 
     private Page<ProductResponse> anyProductToResponse(User user, Page<Product> products) {
-        // mock viewCount
-        final Integer viewCount = 1;
 
         Set<ProductLike> productLikes = productLikeRepository.findProductLikeByUserAndProducts(user, products.getContent());
         return products.map(p -> {
             final Integer totalLiked = productLikeRepository.countByProduct(p);
+            final Integer viewCount = productViewCacheManager.getViewCount(p.getId());
             return ProductResponse.of(p, productLikes.contains(p), totalLiked, viewCount);
         });
 

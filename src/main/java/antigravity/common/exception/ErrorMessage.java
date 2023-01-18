@@ -11,7 +11,8 @@ public enum ErrorMessage {
     NOT_FOUND_USER("등록된 회원이 아닙니다."),
     NOT_FOUND_PRODUCT("등록된 상품이 아닙니다."),
     REQUIRED_LOGIN("유저 정보가 필요합니다."),
-    INVALID_USER_INFO("잘못된 유저 정보입니다.");
+    INVALID_USER_INFO("잘못된 유저 정보입니다."),
+    INVALID_QUERY_PARAM("잘못된 요청입니다.");
 
 
     private final String message;
