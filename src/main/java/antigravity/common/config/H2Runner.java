@@ -1,4 +1,4 @@
-package antigravity.config;
+package antigravity.common.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;

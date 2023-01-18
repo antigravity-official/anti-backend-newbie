@@ -1,5 +1,6 @@
 package antigravity.domain;
 
+import antigravity.common.exception.DuplicatedLikeException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,6 +23,17 @@ public class ProductLike {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
     private LocalDateTime deletedAt;
+
+    public void recoverLiked() {
+        if (this.deletedAt == null) {
+            throw new DuplicatedLikeException();
+        }
+        this.deletedAt = null;
+    }
+
+    public static ProductLike of(Product product, User user) {
+        return new ProductLike(null, product, user, null);
+    }
 
     @Override
     public boolean equals(Object o) {
