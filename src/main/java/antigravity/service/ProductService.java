@@ -2,7 +2,10 @@ package antigravity.service;
 
 import antigravity.constant.ErrorCode;
 import antigravity.entity.Basket;
+import antigravity.entity.Product;
+import antigravity.entity.ProductInfo;
 import antigravity.exception.GeneralException;
+import antigravity.payload.DataConverter;
 import antigravity.payload.ProductResponse;
 import antigravity.repository.BasketRepository;
 import antigravity.repository.ProductInfoRepository;
@@ -15,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Stream;
 
 
 @Service
@@ -37,7 +43,6 @@ public class ProductService {
 
         // TODO : user 고정 나중에 수정하기
         try {
-            System.out.println("test");
             Basket basket = Basket.choiceProduct(true,
                     productRepository.findById(productId).get(),
                     userRepository.findById(1L).get()
@@ -50,7 +55,5 @@ public class ProductService {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
 
-
     }
-
 }

@@ -1,17 +1,16 @@
 package antigravity.entity;
 
 import antigravity.repository.UserRepository;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Builder
 //@ToString
-//@Getter
+@Getter
 @Entity
-
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(uniqueConstraints = {
         @UniqueConstraint(name = "USER_ID_UNIQUE", columnNames = {"user_id"})
 })

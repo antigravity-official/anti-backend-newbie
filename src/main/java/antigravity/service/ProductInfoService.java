@@ -18,7 +18,6 @@ public class ProductInfoService {
 
     private final ProductInfoRepository productInfoRepository;
 
-    //TODO: 찜 한 상품일 경우 bad request
     @Transactional
     public Boolean changeViewProduct(Long productId) {
         try {

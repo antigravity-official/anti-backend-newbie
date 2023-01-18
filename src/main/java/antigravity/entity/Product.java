@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 //
-//@Builder
-//@ToString
-//@Getter
+@Builder
+@ToString
+@Getter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
