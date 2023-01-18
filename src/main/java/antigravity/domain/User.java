@@ -20,6 +20,7 @@ public class User extends BaseTimeEntity {
     private String email;
     private String name;
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -32,3 +32,9 @@ INSERT INTO `users` (`email`, `name`)
 VALUES ('user2@antigravity.kr', '회원2'),
        ('user3@antigravity.kr', '회원3'),
        ('user4@antigravity.kr', '회원4');
+
+
+INSERT INTO `product_like` (`product_id`, `user_id`)
+VALUES ('1', '2'),
+       ('2', '2'),
+       ('3', '2');
