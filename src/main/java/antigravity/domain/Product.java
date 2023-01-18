@@ -2,18 +2,16 @@ package antigravity.domain;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-@ToString
+@ToString(exclude = "productLikes")
 public class Product extends BaseTimeEntity {
 
     @Id
@@ -24,8 +22,14 @@ public class Product extends BaseTimeEntity {
     private BigDecimal price;
     private Integer quantity;
 
-    public static Product of(String sku, String name, BigDecimal price, Integer quantity) {
-        return new Product(null, sku, name, price, quantity);
+    @OneToMany(mappedBy = "product")
+    private List<ProductLike> productLikes = new ArrayList<>();
+
+    public Product(String sku, String name, BigDecimal price, Integer quantity) {
+        this.sku = sku;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
     }
 
     @Override

@@ -6,7 +6,7 @@ DROP TABLE `users` IF EXISTS;
 
 CREATE TABLE `product`
 (
-    `id`         bigint(20) NOT NULL AUTO_INCREMENT,
+    `id`         bigint(20)     NOT NULL AUTO_INCREMENT,
     `sku`        varchar(60)             DEFAULT '' COMMENT '상품 식별값',
     `name`       varchar(125)   NOT NULL COMMENT '상품명',
     `price`      decimal(12, 2) NOT NULL COMMENT '가격',
