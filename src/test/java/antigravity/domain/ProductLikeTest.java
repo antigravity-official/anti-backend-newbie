@@ -1,6 +1,7 @@
 package antigravity.domain;
 
 import antigravity.common.exception.DuplicatedLikeException;
+import antigravity.common.exception.ErrorMessage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +21,7 @@ class ProductLikeTest {
 
         assertThatThrownBy(() -> productLike.recoverLiked())
                 .isInstanceOf(DuplicatedLikeException.class)
-                .hasMessage("이미 찜한 상품입니다.");
+                .hasMessage(ErrorMessage.DUPLICATE_LIKE.getMessage());
     }
 
 }

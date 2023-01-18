@@ -1,6 +1,8 @@
 package antigravity.application;
 
-import antigravity.application.dto.ProductRegisterResponse;
+import antigravity.application.dto.ProductLikeResponse;
+import antigravity.common.exception.NotFoundProductException;
+import antigravity.common.exception.NotFoundUserException;
 import antigravity.domain.Product;
 import antigravity.domain.ProductLike;
 import antigravity.domain.User;
@@ -25,26 +27,26 @@ public class ProductLikeServiceImpl implements ProductLikeService {
 
     @Override
     @Transactional
-    public ProductRegisterResponse like(Long userId, Long productId) {
+    public ProductLikeResponse like(Long userId, Long productId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(NotFoundUserException::new);
         Product product = productRepository.findById(productId)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(NotFoundProductException::new);
 
-        upsert(product, user);
+        ProductLike productLike = upsert(product, user);
         //productViewCacheManager.incrementProductViewCount(productId);
 
-        return new ProductRegisterResponse(product.getId(), product.getSku(), product.getName());
+        return new ProductLikeResponse(productLike.getId(), product.getId());
     }
 
-    private void upsert(Product product, User user) {
+    private ProductLike upsert(Product product, User user) {
         Optional<ProductLike> optionalLike = productLikeRepository.findByProductAndUser(product, user);
 
         if (optionalLike.isPresent()) {
             ProductLike productLike = optionalLike.get();
             productLike.recoverLiked();
-            return;
+            return productLike;
         }
-        productLikeRepository.save(ProductLike.of(product, user));
+        return productLikeRepository.save(ProductLike.of(product, user));
     }
 }

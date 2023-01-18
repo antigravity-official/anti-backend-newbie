@@ -1,8 +1,8 @@
 package antigravity.application;
 
-import antigravity.application.dto.ProductRegisterResponse;
+import antigravity.application.dto.ProductLikeResponse;
 
 public interface ProductLikeService {
 
-    ProductRegisterResponse like(Long userId, Long productId);
+    ProductLikeResponse like(Long userId, Long productId);
 }

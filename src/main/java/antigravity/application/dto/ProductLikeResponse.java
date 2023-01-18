@@ -5,9 +5,8 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public class ProductRegisterResponse {
+public class ProductLikeResponse {
 
-    private final Long id;
-    private final String sku;
-    private final String name;
+    private final Long productLikeId;
+    private final Long productId;
 }
