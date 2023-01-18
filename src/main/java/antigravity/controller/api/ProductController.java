@@ -25,7 +25,6 @@ public class ProductController {
     public APIDataResponse<String> createEvent(@PathVariable("productId") Long productId) {
         boolean result = productService.insertProductInBasket(productId);
         return APIDataResponse.of(Boolean.toString(result));
-        //return true;
     }
 
 

@@ -3,7 +3,7 @@ database: hsqldb
 # Database Settings
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb;MODE=mysql;
+    url: jdbc:h2:mem:testdb;MODE=mysql;NON_KEYWORDS=USER;
     username: sa
     password:
     driverClassName: org.h2.Driver
@@ -26,7 +26,11 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true
+  session:
+    store-type: jdbc
+    jdbc.initialize-schema: always
+

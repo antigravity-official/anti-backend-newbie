@@ -3,6 +3,7 @@ DROP TABLE `user` IF EXISTS;
 DROP TABLE `basket` IF EXISTS;
 DROP TABLE `product_info` IF EXISTS;
 
+
 CREATE TABLE `product`
 (
     `id`         bigint(20) NOT NULL AUTO_INCREMENT,
@@ -14,7 +15,7 @@ CREATE TABLE `product`
     `updated_at` datetime                DEFAULT current_timestamp(),
     `deleted_at` datetime                DEFAULT NULL,
     PRIMARY KEY (`id`)
-);
+) engine=InnoDB;
 
 CREATE TABLE `user`
 (
@@ -24,17 +25,17 @@ CREATE TABLE `user`
     `created_at` datetime     NOT NULL DEFAULT current_timestamp(),
     `deleted_at` datetime              DEFAULT NULL,
     PRIMARY KEY (`id`)
-);
+) engine=InnoDB;
 
 
 CREATE TABLE `basket`
 (
     `id`         bigint(20) NOT NULL AUTO_INCREMENT,
     `liked`      boolean        DEFAULT FALSE COMMENT '찜 여부',
-    `product_id` bigint     COMMENT '제품 id',
-    user_id     bigint      COMMENT '유저 id',
+    `user_id`     bigint not null,
+    `product_id` bigint not null ,
     PRIMARY KEY (`id`)
-);
+) engine=InnoDB;
 
 CREATE TABLE `product_info`
 (
@@ -43,4 +44,4 @@ CREATE TABLE `product_info`
     `viewed`    int         NOT NULL COMMENT '상품 조회 수',
     `product_id` bigint(20)     COMMENT '제품 id',
     PRIMARY KEY (`id`)
-)
+) engine=InnoDB;

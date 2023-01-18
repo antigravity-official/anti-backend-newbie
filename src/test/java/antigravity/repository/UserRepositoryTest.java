@@ -1,6 +1,6 @@
 package antigravity.repository;
 
-import antigravity.entity.Product;
+import antigravity.entity.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,22 +8,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-public class ProductRepositoryTests {
+class UserRepositoryTest {
 
     @Autowired
-    private ProductRepository productRepository;
+    private UserRepository userRepository;
 
-    @DisplayName("[Repository] findById")
+    @DisplayName("user 잘 찾는 지 확인")
     @Test
     public void findByIdTest() {
         Long id = 1L;
-        Product product = productRepository.findById(id).get();
-        Assertions.assertNotNull(product);
+        User user = userRepository.findById(id).get();
+        Assertions.assertNotNull(user);
     }
 
 }
