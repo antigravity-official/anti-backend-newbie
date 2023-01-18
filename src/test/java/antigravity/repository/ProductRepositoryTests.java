@@ -1,7 +1,7 @@
 package antigravity.repository;
 
 import antigravity.entity.Product;
-import antigravity.entity.User;
+import antigravity.entity.Member;
 import antigravity.entity.Wanted;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ public class ProductRepositoryTests {
     @Test
     public void findByUserTest() {
         String email = "user2@antigravity.kr";
-        User user = productRepository.findUserByEmail(email);
+        Member user = productRepository.findUserByEmail(email);
         Assertions.assertNotNull(user);
     }
 

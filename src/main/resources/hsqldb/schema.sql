@@ -9,6 +9,7 @@ CREATE TABLE `product`
     `name`       varchar(125)   NOT NULL COMMENT '상품명',
     `price`      decimal(12, 2) NOT NULL COMMENT '가격',
     `quantity`   int            NOT NULL COMMENT '재고량',
+    `Liked`      Boolean        DEFAULT FALSE,
     `viewed`     int            NOT NULL DEFAULT 0,
     `created_at` datetime       NOT NULL DEFAULT current_timestamp(),
     `updated_at` datetime                DEFAULT current_timestamp(),

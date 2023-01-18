@@ -1,7 +1,7 @@
 package antigravity.repository;
 
 import antigravity.entity.Product;
-import antigravity.entity.User;
+import antigravity.entity.Member;
 import antigravity.entity.Wanted;
 import antigravity.payload.ProductResponse;
 import antigravity.payload.ProductResponseRowMapper;
@@ -9,13 +9,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 @Repository
@@ -92,13 +90,13 @@ public class ProductRepository {
                         .build());
     }
 
-    public User findUserByEmail(String email) {
+    public Member findUserByEmail(String email) {
         String query = "SELECT *" +
                 "   FROM Member WHERE email = :email";
         MapSqlParameterSource params = new MapSqlParameterSource("email", email);
 
         return jdbcTemplate.queryForObject(query, params, (rs, rowNum) ->
-                User.builder()
+                Member.builder()
                         .id(rs.getLong("id"))
                         .email(rs.getString("email"))
                         .name(rs.getString("name"))

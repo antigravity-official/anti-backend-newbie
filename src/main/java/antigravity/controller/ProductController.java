@@ -1,8 +1,7 @@
 package antigravity.controller;
 
 import antigravity.entity.Product;
-import antigravity.entity.User;
-import antigravity.entity.Wanted;
+import antigravity.entity.Member;
 import antigravity.payload.ProductResponse;
 import antigravity.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ public class ProductController {
 
     // TODO 찜 상품 조회 API
     @GetMapping("/products")
-   public ArrayList<ProductResponse> ShowWantedPorducts(User user, Boolean Liked){
+   public ArrayList<ProductResponse> ShowWantedPorducts(Member user, Boolean Liked){
         ArrayList<ProductResponse> result = null;
 
         result = productRepository.Wanted_List(user.getEmail(), Liked);
