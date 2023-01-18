@@ -41,5 +41,5 @@ CREATE TABLE `viewed`
     `id`    bigint(20) NOT NULL AUTO_INCREMENT,
     `count_viewed`  bigint(20),
     PRIMARY KEY (`id`),
-    FOREIGN KEY(`id`) REFERENCES `product` ('id')
+    FOREIGN KEY(`id`) REFERENCES `product` (`id`)
 );

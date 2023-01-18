@@ -8,18 +8,14 @@ import antigravity.repository.ProductRepository;
 import antigravity.repository.UserRepository;
 import antigravity.repository.ViewedRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.awt.print.Pageable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.function.Function;
+
 
 @Service
 public class ProductService {
@@ -57,24 +53,18 @@ public class ProductService {
     @Transactional
     public boolean likedProduct(Long userId, Long productId){
         Product product = productRepository.findById(productId).get();
-        boolean result = false;
         List<Liked> likedAll = likedRepository.findAllByProductId(product);
 
         if(!likedAll.isEmpty()){
-            for(Liked like : likedAll){
-                if(like.getUserId() != userId){
-                    result = true;
-                }else{
-                    return result;
+            for(Liked like : likedAll) {
+                if (like.getUserId() == userId) {
+                    return false;
                 }
             }
-        } else {
-            Liked liked = Liked.builder().userId(userId).productId(productId).build();
-            likedRepository.save(liked);
-            result = true;
-            return result;
         }
-        return result;
+        Liked liked = Liked.builder().userId(userId).productId(productId).build();
+        likedRepository.save(liked);
+        return true;
     }
 
     public List<ProductDTO> getLikedProduct(Long userId, Pageable pageable) {
