@@ -3,13 +3,9 @@ package antigravity.service;
 import java.text.MessageFormat;
 
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import antigravity.common.dto.PageResponseDto;
-import antigravity.controller.dto.CartResponses;
-import antigravity.controller.dto.LikeSearchDto;
 import antigravity.entity.Cart;
 import antigravity.entity.Product;
 import antigravity.entity.User;
@@ -64,8 +60,9 @@ public class CartService {
 			);
 		}
 
-		Long viewCount = redisService.increaseViewCount(productId);
+		Long viewCount = redisService.increaseViewCount(productId,userId);
+		Long likeCount = redisService.increaseLike(productId);
 
-		return cartMapper.toCartResponse(savedCart.getId(), userId, product, viewCount);
+		return cartMapper.toCartResponse(savedCart.getId(), userId, product);
 	}
 }
