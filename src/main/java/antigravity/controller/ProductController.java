@@ -31,22 +31,30 @@ public class ProductController {
         try {
             //혹시 모를 빈칸 처리
             if (userNo.equals("")) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유저 정보가 유효하지 않음.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .header("Content-Type","application/json")
+                        .body("{ \"message\" : \"유저 정보가 유효하지 않음.\"}");
             } else {
 
                 //유저 유효성
                 if (productRepository.findUser(userNo) == 0) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유저 정보가 유효하지 않음");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .header("Content-Type","application/json")
+                            .body("{ \"message\" : \"유저 정보가 유효하지 않음\" }");
                 }
 
                 //상품 유효성
                 if (productRepository.findById(productId) == 0) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("상품 정보가 유효하지 않음");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .header("Content-Type","application/json")
+                            .body("{ \"message\" : \"상품 정보가 유효하지 않음\" }");
                 }
 
                 // 찜하기 조회
                 if (productRepository.likeCheckSum(userNo, productId) != 0) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 찜 목록에 있습니다.");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .header("Content-Type","application/json")
+                            .body("{ \"message\" : \"이미 찜 목록에 있습니다.\" }");
                 }
 
                 //혹시 모를 트랜젝션 에러
@@ -54,17 +62,23 @@ public class ProductController {
                     productRepository.updateView(productId);
                 }
                 else {
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 측 에러");
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                            .header("Content-Type","application/json")
+                            .body("{ \"message\" : \"서버 에러\" }");
                 }
 
             }
 
         } catch (NullPointerException | HttpMessageNotReadableException e) {
             // userNo 의 널값 처리
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유저 정보가 유효하지 않음");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .header("Content-Type","application/json")
+                    .body("{ \"message\" : \"유저 정보가 유효하지 않음\" } ");
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("userNo = " + userNo + "\nproductId = " + productId);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header("Content-Type","application/json")
+                .body(" { \"userNo\" : \"" + userNo + "\",\n\"productId\" : \"" + productId +"\" }");
     }
 
     // TODO 찜 상품 조회 API
@@ -73,6 +87,7 @@ public class ProductController {
                                          @RequestParam(defaultValue = "1") String page,
                                          @RequestParam(defaultValue = "1") String size,
                                          @RequestParam(required = false) String liked) {
+
 
         List<Product> result;
         int pageParam;
@@ -86,7 +101,9 @@ public class ProductController {
 
         } catch ( NumberFormatException e ) {
 
-            return ResponseEntity.status( HttpStatus.BAD_REQUEST ).body( "잘못된 파라미터" );
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .header("Content-Type","application/json;charset=UTF-8")
+                    .body( "{ \"message\" : \"잘못된 파라미터\"}" );
 
         }
 
@@ -94,7 +111,10 @@ public class ProductController {
 
             // liked 파라미터 유효성 판단
             if ( liked.equals( "true" ) == liked.equals( "false" ) ) {
-                return ResponseEntity.status( HttpStatus.BAD_REQUEST ).body( "잘못된 파라미터" );
+
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .header("Content-Type","application/json;charset=UTF-8")
+                        .body( "{ \"message\" : \"잘못된 파라미터\"}" );
             }
 
             //liked
@@ -112,6 +132,8 @@ public class ProductController {
 
         }
 
-        return ResponseEntity.status( HttpStatus.OK ).body( result.isEmpty() ? "해당 목록이 존재하지 않습니다. " : result );
+        return ResponseEntity.status( HttpStatus.OK )
+                .header("Content-Type","application/json;charset=UTF-8")
+                .body( result.isEmpty() ? "{ \"message\" : \"해당 목록이 존재하지 않습니다.\" } " : result );
     }
 }
