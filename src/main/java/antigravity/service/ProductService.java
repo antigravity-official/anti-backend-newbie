@@ -2,6 +2,7 @@ package antigravity.service;
 
 import java.util.List;
 
+import antigravity.entity.Liked;
 import antigravity.entity.Product;
 
 public interface ProductService {
@@ -11,5 +12,6 @@ public interface ProductService {
 	 * @return - 상품목록 
 	 */
 	public List<Product> getList();
+
 
 }

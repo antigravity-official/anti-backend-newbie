@@ -23,3 +23,7 @@ spring:
       schema-locations: classpath*:/${database}/schema.sql
       data-locations: classpath*:/${database}/data.sql
       platform: h2
+   
+  jpa:
+    defer-datasource-initialization : true
+    

@@ -27,17 +27,16 @@ CREATE TABLE `user`
     PRIMARY KEY (`id`)
 );
 
-//찜하기 테이블
+
 CREATE TABLE `liked`
 (
-    `id`         bigint(20) NOT NULL AUTO_INCREMENT,
-    `sku`        varchar(60)             DEFAULT '' COMMENT '상품 식별값',
-    `name`       varchar(125)   NOT NULL COMMENT '상품명',
-    `price`      decimal(12, 2) NOT NULL COMMENT '가격',
-    'id'         bigint(20) COMMENT '회원번호',
-    PRIMARY KEY (`id`)
+    `likedNo`         bigint(20) NOT NULL AUTO_INCREMENT,
+    `productId`         bigint(20)            DEFAULT '' COMMENT '상품번호',
+    "userId"         bigint(20) COMMENT '회원번호',
+    PRIMARY KEY (`likedNo`)
 	
 );
 
 
+ALTER TABLE `product` ADD  `views`   bigint(20) DEFAULT '0';
 

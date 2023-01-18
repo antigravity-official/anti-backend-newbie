@@ -14,7 +14,22 @@
 	$(document).ready(function(){
 
 	$("#liked").click(function(){
-	
+	  $.ajax ({
+			type:"post"
+			,url : "/procuts/liked/${"#liked"}.val()
+			,data:{
+				id : $("#liked").val(),
+			}		  
+		  ,dataType:"json"
+		  .success:function(res){
+			  console.log(res)
+		  }
+		  ,error: function(){
+			  console.log()
+		  }
+		  
+	  })
+	  
 		
 		
 		
@@ -73,18 +88,14 @@ h1{
 						<td>${productList.sku }</td>
 						<td>${productList.name }</td>
 						<td>${productList.price }</td>
-						<td></td>
+						<td>${productList.views }</td>
 						<td><input type="checkbox" name="liked" value="${productList.id}" id="liked"></td>
 					</tr>		
 				</c:forEach>
 			</tbody>
 		</table>
 		</div>
-		
-		<div id="btnArea">
-		
-			<button type="button"></button>
-		</div>
+	
 </div>
 
 </body>

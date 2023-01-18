@@ -41,12 +41,14 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public List<Product> selectProduct() {
     	log.debug("selectProduct");
-    	List<Product> result = jdbcTemplate.query("SELECT id, sku,name,price FROM product", productRowMapper());
+    	List<Product> result = jdbcTemplate.query("SELECT id, sku,name,price,views FROM product", productRowMapper());
     	log.info("조회 결과 {}",result);
     	
     	return result;
     }
     
+ 
+
     
     private RowMapper<Product> productRowMapper(){
     	return new RowMapper<Product>() {
@@ -58,12 +60,12 @@ public class ProductRepositoryImpl implements ProductRepository {
     				product.setSku(rs.getString("sku"));
     				product.setName(rs.getString("name"));
     				product.setPrice(rs.getBigDecimal("price"));
-    				
+    				product.setViews(rs.getLong("views"));
     				return product;
     			}
     	
     	};
     	
     }
-
+    
 }

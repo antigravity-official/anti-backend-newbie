@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import antigravity.entity.Liked;
 import antigravity.entity.Product;
 import antigravity.repository.ProductRepository;
 import lombok.AllArgsConstructor;
@@ -26,5 +27,6 @@ public class ProductServiceImpl implements ProductService {
 		log.info("서비스 영역 productList {}",productList);
 		return productList;
 	}
+	
 
 }
