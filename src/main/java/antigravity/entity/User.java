@@ -1,6 +1,5 @@
 package antigravity.entity;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -16,30 +15,24 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Table(name = "users")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @AllArgsConstructor
-@Table(name = "product")
 @Entity
-public class Product extends BaseEntity {
+public class User extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(nullable = false)
-	private String sku;
+	private String email;
 
-	@Column(nullable = false)
 	private String name;
 
-	@Column(nullable = false)
-	private BigDecimal price;
-
-	@Column(nullable = false)
-	private Integer quantity;
-
 	private LocalDateTime deletedAt;
+
 
 }
