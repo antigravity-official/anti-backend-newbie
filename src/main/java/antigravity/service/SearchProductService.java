@@ -1,6 +1,7 @@
 package antigravity.service;
 
 import antigravity.entity.Product;
+import antigravity.entity.ProductLike;
 import antigravity.entity.User;
 import antigravity.exception.CustomException;
 import antigravity.exception.ErrorCode;
@@ -67,7 +68,9 @@ public class SearchProductService {
 
     @Transactional(readOnly = true)
     public List<SearchResponse> productTureLiked(User user, Pageable pageable) {
-        return productLikeRepository.findAllByUserId(user.getId(), pageable)
+        List<ProductLike> responseList = productLikeRepository.findAllByUserId(user.getId(), pageable);
+
+        return responseList
                 .stream()
                 .map(productLike -> new SearchResponse(productLike.getProduct(), true))
                 .collect(Collectors.toList());
@@ -75,7 +78,9 @@ public class SearchProductService {
 
     @Transactional(readOnly = true)
     public List<SearchResponse> productFalseLiked(User user, Pageable pageable) {
-        return productRepository.findAllFalseLikedByUserId(user, pageable)
+        List<Product> responseList = productRepository.findAllFalseLikedByUserId(user, pageable);
+
+        return responseList
                 .stream()
                 .map(product -> new SearchResponse(product, false))
                 .collect(Collectors.toList());
