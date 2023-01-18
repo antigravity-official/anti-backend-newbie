@@ -1,4 +1,4 @@
-package antigravity.config;
+package antigravity.common.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;

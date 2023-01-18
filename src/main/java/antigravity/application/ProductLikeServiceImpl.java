@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -21,7 +23,6 @@ public class ProductLikeServiceImpl implements ProductLikeService {
     private final UserRepository userRepository;
     private final ProductViewCacheManager productViewCacheManager;
 
-
     @Override
     @Transactional
     public ProductRegisterResponse like(Long userId, Long productId) {
@@ -30,12 +31,20 @@ public class ProductLikeServiceImpl implements ProductLikeService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(RuntimeException::new);
 
-        ProductLike productLike = productLikeRepository.findByProductAndUser(product, user)
-                .orElseGet(() -> productLikeRepository.save(ProductLike.of(product, user)));
-
-        productLike.recoverLiked();
+        upsert(product, user);
         productViewCacheManager.incrementProductViewCount(productId);
 
         return new ProductRegisterResponse(product.getId(), product.getSku(), product.getName());
+    }
+
+    private void upsert(Product product, User user) {
+        Optional<ProductLike> optionalLike = productLikeRepository.findByProductAndUser(product, user);
+
+        if (optionalLike.isPresent()) {
+            ProductLike productLike = optionalLike.get();
+            productLike.recoverLiked();
+            return;
+        }
+        productLikeRepository.save(ProductLike.of(product, user));
     }
 }
