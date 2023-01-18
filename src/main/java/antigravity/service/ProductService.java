@@ -36,6 +36,7 @@ public class ProductService {
                     productRepository.findById(productId).get(),
                     userRepository.findById(1L).get()
                    );
+            
             basketRepository.save(basket);
             return true;
         }

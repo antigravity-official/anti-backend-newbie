@@ -3,6 +3,7 @@ package antigravity.controller.api;
 
 import antigravity.payload.APIDataResponse;
 import antigravity.payload.ProductResponse;
+import antigravity.service.ProductInfoService;
 import antigravity.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,13 +18,19 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductInfoService productInfoService;
 
 
     // TODO: 찜 상품 등록 API
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/liked/{productId}")
     public APIDataResponse<String> createEvent(@PathVariable("productId") Long productId) {
-        boolean result = productService.insertProductInBasket(productId);
+        boolean basketResult = productService.insertProductInBasket(productId);
+        boolean productInfoResult = productInfoService.changeViewProduct(productId);
+        boolean result = false;
+
+        if (basketResult == true && productInfoResult == true)
+            result = true;
         return APIDataResponse.of(Boolean.toString(result));
     }
 

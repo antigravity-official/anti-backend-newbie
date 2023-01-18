@@ -1,14 +1,15 @@
 package antigravity.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
-//@Builder
-//@ToString
-//@Getter
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
+@Getter
 @Entity
 public class ProductInfo {
 
@@ -30,4 +31,19 @@ public class ProductInfo {
 
 
     /********************************* 연관관계 매핑 *********************************/
+    @OneToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    /********************************* 생성 메소드 **********************************/
+    public static ProductInfo changeViewProduct(Integer totalLiked, Integer viewed) {
+
+        ProductInfo productInfo = ProductInfo.builder()
+                .totalLiked(totalLiked)
+                .viewed(viewed)
+                //.product(product)
+                .build();
+
+        return productInfo;
+    }
 }

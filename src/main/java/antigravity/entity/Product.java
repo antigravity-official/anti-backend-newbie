@@ -16,6 +16,8 @@ import java.util.List;
 //@ToString
 //@Getter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Product {
 
     /********************************* PK 필드 *********************************/
@@ -59,4 +61,7 @@ public class Product {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY )
     private final List<Basket> baskets = new ArrayList<>();
 
+
+    @OneToOne(mappedBy = "product")
+    private ProductInfo productInfo;
 }
