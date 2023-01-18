@@ -1,6 +1,7 @@
 package antigravity.application.impl;
 
 import antigravity.application.ProductLikeService;
+import antigravity.application.ProductViewCacheManager;
 import antigravity.application.dto.ProductLikeResponse;
 import antigravity.common.exception.NotFoundProductException;
 import antigravity.common.exception.NotFoundUserException;
@@ -24,7 +25,7 @@ public class ProductLikeServiceImpl implements ProductLikeService {
     private final ProductLikeRepository productLikeRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
-   //private final ProductViewCacheManager productViewCacheManager;
+   private final ProductViewCacheManager productViewCacheManager;
 
     @Override
     @Transactional
@@ -35,7 +36,7 @@ public class ProductLikeServiceImpl implements ProductLikeService {
                 .orElseThrow(NotFoundProductException::new);
 
         ProductLike productLike = upsert(product, user);
-        //productViewCacheManager.incrementProductViewCount(productId);
+        productViewCacheManager.incrementProductViewCount(productId);
 
         return new ProductLikeResponse(productLike.getId(), product.getId());
     }
