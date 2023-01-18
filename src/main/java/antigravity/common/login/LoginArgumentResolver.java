@@ -1,5 +1,6 @@
-package antigravity.common;
+package antigravity.common.login;
 
+import antigravity.common.exception.InvalidLoginException;
 import antigravity.common.exception.RequiredLoginException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -29,6 +30,22 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
         String userInfo = Optional.ofNullable(request.getHeader(USER_HEADER))
                 .orElseThrow(RequiredLoginException::new);
 
-        return Long.parseLong(userInfo);
+        return convertUserId(userInfo);
+    }
+
+    private Long convertUserId(String userInfo) {
+        try {
+            long userId = Long.parseLong(userInfo.trim());
+            checkValidUserId(userId);
+            return userId;
+        } catch (Exception e) {
+            throw new InvalidLoginException();
+        }
+    }
+
+    private void checkValidUserId(Long userId) {
+        if(userId <= 0) {
+            throw new IllegalArgumentException();
+        }
     }
 }
