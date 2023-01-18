@@ -21,7 +21,7 @@ public class ProductLikeServiceImpl implements ProductLikeService {
     private final ProductLikeRepository productLikeRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
-    private final ProductViewCacheManager productViewCacheManager;
+   //private final ProductViewCacheManager productViewCacheManager;
 
     @Override
     @Transactional
@@ -32,7 +32,7 @@ public class ProductLikeServiceImpl implements ProductLikeService {
                 .orElseThrow(RuntimeException::new);
 
         upsert(product, user);
-        productViewCacheManager.incrementProductViewCount(productId);
+        //productViewCacheManager.incrementProductViewCount(productId);
 
         return new ProductRegisterResponse(product.getId(), product.getSku(), product.getName());
     }
