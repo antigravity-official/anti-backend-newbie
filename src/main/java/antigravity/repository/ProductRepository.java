@@ -23,7 +23,7 @@ public class ProductRepository {
     public Product findById(Long id) throws EmptyResultDataAccessException {
         String query = "SELECT id, sku, name, price, viewed, quantity, created_at" +
                 "       FROM product WHERE id = :id " +
-                "       AND deleted_at IS NOT NULL";
+                "       AND deleted_at IS NULL";
         MapSqlParameterSource params = new MapSqlParameterSource("id", id);
 
         return jdbcTemplate.queryForObject(query, params, (rs, rowNum) ->
@@ -43,7 +43,7 @@ public class ProductRepository {
         String query = "SELECT COUNT(*) " +
                 "       FROM `user` " +
                 "       WHERE id = :id" +
-                "       AND deleted_at IS NOT NULL";
+                "       AND deleted_at IS NULL";
         MapSqlParameterSource params = new MapSqlParameterSource("id", Long.parseLong(userNo));
         return jdbcTemplate.queryForObject(query, params, Integer.class);
     }
@@ -52,7 +52,7 @@ public class ProductRepository {
         String query = "SELECT COUNT(*) " +
                 "       FROM `product` " +
                 "       WHERE id = :id" +
-                "       AND deleted_at IS NOT NULL ";
+                "       AND deleted_at IS NULL ";
         MapSqlParameterSource params = new MapSqlParameterSource("id", Long.parseLong(productNo));
         return jdbcTemplate.queryForObject(query, params, Integer.class);
     }
@@ -92,7 +92,7 @@ public class ProductRepository {
     public List<Product> selectLikeProduct(String userNo, Integer page, Integer size) {
         String query = "SELECT * , (SELECT COUNT(*) FROM `like` WHERE item_id = p.id) totalLiked" +
                 "       FROM `product` p" +
-                "       WHERE deleted_at IS NOT NULL" +
+                "       WHERE deleted_at IS NULL" +
                 "       AND p.id IN (SELECT item_id" +
                 "                      FROM `like`" +
                 "                      WHERE user_id = :userNo)" +
@@ -100,10 +100,10 @@ public class ProductRepository {
         return getProducts( createParamMap(userNo, page, size), query, true );
     }
 
-    public List<Product> selectDontLikeProduct(String userNo, Integer page, Integer size) {
+    public List<Product> selectUnlikeProduct(String userNo, Integer page, Integer size) {
         String query = "SELECT * , (SELECT COUNT(*) FROM `like` WHERE item_id = p.id) totalLiked" +
                 "       FROM `product` p" +
-                "       WHERE deleted_at IS NOT NULL" +
+                "       WHERE deleted_at IS NULL" +
                 "       AND p.id NOT IN (SELECT item_id" +
                 "                           FROM `like`" +
                 "                           WHERE user_id = :userNo)" +
@@ -117,7 +117,7 @@ public class ProductRepository {
                 "       (SELECT COUNT(*) FROM `like` WHERE item_id = p.id) totalLiked " +
                 "       FROM `product` p " +
                 "       LEFT JOIN `like` ON (item_id = p.id) " +
-                "       WHERE deleted_at IS NOT NULL " +
+                "       WHERE deleted_at IS NULL " +
                 "       ORDER BY p.id LIMIT :size OFFSET (:size * (:page - 1))";
 
         return jdbcTemplate.query(query, createParamMap(userNo, page, size), (rs, rowNum) ->

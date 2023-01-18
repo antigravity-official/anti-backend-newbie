@@ -53,6 +53,9 @@ public class ProductController {
                 if (productRepository.insertLikeProduct(userNo, productId) > 0) {
                     productRepository.updateView(productId);
                 }
+                else {
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 측 에러");
+                }
 
             }
 
@@ -67,21 +70,48 @@ public class ProductController {
     // TODO 찜 상품 조회 API
     @GetMapping("/products")
     public ResponseEntity selectLikeList(@RequestHeader(value = "X-USER-ID") String userNo,
-                                        @RequestParam(defaultValue = "1") Integer page,
-                                        @RequestParam(defaultValue = "1") Integer size,
-                                        @RequestParam(required = false) String liked) {
+                                         @RequestParam(defaultValue = "1") String page,
+                                         @RequestParam(defaultValue = "1") String size,
+                                         @RequestParam(required = false) String liked) {
 
         List<Product> result;
+        int pageParam;
+        int sizeParam;
+        
         try {
-            if (liked.equals("ture")) {
-                result = productRepository.selectLikeProduct(userNo, page, size);
-            } else {
-                result = productRepository.selectDontLikeProduct(userNo, page, size);
+            // page / size / userNo 파라미터 유효성 판단
+            Long.parseLong(userNo);
+            pageParam = Integer.parseInt(page);
+            sizeParam = Integer.parseInt(size);
+
+        } catch ( NumberFormatException e ) {
+
+            return ResponseEntity.status( HttpStatus.BAD_REQUEST ).body( "잘못된 파라미터" );
+
+        }
+
+        try {
+
+            // liked 파라미터 유효성 판단
+            if ( liked.equals( "true" ) == liked.equals( "false" ) ) {
+                return ResponseEntity.status( HttpStatus.BAD_REQUEST ).body( "잘못된 파라미터" );
             }
 
-        } catch (NullPointerException e) {
-            result = productRepository.selectAllProduct(userNo, page, size);
+            //liked
+            if ( Boolean.parseBoolean( liked ) ) {
+                result = productRepository.selectLikeProduct( userNo, pageParam, sizeParam );
+            }
+            //unlike
+            else {
+                result = productRepository.selectUnlikeProduct(userNo, pageParam, sizeParam);
+            }
+
+        } catch ( NullPointerException e ) {
+
+            result = productRepository.selectAllProduct( userNo, pageParam, sizeParam );
+
         }
-        return ResponseEntity.status(HttpStatus.OK).body(result);
+
+        return ResponseEntity.status( HttpStatus.OK ).body( result.isEmpty() ? "해당 목록이 존재하지 않습니다. " : result );
     }
 }
