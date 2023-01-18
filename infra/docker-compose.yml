@@ -1,0 +1,57 @@
+version: '3.8'
+
+volumes:
+  data:
+    driver: local
+  config:
+    driver: local
+
+services:
+  antigravity-mysql:
+    image: mysql:5.7
+    container_name: antigravity-mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - ./db/mysql/data:/var/lib/mysql
+      - ./db/mysql/init:/docker-entrypoint-initdb.d
+    environment:
+      TZ: Asia/Seoul
+      MYSQL_DATABASE: antigravity
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: antigravity
+      MYSQL_PASSWORD: password
+    platform: linux/amd64
+
+  antigravity-mysql-phpmyadmin:
+    depends_on:
+      - antigravity-mysql
+    image: phpmyadmin/phpmyadmin
+    container_name: antigravity-mysql-phpmyadmin
+    ports:
+      - 8082:80
+    environment:
+      PMA_HOST: antigravity-mysql
+      MYSQL_ROOT_PASSWORD: password
+    platform: linux/amd64
+    restart: always
+
+  antigravity-redis:
+    image: redis:alpine
+    container_name: antigravity-redis
+    ports:
+      - 6379:6379
+    volumes:
+      - data:/data
+    platform: linux/x86_64
+    restart: always
+
+  antigravity-redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: antigravity-redis-commander
+    environment:
+      - REDIS_HOSTS=antigravity-redis
+    ports:
+      - 8081:8081
+    platform: linux/x86_64
+    restart: always
