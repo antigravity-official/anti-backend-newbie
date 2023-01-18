@@ -31,4 +31,8 @@ public class ProductRepository {
                         .build());
     }
 
+    public Boolean insertProduct(Long id) {
+        return true;
+    }
+
 }

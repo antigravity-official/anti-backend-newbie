@@ -1,8 +1,11 @@
 package antigravity.payload;
 
+import lombok.AllArgsConstructor;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@AllArgsConstructor
 public class ProductResponse {
 
     private Long id; // 상품아이디
@@ -15,4 +18,30 @@ public class ProductResponse {
     private Integer viewed; // 상품 조회 수
     private LocalDateTime createdAt; // 상품 생성일시
     private LocalDateTime updatedAt; // 상품 수정일시
+
+    public static ProductResponse of(
+            Long id,
+            String sku,
+            String name,
+            BigDecimal price,
+            Integer quantity,
+            Boolean liked,
+            Integer totalLiked,
+            Integer viewed,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt
+    ) {
+        return new ProductResponse(
+                id,
+                sku,
+                name,
+                price,
+                quantity,
+                liked,
+                totalLiked,
+                viewed,
+                createdAt,
+                updatedAt
+        );
+    }
 }

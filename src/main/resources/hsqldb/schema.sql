@@ -1,6 +1,7 @@
 DROP TABLE `product` IF EXISTS;
 DROP TABLE `user` IF EXISTS;
 DROP TABLE `basket` IF EXISTS;
+DROP TABLE `product_info` IF EXISTS;
 
 CREATE TABLE `product`
 (
@@ -9,7 +10,6 @@ CREATE TABLE `product`
     `name`       varchar(125)   NOT NULL COMMENT '상품명',
     `price`      decimal(12, 2) NOT NULL COMMENT '가격',
     `quantity`   int            NOT NULL COMMENT '재고량',
-    `viewed`     int            NOT NULL COMMENT '상품 조회 수',
     `created_at` datetime       NOT NULL DEFAULT current_timestamp(),
     `updated_at` datetime                DEFAULT current_timestamp(),
     `deleted_at` datetime                DEFAULT NULL,
@@ -26,11 +26,21 @@ CREATE TABLE `user`
     PRIMARY KEY (`id`)
 );
 
+
 CREATE TABLE `basket`
 (
     `id`         bigint(20) NOT NULL AUTO_INCREMENT,
     `liked`      boolean        DEFAULT FALSE COMMENT '찜 여부',
-    `totalLiked` int            NOT NULL COMMENT '찜 개수',
-    user_id     bigint,
+    `product_id` bigint     COMMENT '제품 id',
+    user_id     bigint      COMMENT '유저 id',
     PRIMARY KEY (`id`)
 );
+
+CREATE TABLE `product_info`
+(
+    `id`         bigint(20) NOT NULL AUTO_INCREMENT,
+    `total_liked` int        NOT NULL COMMENT '상품이 받은 모든 찜 개수',
+    `viewed`    int         NOT NULL COMMENT '상품 조회 수',
+    `product_id` bigint(20)     COMMENT '제품 id',
+    PRIMARY KEY (`id`)
+)
