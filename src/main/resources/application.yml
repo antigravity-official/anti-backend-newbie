@@ -11,3 +11,11 @@ spring:
     prefix: /WEB-INF/views/
     suffix: .jsp        
   
+logging:
+  level:
+    org.springframework.web: debug
+    antigravity.controller: debug
+    antigravity.service: debug
+    antigravity.repository: debug
+    antigravity.entity: debug
+  

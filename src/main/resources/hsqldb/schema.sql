@@ -1,5 +1,8 @@
 DROP TABLE `product` IF EXISTS;
 DROP TABLE `user` IF EXISTS;
+DROP TABLE `liked` IF EXISTS;
+
+
 
 CREATE TABLE `product`
 (
@@ -23,3 +26,18 @@ CREATE TABLE `user`
     `deleted_at` datetime              DEFAULT NULL,
     PRIMARY KEY (`id`)
 );
+
+//찜하기 테이블
+CREATE TABLE `liked`
+(
+    `id`         bigint(20) NOT NULL AUTO_INCREMENT,
+    `sku`        varchar(60)             DEFAULT '' COMMENT '상품 식별값',
+    `name`       varchar(125)   NOT NULL COMMENT '상품명',
+    `price`      decimal(12, 2) NOT NULL COMMENT '가격',
+    'id'         bigint(20) COMMENT '회원번호',
+    PRIMARY KEY (`id`)
+	
+);
+
+
+
