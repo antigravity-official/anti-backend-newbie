@@ -1,12 +1,13 @@
 package antigravity.domain.repository;
 
-import java.util.List;
+
+import antigravity.domain.ProductView;
+
+import java.util.Optional;
 
 public interface ProductViewRepository {
 
-    Long findCountById(Long productId);
-
-    List<Long> getProductIds();
+    Optional<ProductView> findByProductId(Long productId);
 
     void updateViewCount(Long productId, Long viewCount);
 

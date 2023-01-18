@@ -1,6 +1,8 @@
 package antigravity.application.impl;
 
 import antigravity.application.ProductViewCacheManager;
+import antigravity.common.exception.NotFoundProductException;
+import antigravity.domain.ProductView;
 import antigravity.domain.repository.ProductViewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,21 +27,23 @@ public class ProductViewCacheManagerImpl implements ProductViewCacheManager {
 
     @Override
     public Integer getViewCount(Long productId) {
-        Optional<Object> optionalCount = Optional.ofNullable(redisTemplate.opsForHash().get(PRODUCT_VIEW_KEY, productId));
+        Optional<Object> optionalCount = Optional.ofNullable(redisTemplate.opsForHash().get(PRODUCT_VIEW_KEY, String.valueOf(productId)));
 
         if(optionalCount.isEmpty()) {
-            Long viewCount = productViewRepository.findCountById(productId);
-            redisTemplate.opsForHash().put(PRODUCT_VIEW_KEY, productId, viewCount);
-            return viewCount.intValue();
+            log.debug("cache miss");
+            ProductView productView = productViewRepository.findByProductId(productId)
+                    .orElseThrow(NotFoundProductException::new);
+            redisTemplate.opsForHash().put(PRODUCT_VIEW_KEY, String.valueOf(productId), String.valueOf(productView.getViewCount()));
+            return productView.getViewCount().intValue();
         }
 
-        return (Integer) optionalCount.get();
+        return Integer.parseInt(String.valueOf(optionalCount.get()));
     }
 
 
     @Override
-    public void incrementProductViewCount(Long productId) {
-        redisTemplate.opsForHash().increment(PRODUCT_VIEW_KEY, productId, 1L);
+    public Long incrementProductViewCount(Long productId) {
+        return redisTemplate.opsForHash().increment(PRODUCT_VIEW_KEY, String.valueOf(productId), 1L);
     }
 
     // 1시간
@@ -49,7 +53,11 @@ public class ProductViewCacheManagerImpl implements ProductViewCacheManager {
         Map<Object, Object> entries = redisTemplate.opsForHash().entries(PRODUCT_VIEW_KEY);
         log.debug("BATCH UPDATE START");
         entries.keySet()
-                .forEach(key -> productViewRepository.updateViewCount((Long) key, (Long) entries.get(key)));
+                .forEach(key -> productViewRepository.updateViewCount(
+                        Long.parseLong(String.valueOf(key)),
+                        Long.parseLong(String.valueOf(entries.get(key)))
+                        )
+                );
         log.debug("BATCH UPDATE FINISH");
     }
 }

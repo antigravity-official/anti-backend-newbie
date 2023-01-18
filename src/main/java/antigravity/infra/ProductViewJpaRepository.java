@@ -7,15 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductViewJpaRepository extends JpaRepository<ProductView, Long>, ProductViewRepository {
 
     @Override
-    @Query("select pv.viewCount from ProductView pv where pv.productId = :productId")
-    Long findCountById(@Param("productId") Long productId);
-
-    @Query("select pv.productId from ProductView pv")
-    List<Long> getProductIds();
+    Optional<ProductView> findByProductId(Long productId);
 
     @Override
     @Query("update ProductView pv set pv.viewCount = :viewCount where pv.productId = :productId")
