@@ -39,3 +39,8 @@ spring:
     level:
       org:
         springframework.web: debug
+
+  # redis
+  redis:
+    host: localhost
+    port: 6379
