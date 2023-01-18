@@ -1,6 +1,7 @@
 package antigravity.entity;
 
 import lombok.*;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Builder
 @ToString
 @Getter
+@Setter
 @Entity
 public class ProductInfo {
 
@@ -36,12 +38,12 @@ public class ProductInfo {
     private Product product;
 
     /********************************* 생성 메소드 **********************************/
-    public static ProductInfo changeViewProduct(Integer totalLiked, Integer viewed) {
+    public static ProductInfo changeViewProduct(Integer totalLiked, Integer viewed, Product product) {
 
         ProductInfo productInfo = ProductInfo.builder()
                 .totalLiked(totalLiked)
                 .viewed(viewed)
-                //.product(product)
+                .product(product)
                 .build();
 
         return productInfo;

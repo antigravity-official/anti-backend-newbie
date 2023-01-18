@@ -11,6 +11,10 @@ import javax.persistence.*;
 //@ToString
 //@Getter
 @Entity
+
+@Table(uniqueConstraints = {
+        @UniqueConstraint(name = "USER_ID_UNIQUE", columnNames = {"user_id"})
+})
 public class Basket {
 
     /********************************* PK 필드 *********************************/

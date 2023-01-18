@@ -30,8 +30,14 @@ public class ProductService {
     @Transactional
     public Boolean insertProductInBasket(Long productId) {
 
+        if (basketRepository.existsBasketByProductIdAndUserId(productId, 1L))
+            throw new GeneralException(ErrorCode.BAD_REQUEST);
+        else if (productRepository.existsById(productId) == false)
+            throw new GeneralException(ErrorCode.NOT_FOUND);
+
         // TODO : user 고정 나중에 수정하기
         try {
+            System.out.println("test");
             Basket basket = Basket.choiceProduct(true,
                     productRepository.findById(productId).get(),
                     userRepository.findById(1L).get()

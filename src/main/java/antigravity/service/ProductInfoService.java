@@ -6,8 +6,11 @@ import antigravity.entity.ProductInfo;
 import antigravity.exception.GeneralException;
 import antigravity.repository.ProductInfoRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -15,15 +18,17 @@ public class ProductInfoService {
 
     private final ProductInfoRepository productInfoRepository;
 
+    //TODO: 찜 한 상품일 경우 bad request
     @Transactional
     public Boolean changeViewProduct(Long productId) {
         try {
-            ProductInfo productInfo = productInfoRepository.findById(productId).get();
-            ProductInfo productInfo2 = ProductInfo.changeViewProduct(productInfo.getTotalLiked() + 1,
-                    productInfo.getViewed() + 1
-                    );
+            final Optional<ProductInfo> productInfo = productInfoRepository.findById(productId);
+            productInfo.ifPresent(productInfo1 -> {
+                productInfo1.setTotalLiked(productInfo1.getTotalLiked() + 1);
+                productInfo1.setViewed(productInfo1.getViewed() + 1);
+                productInfoRepository.save(productInfo1);
+            });
 
-            productInfoRepository.save(productInfo2);
             return true;
         }
         catch (Exception e) {
