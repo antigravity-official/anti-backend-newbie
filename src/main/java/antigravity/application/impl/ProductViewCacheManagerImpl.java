@@ -45,9 +45,9 @@ public class ProductViewCacheManagerImpl implements ProductViewCacheManager {
     @Scheduled(fixedRate = 1000)
     public void batchUpdateViewCount() {
         Map<Object, Object> entries = redisTemplate.opsForHash().entries(PRODUCT_VIEW_KEY);
-        log.info("BATCH UPDATE START");
+        log.debug("BATCH UPDATE START");
         entries.keySet()
                 .forEach(key -> productViewRepository.updateViewCount((Long) key, (Long) entries.get(key)));
-        log.info("BATCH UPDATE FINISH");
+        log.debug("BATCH UPDATE FINISH");
     }
 }

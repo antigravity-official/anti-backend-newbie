@@ -34,13 +34,16 @@ spring:
 
     open-in-view: false
 
- # logging setting
-  logging:
-    level:
-      org:
-        springframework.web: debug
-
   # redis
   redis:
     host: localhost
     port: 6379
+
+# logging setting
+logging:
+  level:
+    root: info
+    org.springframework.web : debug
+    antigravity : debug
+
+
