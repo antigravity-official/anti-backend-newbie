@@ -29,7 +29,6 @@ public class Basket {
 
 
     /********************************* 연관관계 매핑 *********************************/
-    // TODO: product id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID", nullable = false, updatable = false)
@@ -39,10 +38,6 @@ public class Basket {
     @JoinColumn(name = "PRODUCT_ID", nullable = false, updatable = false)
     private Product product;
 
-//
-//    public User getUser() {
-//        return user;
-//    }
 
 
     /********************************* 생성 메소드 **********************************/

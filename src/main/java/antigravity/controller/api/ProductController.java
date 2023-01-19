@@ -49,11 +49,10 @@ public class ProductController {
     // TODO: 찜 상품 조회 API
     @GetMapping
     public APIDataResponse<List<ProductResponse>> basketInProudct(
-            @Nullable  @RequestParam(value = "liked", required = false, defaultValue = "true") Boolean liked,
+            @Nullable  @RequestParam(value = "liked", required = false, defaultValue = "") Boolean liked,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "size", required = false, defaultValue = "20") Integer size,
             @RequestHeader("X-USER-ID") Integer userId
-
     ) {
 
         return APIDataResponse.of(productRequestService.getProducts(liked, page, size, userId));

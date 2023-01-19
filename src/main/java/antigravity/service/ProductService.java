@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final ProductInfoRepository productInfoRepository;
     private final BasketRepository basketRepository;
     private final UserRepository userRepository;
 
