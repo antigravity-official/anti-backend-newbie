@@ -1,6 +1,3 @@
-database: hsqldb
-
-# Database Settings
 spring:
   jpa:
     hibernate:
