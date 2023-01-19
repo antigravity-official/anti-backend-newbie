@@ -4,7 +4,6 @@ import antigravity.constant.ErrorCode;
 import antigravity.entity.Basket;
 import antigravity.exception.GeneralException;
 import antigravity.repository.BasketRepository;
-import antigravity.repository.ProductInfoRepository;
 import antigravity.repository.ProductRepository;
 import antigravity.repository.UserRepository;
 import lombok.AllArgsConstructor;
