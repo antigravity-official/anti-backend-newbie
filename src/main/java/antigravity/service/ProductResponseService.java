@@ -38,7 +38,7 @@ public class ProductResponseService {
     {
         if (userRepository.existsById(userId.longValue()) == false)
             throw new GeneralException(ErrorCode.NOT_FOUND);
-        // TODO : 시간 수정
+
         try {
             List<ProductResponse> result = new LinkedList<>();
             Stream<Long> idList = basketRepository.findAllByUserId(userId.longValue())
@@ -54,41 +54,20 @@ public class ProductResponseService {
 
                 int len = trueProductResponses.length + falseProductResponses.length;
                 list1.addAll(list2);
-                if (page > len / size && page != 0)
-                    page = len / size;
-                else if (page == 0)
-                    page = 1;
-                if (size > len) {
-                    size = len;
-                    page = 1;
-                }
+                int [] tl = sortArray(page, size, len);
 
-                result = list1.subList((page - 1) * size , (page - 1) * size + size);
+                result = list1.subList((tl[0] - 1) * tl[1] , (tl[0] - 1) * tl[1] + tl[1]);
                 return result;
             }
 
             if (liked.equals(true)) {
                 trueProductResponses = ifTrue(list);
-                if (page > trueProductResponses.length / size && page != 0)
-                    page = trueProductResponses.length / size;
-                else if (page == 0)
-                    page = 1;
-                if (size > trueProductResponses.length) {
-                    size = trueProductResponses.length;
-                    page = 1;
-                }
-                result = Arrays.asList(trueProductResponses).subList((page - 1) * size , (page - 1) * size + size);
+                int [] tl = sortArray(page, size, trueProductResponses.length);
+                result = Arrays.asList(trueProductResponses).subList((tl[0] - 1) * tl[1] , (tl[0] - 1) * tl[1] + tl[1]);
             } else if (liked.equals(false)){
                 falseProductResponses = ifFalse(list);
-                if (page > falseProductResponses.length / size && page != 0)
-                    page = falseProductResponses.length / size;
-                else if (page == 0)
-                    page = 1;
-                if (size > falseProductResponses.length) {
-                    size = falseProductResponses.length;
-                    page = 1;
-                }
-                result = Arrays.asList(falseProductResponses).subList((page - 1) * size , (page - 1) * size + size);
+                int [] tl = sortArray(page, size, falseProductResponses.length);
+                result = Arrays.asList(falseProductResponses).subList((tl[0] - 1) * tl[1] , (tl[0] - 1) * tl[1] + tl[1]);
             }
 
             return result;
@@ -148,6 +127,21 @@ public class ProductResponseService {
             );
         }
         return falseProductResponses;
+    }
+
+    public int[] sortArray(int page, int size, int length) {
+        int [] result = new int[2];
+        result[0] = page;
+        result[1] = size;
+        if (page > length / size && page != 0)
+            result[0] = length / size;
+        else if (page == 0)
+            result[0] = 1;
+        if (size > length) {
+            result[1] = length;
+            result[0] = 1;
+        }
+        return result;
     }
 
 }
