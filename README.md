@@ -25,7 +25,7 @@
 
 ### 찜 상품 조회
 
-- [GET] `/products?liked?liked={boolean}&page={integer}&size={integer}`
+- [GET] `/products/liked?liked={boolean}&page={integer}&size={integer}`
 - 페이징 된 상품 목록을 조회합니다.
 - liked 파라미터가 없으면 모든 상품을 조회하되 {user}가 찜한 상품에 `liked: true`를 추가하고
 - `liked=false` 이면 찜하지 않은 상품만 조회
