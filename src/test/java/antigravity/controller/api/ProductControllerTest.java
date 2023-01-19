@@ -2,7 +2,7 @@ package antigravity.controller.api;
 
 import antigravity.constant.ErrorCode;
 import antigravity.repository.ProductRepository;
-import antigravity.service.ProductService;
+import antigravity.service.ProductRequestService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ class ProductControllerTest {
     private final ObjectMapper mapper;
 
     @MockBean
-    private ProductService productService;
+    private ProductRequestService productRequestService;
 
     @MockBean
     private ProductRepository productRepository;

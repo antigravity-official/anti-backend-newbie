@@ -1,21 +1,16 @@
 package antigravity.controller.api;
 
 
-import antigravity.entity.User;
 import antigravity.payload.APIDataResponse;
 import antigravity.payload.ProductResponse;
 import antigravity.service.ProductInfoService;
+import antigravity.service.ProductResponseService;
 import antigravity.service.ProductRequestService;
-import antigravity.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Parameter;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -23,8 +18,8 @@ import java.util.List;
 @RestController
 public class ProductController {
 
-    private final ProductService productService;
     private final ProductRequestService productRequestService;
+    private final ProductResponseService productResponseService;
     private final ProductInfoService productInfoService;
 
 
@@ -34,7 +29,7 @@ public class ProductController {
     public APIDataResponse<String> createEvent(@PathVariable("productId") Long productId,
                                                @RequestHeader("X-USER-ID") Integer userId) {
 
-        boolean basketResult = productService.insertProductInBasket(productId, userId);
+        boolean basketResult = productRequestService.insertProductInBasket(productId, userId);
         boolean productInfoResult = productInfoService.changeViewProduct(productId);
         boolean result = false;
 
@@ -55,7 +50,7 @@ public class ProductController {
             @RequestHeader("X-USER-ID") Integer userId
     ) {
 
-        return APIDataResponse.of(productRequestService.getProducts(liked, page, size, userId));
+        return APIDataResponse.of(productResponseService.getProducts(liked, page, size, userId));
     }
 
 }
