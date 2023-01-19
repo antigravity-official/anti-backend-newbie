@@ -1,8 +1,6 @@
 package antigravity.controller;
 
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import antigravity.dto.LikedDto;
+import antigravity.dto.UserDto;
+import antigravity.entity.Liked;
 import antigravity.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,14 +28,18 @@ public class ProductController {
 	
 	// TODO 찜 상품 등록 API
 	@PostMapping("/products/liked/{productId}")
-	public ResponseEntity<String> registedLiked (@Valid @RequestBody LikedDto likedDto){
+	public ResponseEntity<String> registedLiked (@RequestBody LikedDto likedDto, UserDto userDto){
 		log.debug("찜 목록 등록");
 		
 		
-		int result = productService.resisterLiked(likedDto);
+		//이미 찜한 상품 조회
+		int isLiked = productService.isLiked(likedDto,userDto);
 		
-		if(result >0) {
+		int result = productService.resisterLiked(likedDto,userDto); //찜하기 등록
+		
+		if(result >0 && isLiked <=0 && userDto.getId() != null) {
 			log.info("찜하기 등록 {}",result);
+			productService.increaseViews(likedDto,userDto);
 			return ResponseEntity.status(HttpStatus.OK).body("liked Resitered");
 		}
 		log.info("찜하기 등록 {}",result);

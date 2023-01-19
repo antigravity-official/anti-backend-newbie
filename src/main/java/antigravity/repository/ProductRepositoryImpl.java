@@ -1,20 +1,13 @@
 package antigravity.repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
-
-import javax.validation.Valid;
-
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import antigravity.dto.LikedDto;
+import antigravity.dto.UserDto;
 import antigravity.entity.Liked;
-import antigravity.entity.Product;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,35 +17,48 @@ import lombok.extern.slf4j.Slf4j;
 public class ProductRepositoryImpl implements ProductRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
-    //데이터를 저장하기 위한 곳
-//    // 예시 메서드입니다.
-//    PUBLIC PRODUCT FINDBYID(LONG ID) {
-//        STRING QUERY = "SELECT ID, SKU, NAME, PRICE, QUANTITY, CREATED_AT" +
-//                "       FROM PRODUCT WHERE ID = :ID";
-//        MAPSQLPARAMETERSOURCE PARAMS = NEW MAPSQLPARAMETERSOURCE("ID", ID);
-//
-//        RETURN JDBCTEMPLATE.QUERYFOROBJECT(QUERY, PARAMS, (RS, ROWNUM) ->
-//                PRODUCT.BUILDER()
-//                        .ID(RS.GETLONG("ID"))
-//                        .SKU(RS.GETSTRING("SKU"))
-//                        .NAME(RS.GETSTRING("NAME"))
-//                        .PRICE(RS.GETBIGDECIMAL("PRICE"))
-//                        .QUANTITY(RS.GETINT("QUANTITY"))
-//                        .CREATEDAT(RS.GETTIMESTAMP("CREATED_AT").TOLOCALDATETIME())
-//                        .BUILD());
-//    }
-//    
+    // 예시 메서드입니다.
+    
+
     @Override
-    public int insertLiked(@Valid LikedDto likedDto) {
+    public int selectCnt(LikedDto likedDto, UserDto userDto) {
+    	
+    	String sql ="SELECT count(*) FROM LIKED"
+    			+"WHERE userId = : userId and productId = : productId";
+    	
+    	SqlParameterSource params = new MapSqlParameterSource("userId",userDto.getId())
+    				                .addValue("productId", likedDto.getProductId());
+   
+    	int result = jdbcTemplate.queryForObject(sql,params,Integer.class);
+    	return result;
+    }
+    
+    
+    @Override
+    public int insertLiked(LikedDto likedDto,UserDto userDto) {
     	log.debug("insertLiked");
     	String sql = "INSERT INTO LIKED (likedNo,productId,userId)"
-    			+"VALUES(:likedNo,:productId,:userId)";
+    			+"VALUES(:likedNo,:productId,:userId)"
+    			+ "WHERE userId =: userId";
     	SqlParameterSource params = new MapSqlParameterSource("likedNo",likedDto.getLikedNo())
     	 								.addValue("productId",likedDto.getProductId())
-    	 								.addValue("userId",likedDto.getUserId());
-    	
+    	 								.addValue("userId",userDto.getId());
     	return jdbcTemplate.update(sql, params);
     }
     
+    @Override
+    public void updateViews( LikedDto likedDto, UserDto userDto) {
+    	log.debug("updateVeiws");
+    	
+    	String sql ="UPDATE LIKED SET view+1 "
+    			+ "WHERE userId = :userId and productId =:productId";
+    
+    	SqlParameterSource params = new MapSqlParameterSource("procutId",likedDto.getProductId())
+    				                         .addValue("userId", userDto.getId());
+    	
+    	int result = jdbcTemplate.update(sql, params);
+    	log.info("update  결과 {}",result);	
+    }
 
+    
 }

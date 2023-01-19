@@ -1,17 +1,14 @@
 package antigravity.service;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import antigravity.dto.LikedDto;
+import antigravity.dto.UserDto;
 import antigravity.entity.Liked;
-import antigravity.entity.Product;
 import antigravity.repository.ProductRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,28 +22,29 @@ public class ProductServiceImpl implements ProductService {
 	
 	
 	@Override
-	public int resisterLiked(@Valid LikedDto likedDto) {
+	public int isLiked(@Valid LikedDto likedDto, UserDto userDto) {
+		log.debug("isLiked");
+		
+		int resultIsLiked = productRepo.selectCnt(likedDto,userDto);
+		log.info("찜한 상품 확인 {}",resultIsLiked);
+		return resultIsLiked;
+	}
+	
+	@Override
+	public int resisterLiked(@Valid LikedDto likedDto , UserDto userDto) {
 		log.debug("resiterLiked");
 		
-		int insertResult = productRepo.insertLiked(likedDto);
+		int insertResult = productRepo.insertLiked(likedDto,userDto);
 		log.info("insertLiked {}",insertResult);
 		return insertResult;
 	}
-//	@Override
-//	public List<Product> getList() {
-//		log.debug("getList");
-//		List<Product> productList = produrctRepo.selectProduct();
-//		log.info("서비스 영역 productList {}",productList);
-//		return productList;
-//	}
-//	
-//	@Override
-//	public List<Liked> getLikedList(Long userId) {
-//		log.debug("getLikedList");
-//		List<Liked> isLiked = productRepo.selectLikedById(userId);
-//		
-//		return isLiked;
-//	}
-//	
+	
+	@Override
+	public void increaseViews(@Valid LikedDto likedDto, UserDto userDto) {
+
+		log.debug("increaseViews");
+		productRepo.updateViews(likedDto,userDto);
+		
+	}
 
 }

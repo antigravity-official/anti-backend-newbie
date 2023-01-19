@@ -31,6 +31,7 @@ CREATE TABLE `user`
 CREATE TABLE `liked`
 (
     `likedNo`         bigint(20) NOT NULL AUTO_INCREMENT,
+    'views'           bigint(20) DEFAULT '0'
     `productId`         bigint(20)            DEFAULT '' COMMENT '상품번호',
     "userId"         bigint(20) COMMENT '회원번호',
     PRIMARY KEY (`likedNo`)
@@ -38,5 +39,4 @@ CREATE TABLE `liked`
 );
 
 
-ALTER TABLE `product` ADD  `views`   bigint(20) DEFAULT '0';
 
