@@ -51,4 +51,14 @@ public class Basket {
 
         return basket;
     }
+
+    /************************** Junit test 메소드 **********************************/
+
+    public static Basket of(Boolean liked, Long productId, Long userId) {
+        return Basket.builder()
+                .liked(liked)
+                .user(User.builder().id(userId).build())
+                .product(Product.builder().id(productId).build())
+                .build();
+    }
 }

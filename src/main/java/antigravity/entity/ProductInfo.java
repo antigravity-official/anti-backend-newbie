@@ -27,7 +27,7 @@ public class ProductInfo {
     private Integer totalLiked; // 상품이 받은 모든 찜 개수
 
     @Column(nullable = false)
-    private Integer viewed; // 상품 조회 수닌
+    private Integer viewed; // 상품 조회
 
 
 

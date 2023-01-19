@@ -47,7 +47,6 @@ public class ProductResponseService {
 
             Long[] list = idList.toArray(Long[]::new);
             if (liked == null) {
-
                 trueProductResponses = ifTrue(list);
                 falseProductResponses = ifFalse(list);
                 List<ProductResponse> list1 = new ArrayList(Arrays.asList(trueProductResponses));
@@ -69,7 +68,6 @@ public class ProductResponseService {
             }
 
             if (liked.equals(true)) {
-
                 trueProductResponses = ifTrue(list);
                 if (page > trueProductResponses.length / size && page != 0)
                     page = trueProductResponses.length / size;
