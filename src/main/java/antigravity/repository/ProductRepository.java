@@ -1,32 +1,24 @@
 package antigravity.repository;
 
 import antigravity.entity.Product;
-import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.data.domain.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-@RequiredArgsConstructor
+import java.util.List;
+import java.util.Optional;
+
 @Repository
-public class ProductRepository {
+public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    private final NamedParameterJdbcTemplate jdbcTemplate;
+    @Override
+    Optional<Product> findById(Long id);
 
-    // 예시 메서드입니다.
-    public Product findById(Long id) {
-        String query = "SELECT id, sku, name, price, quantity, created_at" +
-                "       FROM product WHERE id = :id";
-        MapSqlParameterSource params = new MapSqlParameterSource("id", id);
+    @Query(value = "SELECT p FROM Product p")
+    List<Product> findProduct(Pageable pageable);
 
-        return jdbcTemplate.queryForObject(query, params, (rs, rowNum) ->
-                Product.builder()
-                        .id(rs.getLong("id"))
-                        .sku(rs.getString("sku"))
-                        .name(rs.getString("name"))
-                        .price(rs.getBigDecimal("price"))
-                        .quantity(rs.getInt("quantity"))
-                        .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
-                        .build());
-    }
+    List<Product> findByIdNotIn(List<Long> ids, Pageable pageable);
 
+    List<Product> findByIdIn(List<Long> ids,Pageable pageable);
 }

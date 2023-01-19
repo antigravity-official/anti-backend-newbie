@@ -11,6 +11,8 @@ CREATE TABLE `product`
     `created_at` datetime       NOT NULL DEFAULT current_timestamp(),
     `updated_at` datetime                DEFAULT current_timestamp(),
     `deleted_at` datetime                DEFAULT NULL,
+    `viewed`     int            NOT NULL DEFAULT 0,
+    `total_liked` int            NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`)
 );
 
@@ -22,4 +24,14 @@ CREATE TABLE `user`
     `created_at` datetime     NOT NULL DEFAULT current_timestamp(),
     `deleted_at` datetime              DEFAULT NULL,
     PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `liked`
+(
+    `id`         bigint(20) NOT NULL AUTO_INCREMENT,
+    `user_id`    bigint(20),
+    `product_id` bigint(20),
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`user_id`) REFERENCES user (`id`),
+    FOREIGN KEY (`product_id`) REFERENCES product (`id`)
 );
