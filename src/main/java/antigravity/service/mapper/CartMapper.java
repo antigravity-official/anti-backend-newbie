@@ -11,13 +11,13 @@ import antigravity.common.dto.PageResponseDto;
 import antigravity.controller.dto.CartResponses;
 import antigravity.entity.Cart;
 import antigravity.entity.Product;
-import antigravity.controller.dto.CartResponse;
+import antigravity.controller.dto.LikeResponse;
 
 @Component
 public class CartMapper {
 
-	public CartResponse toCartResponse(Long cartId, Long userId, Product product) {
-		return CartResponse.builder()
+	public LikeResponse toCartResponse(Long cartId, Long userId, Product product) {
+		return LikeResponse.builder()
 			.cartId(cartId)
 			.userId(userId)
 			.sku(product.getSku())

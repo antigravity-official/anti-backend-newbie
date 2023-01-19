@@ -20,7 +20,7 @@ import antigravity.entity.User;
 import antigravity.exception.custom.BusinessException;
 import antigravity.exception.custom.NotFoundResource;
 import antigravity.exception.payload.ErrorCode;
-import antigravity.controller.dto.CartResponse;
+import antigravity.controller.dto.LikeResponse;
 import antigravity.repository.CartRepository;
 import antigravity.repository.ProductRepository;
 import antigravity.repository.UserRepository;
@@ -38,7 +38,7 @@ public class CartService {
 	private final CartRepository cartRepository;
 
 	@Transactional
-	public CartResponse like(Long userId, Long productId) {
+	public LikeResponse like(Long userId, Long productId) {
 
 		User user = userRepository.findByIdAndDeletedAtIsNull(userId).orElseThrow(
 			() -> new NotFoundResource(
@@ -47,7 +47,7 @@ public class CartService {
 			)
 		);
 
-		Product product = productRepository.findById(productId).orElseThrow(
+		Product product = productRepository.findByIdAndDeletedAtIsNull(productId).orElseThrow(
 			() -> new NotFoundResource(
 				MessageFormat.format("not exist product Id: {0}", productId),
 				ErrorCode.NOT_FOUND_RESOURCES
