@@ -1,6 +1,7 @@
 package antigravity.service;
 
 import antigravity.constant.ErrorCode;
+import antigravity.entity.Basket;
 import antigravity.entity.Product;
 import antigravity.entity.ProductInfo;
 import antigravity.exception.GeneralException;
@@ -11,10 +12,15 @@ import antigravity.repository.ProductInfoRepository;
 import antigravity.repository.ProductRepository;
 import antigravity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
@@ -26,9 +32,9 @@ public class ProductRequestService {
     private final ProductInfoRepository productInfoRepository;
     private final BasketRepository basketRepository;
     private final UserRepository userRepository;
+    private final EntityManager em;
 
     // TODO : user 별로 api 받기
-    // TODO : page, size 처리
     public List<ProductResponse> getProducts(
             Boolean liked,
             Integer page,
@@ -40,6 +46,7 @@ public class ProductRequestService {
             Stream<Long> idList = basketRepository.findAllByUserId(1L)
                     .stream()
                     .map(x -> x.getProduct_Id());
+
             Long[] list = idList.toArray(Long[]::new);
             if (liked.equals(true)) {
 
@@ -89,7 +96,17 @@ public class ProductRequestService {
                     );
                 }
             }
-            List<ProductResponse> result = Arrays.asList(productResponses);
+
+            if (page > productResponses.length / size && page != 0)
+                page = productResponses.length / size;
+            else if (page == 0)
+                page = 1;
+            if (size > productResponses.length) {
+                size = productResponses.length;
+                page = 1;
+            }
+            // TODO : page, size 처리
+            List<ProductResponse> result = Arrays.asList(productResponses).subList((page - 1) * size , (page - 1) * size + size);
 
             return result;
         }

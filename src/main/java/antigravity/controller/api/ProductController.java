@@ -7,6 +7,8 @@ import antigravity.service.ProductInfoService;
 import antigravity.service.ProductRequestService;
 import antigravity.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
@@ -43,8 +45,8 @@ public class ProductController {
     @GetMapping
     public APIDataResponse<List<ProductResponse>> basketInProudct(
             @Nullable  @RequestParam(value = "liked", required = false, defaultValue = "true") Boolean liked,
-            @RequestParam(value = "page", required = false, defaultValue = "100") Integer page,
-            @RequestParam(value = "size", required = false, defaultValue = "100") Integer size
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "size", required = false, defaultValue = "20") Integer size
     ) {
 
         return APIDataResponse.of(productRequestService.getProducts(liked, page, size));
