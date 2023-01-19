@@ -27,6 +27,8 @@ public class ProductRequestService {
             throw new GeneralException(ErrorCode.BAD_REQUEST);
         else if (productRepository.existsById(productId) == false)
             throw new GeneralException(ErrorCode.NOT_FOUND);
+        else if (userRepository.existsById(userId.longValue()) == false)
+            throw new GeneralException(ErrorCode.NOT_FOUND);
 
         try {
             Basket basket = Basket.choiceProduct(true,

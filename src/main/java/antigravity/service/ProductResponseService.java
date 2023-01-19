@@ -9,6 +9,7 @@ import antigravity.payload.ProductResponse;
 import antigravity.repository.BasketRepository;
 import antigravity.repository.ProductInfoRepository;
 import antigravity.repository.ProductRepository;
+import antigravity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ public class ProductResponseService {
     private final ProductRepository productRepository;
     private final ProductInfoRepository productInfoRepository;
     private final BasketRepository basketRepository;
+    private final UserRepository userRepository;
     private ProductResponse[] trueProductResponses = new ProductResponse[0];
     private ProductResponse[] falseProductResponses = new ProductResponse[0];
 
@@ -34,6 +36,8 @@ public class ProductResponseService {
             Integer userId
     )
     {
+        if (userRepository.existsById(userId.longValue()) == false)
+            throw new GeneralException(ErrorCode.NOT_FOUND);
         // TODO : 시간 수정
         try {
             List<ProductResponse> result = new LinkedList<>();
