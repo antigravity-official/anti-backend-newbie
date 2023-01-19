@@ -1,4 +1,4 @@
-package antigravity.config;
+package antigravity.common.resolver;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;

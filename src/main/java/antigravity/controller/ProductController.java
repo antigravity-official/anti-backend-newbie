@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import antigravity.common.ApiResponse;
+import antigravity.common.payload.ApiResponse;
 import antigravity.common.dto.PageResponseDto;
-import antigravity.config.UserId;
+import antigravity.common.resolver.UserId;
 import antigravity.controller.dto.CartResponses;
 import antigravity.controller.dto.LikeSearchDto;
 import antigravity.controller.dto.LikeResponse;
