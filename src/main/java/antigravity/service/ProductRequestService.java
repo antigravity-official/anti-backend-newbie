@@ -1,7 +1,6 @@
 package antigravity.service;
 
 import antigravity.constant.ErrorCode;
-import antigravity.entity.Basket;
 import antigravity.entity.Product;
 import antigravity.entity.ProductInfo;
 import antigravity.exception.GeneralException;
@@ -12,15 +11,11 @@ import antigravity.repository.ProductInfoRepository;
 import antigravity.repository.ProductRepository;
 import antigravity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
@@ -31,19 +26,17 @@ public class ProductRequestService {
     private final ProductRepository productRepository;
     private final ProductInfoRepository productInfoRepository;
     private final BasketRepository basketRepository;
-    private final UserRepository userRepository;
-    private final EntityManager em;
 
-    // TODO : user 별로 api 받기
     public List<ProductResponse> getProducts(
             Boolean liked,
             Integer page,
-            Integer size
+            Integer size,
+            Integer userId
     )
     {
         try {
             ProductResponse[] productResponses = new ProductResponse[0];
-            Stream<Long> idList = basketRepository.findAllByUserId(1L)
+            Stream<Long> idList = basketRepository.findAllByUserId(userId.longValue())
                     .stream()
                     .map(x -> x.getProduct_Id());
 

@@ -1,18 +1,21 @@
 package antigravity.controller.api;
 
 
+import antigravity.entity.User;
 import antigravity.payload.APIDataResponse;
 import antigravity.payload.ProductResponse;
 import antigravity.service.ProductInfoService;
 import antigravity.service.ProductRequestService;
 import antigravity.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Parameter;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -28,8 +31,10 @@ public class ProductController {
     // TODO: 찜 상품 등록 API
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/liked/{productId}")
-    public APIDataResponse<String> createEvent(@PathVariable("productId") Long productId) {
-        boolean basketResult = productService.insertProductInBasket(productId);
+    public APIDataResponse<String> createEvent(@PathVariable("productId") Long productId,
+                                               @RequestHeader("X-USER-ID") Integer userId) {
+
+        boolean basketResult = productService.insertProductInBasket(productId, userId);
         boolean productInfoResult = productInfoService.changeViewProduct(productId);
         boolean result = false;
 
@@ -46,10 +51,12 @@ public class ProductController {
     public APIDataResponse<List<ProductResponse>> basketInProudct(
             @Nullable  @RequestParam(value = "liked", required = false, defaultValue = "true") Boolean liked,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
-            @RequestParam(value = "size", required = false, defaultValue = "20") Integer size
+            @RequestParam(value = "size", required = false, defaultValue = "20") Integer size,
+            @RequestHeader("X-USER-ID") Integer userId
+
     ) {
 
-        return APIDataResponse.of(productRequestService.getProducts(liked, page, size));
+        return APIDataResponse.of(productRequestService.getProducts(liked, page, size, userId));
     }
 
 }

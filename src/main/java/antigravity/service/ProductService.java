@@ -23,9 +23,9 @@ public class ProductService {
 
 
     @Transactional
-    public Boolean insertProductInBasket(Long productId) {
+    public Boolean insertProductInBasket(Long productId, Integer userId) {
 
-        if (basketRepository.existsBasketByProductIdAndUserId(productId, 1L))
+        if (basketRepository.existsBasketByProductIdAndUserId(productId, userId.longValue()))
             throw new GeneralException(ErrorCode.BAD_REQUEST);
         else if (productRepository.existsById(productId) == false)
             throw new GeneralException(ErrorCode.NOT_FOUND);
@@ -34,7 +34,7 @@ public class ProductService {
         try {
             Basket basket = Basket.choiceProduct(true,
                     productRepository.findById(productId).get(),
-                    userRepository.findById(1L).get()
+                    userRepository.findById(userId.longValue()).get()
                    );
             
             basketRepository.save(basket);
