@@ -1,32 +1,29 @@
 package antigravity.repository;
 
 import antigravity.entity.Product;
-import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import antigravity.entity.User;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-@RequiredArgsConstructor
+import java.util.List;
+
 @Repository
-public class ProductRepository {
+public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    private final NamedParameterJdbcTemplate jdbcTemplate;
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("UPDATE Product p SET p.viewed = p.viewed +1 WHERE p.id = :productId")
+    int increaseViewed(Long productId);
 
-    // 예시 메서드입니다.
-    public Product findById(Long id) {
-        String query = "SELECT id, sku, name, price, quantity, created_at" +
-                "       FROM product WHERE id = :id";
-        MapSqlParameterSource params = new MapSqlParameterSource("id", id);
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("UPDATE Product p SET p.totalLiked = p.totalLiked +1 WHERE p.id = :productId")
+    int increaseTotalLiked(Long productId);
 
-        return jdbcTemplate.queryForObject(query, params, (rs, rowNum) ->
-                Product.builder()
-                        .id(rs.getLong("id"))
-                        .sku(rs.getString("sku"))
-                        .name(rs.getString("name"))
-                        .price(rs.getBigDecimal("price"))
-                        .quantity(rs.getInt("quantity"))
-                        .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
-                        .build());
-    }
+    @Query("SELECT p FROM Product p WHERE p.id NOT IN(SELECT product FROM ProductLike pl WHERE pl.user = :user) AND p.deletedAt = null")
+    List<Product> findAllFalseLikedByUserId(User user, Pageable pageable);
 
+    @Query("SELECT p FROM Product p WHERE p.deletedAt = null")
+    List<Product> findAllExceptDeletedAt(Pageable pageable);
 }

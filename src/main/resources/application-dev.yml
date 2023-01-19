@@ -2,13 +2,19 @@ database: hsqldb
 
 # Database Settings
 spring:
-  datasource:
-    url: jdbc:h2:mem:testdb;MODE=mysql;
-    username: sa
-    password:
-    driverClassName: org.h2.Driver
+#  datasource:
+#    url: jdbc:h2:mem:testdb;MODE=mysql;
+#    username: sa
+#    password:
+#    driverClassName: org.h2.Driver
 
-  # H2 Settings
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/antigravity?serverTimezone=Asia/Seoul
+    username: root
+    password: 12345678
+
+#   H2 Settings
   h2:
     console:
       enabled: true
@@ -23,3 +29,12 @@ spring:
       schema-locations: classpath*:/${database}/schema.sql
       data-locations: classpath*:/${database}/data.sql
       platform: h2
+      mode: always
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
