@@ -4,11 +4,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import antigravity.dto.LikedDto;
+import antigravity.entity.Liked;
 import antigravity.entity.Product;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,52 +25,34 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
     //데이터를 저장하기 위한 곳
-    // 예시 메서드입니다.
-    public Product findById(Long id) {
-        String query = "SELECT id, sku, name, price, quantity, created_at" +
-                "       FROM product WHERE id = :id";
-        MapSqlParameterSource params = new MapSqlParameterSource("id", id);
-
-        return jdbcTemplate.queryForObject(query, params, (rs, rowNum) ->
-                Product.builder()
-                        .id(rs.getLong("id"))
-                        .sku(rs.getString("sku"))
-                        .name(rs.getString("name"))
-                        .price(rs.getBigDecimal("price"))
-                        .quantity(rs.getInt("quantity"))
-                        .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
-                        .build());
-    }
-    
-    
+//    // 예시 메서드입니다.
+//    PUBLIC PRODUCT FINDBYID(LONG ID) {
+//        STRING QUERY = "SELECT ID, SKU, NAME, PRICE, QUANTITY, CREATED_AT" +
+//                "       FROM PRODUCT WHERE ID = :ID";
+//        MAPSQLPARAMETERSOURCE PARAMS = NEW MAPSQLPARAMETERSOURCE("ID", ID);
+//
+//        RETURN JDBCTEMPLATE.QUERYFOROBJECT(QUERY, PARAMS, (RS, ROWNUM) ->
+//                PRODUCT.BUILDER()
+//                        .ID(RS.GETLONG("ID"))
+//                        .SKU(RS.GETSTRING("SKU"))
+//                        .NAME(RS.GETSTRING("NAME"))
+//                        .PRICE(RS.GETBIGDECIMAL("PRICE"))
+//                        .QUANTITY(RS.GETINT("QUANTITY"))
+//                        .CREATEDAT(RS.GETTIMESTAMP("CREATED_AT").TOLOCALDATETIME())
+//                        .BUILD());
+//    }
+//    
     @Override
-    public List<Product> selectProduct() {
-    	log.debug("selectProduct");
-    	List<Product> result = jdbcTemplate.query("SELECT id, sku,name,price,views FROM product", productRowMapper());
-    	log.info("조회 결과 {}",result);
+    public int insertLiked(@Valid LikedDto likedDto) {
+    	log.debug("insertLiked");
+    	String sql = "INSERT INTO LIKED (likedNo,productId,userId)"
+    			+"VALUES(:likedNo,:productId,:userId)";
+    	SqlParameterSource params = new MapSqlParameterSource("likedNo",likedDto.getLikedNo())
+    	 								.addValue("productId",likedDto.getProductId())
+    	 								.addValue("userId",likedDto.getUserId());
     	
-    	return result;
+    	return jdbcTemplate.update(sql, params);
     }
     
- 
 
-    
-    private RowMapper<Product> productRowMapper(){
-    	return new RowMapper<Product>() {
-    			@Override
-    			public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
-    				
-    				Product product = new Product();
-    				product.setId(rs.getLong("id"));
-    				product.setSku(rs.getString("sku"));
-    				product.setName(rs.getString("name"));
-    				product.setPrice(rs.getBigDecimal("price"));
-    				product.setViews(rs.getLong("views"));
-    				return product;
-    			}
-    	
-    	};
-    	
-    }
-    
 }

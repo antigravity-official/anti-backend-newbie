@@ -18,4 +18,4 @@ logging:
     antigravity.service: debug
     antigravity.repository: debug
     antigravity.entity: debug
-  
+    antigravity.dto: debug

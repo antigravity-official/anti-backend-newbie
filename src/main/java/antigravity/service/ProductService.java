@@ -1,17 +1,19 @@
 package antigravity.service;
 
-import java.util.List;
 
-import antigravity.entity.Liked;
-import antigravity.entity.Product;
+import javax.validation.Valid;
+
+import antigravity.dto.LikedDto;
 
 public interface ProductService {
 
+
 	/**
-	 * 찜 상품 등록을 위한 전체 상품 목록 조회
-	 * @return - 상품목록 
+	 * 찜상품 등록
+	 * @param likedDto -찜하기 정보
+	 * @return - insert 결과
 	 */
-	public List<Product> getList();
+	public int resisterLiked(@Valid LikedDto likedDto);
 
 
 }

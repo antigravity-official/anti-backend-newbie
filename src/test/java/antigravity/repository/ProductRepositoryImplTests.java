@@ -14,11 +14,11 @@ public class ProductRepositoryImplTests {
     @Autowired
     private ProductRepositoryImpl productRepository;
 
-    @Test
-    public void findByIdTest() {
-        Long id = 1L;
-        Product product = productRepository.findById(id);
-        Assertions.assertNotNull(product);
-    }
+//    @Test
+//    public void findByIdTest() {
+//        Long id = 1L;
+//        Product product = productRepository.findById(id);
+//        Assertions.assertNotNull(product);
+//    }
 
 }
