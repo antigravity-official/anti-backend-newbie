@@ -1,31 +1,31 @@
 package antigravity.entity;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.ToString;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Builder
 @ToString
 @Getter
 @Entity
-public class Product {
+public class User {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String sku;
     @NonNull
+    private String email;
+
     private String name;
-    @NonNull
-    private BigDecimal price;
-    @NonNull
-    private Integer quantity;
-    @NonNull
+
     @Column(name = "created_at")
+    @NonNull
     private LocalDateTime createdAt;
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
