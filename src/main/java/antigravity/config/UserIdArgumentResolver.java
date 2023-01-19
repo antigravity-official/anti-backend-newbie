@@ -8,8 +8,8 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import antigravity.exception.payload.ErrorCode;
 import antigravity.exception.custom.NotFoundParameter;
+import antigravity.exception.payload.ErrorCode;
 
 @Component
 public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
@@ -24,9 +24,21 @@ public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
 		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 		String userId = webRequest.getHeader("X-USER-ID");
 
-		if(!StringUtils.hasText(userId))
+		if (!StringUtils.hasText(userId))
 			throw new NotFoundParameter("not exist userId on header", ErrorCode.NOT_FOUND_HEADER);
 
-		return Integer.parseInt(userId);
+		Integer parseUserId = 0;
+
+		try {
+			parseUserId = Integer.parseInt(userId);
+
+			if (parseUserId <= 0) {
+				throw new NotFoundParameter("not exist userId on header", ErrorCode.NOT_FOUND_HEADER);
+			}
+		} catch (NumberFormatException e) {
+			throw new NotFoundParameter("not exist userId on header", ErrorCode.NOT_FOUND_HEADER);
+		}
+
+		return parseUserId;
 	}
 }

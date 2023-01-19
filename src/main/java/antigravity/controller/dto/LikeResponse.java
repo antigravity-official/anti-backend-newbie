@@ -7,10 +7,10 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class CartResponse {
+public class LikeResponse {
 	private Long cartId;
 	private Long userId;
-	private String sku; // 상품 고유값
+	private String sku;
 	private String name;
 	private BigDecimal price;
 }

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.TransactionSystemException;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -22,9 +23,8 @@ import antigravity.exception.payload.ErrorResponse;
 public class GlobalExceptionHandler {
 	private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<ErrorResponse<ErrorModel>> handleMethodArgumentNotValidException(
-		MethodArgumentNotValidException e) {
+	@ExceptionHandler({BindException.class, MethodArgumentNotValidException.class,MethodArgumentNotValidException.class})
+	public ResponseEntity<ErrorResponse<ErrorModel>> handleMethodArgumentNotValidException(BindException e) {
 		log.warn("Method argument not valid exception occurred : {}", e.toString(), e);
 
 		return newResponse(ErrorCode.CONSTRAINT_VIOLATION);

@@ -36,13 +36,23 @@ dependencies {
 
 	// DataBase
 	runtimeOnly 'mysql:mysql-connector-java'
+	testImplementation 'com.h2database:h2'
 
 	// Redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+	implementation 'org.redisson:redisson-spring-boot-starter:3.17.7'
+
 	// Lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	// TEST CONTAINER
+	testImplementation "org.testcontainers:mysql:1.17.5"
+	testImplementation "org.testcontainers:junit-jupiter:1.17.5"
+	testImplementation "com.redis.testcontainers:testcontainers-redis-junit:1.6.2"
+
+	// Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
