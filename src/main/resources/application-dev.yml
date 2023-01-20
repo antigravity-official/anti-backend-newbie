@@ -7,6 +7,11 @@ spring:
     username: sa
     password:
     driverClassName: org.h2.Driver
+  #  datasource:
+  #    driver-class-name: com.mysql.cj.jdbc.Driver
+  #    url: jdbc:mysql://localhost:3306/{스키마 이름}?serverTimezone=Asia/Seoul
+  #    username: {계정 아이디}
+  #    password: {계정 비밀번호}
 
   # H2 Settings
   h2:
@@ -23,3 +28,12 @@ spring:
       schema-locations: classpath*:/${database}/schema.sql
       data-locations: classpath*:/${database}/data.sql
       platform: h2
+
+  # JPA Settings
+  jpa:
+    hibernate:
+      ddl-auto: none # create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
