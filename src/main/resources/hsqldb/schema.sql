@@ -1,5 +1,7 @@
 DROP TABLE `product` IF EXISTS;
 DROP TABLE `user` IF EXISTS;
+DROP TABLE `product_like` IF EXISTS;
+DROP TABLE `product_view` IF EXISTS;
 
 CREATE TABLE `product`
 (
@@ -23,3 +25,23 @@ CREATE TABLE `user`
     `deleted_at` datetime              DEFAULT NULL,
     PRIMARY KEY (`id`)
 );
+
+CREATE TABLE `product_like`
+(
+    `id`         bigint(20) NOT NULL AUTO_INCREMENT,
+    `product_id`         bigint(20) NOT NULL,
+    `user_id`         bigint(20) NOT NULL,
+    `name`       varchar(45)           DEFAULT '',
+    `created_at` datetime     NOT NULL DEFAULT current_timestamp(),
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `product_view`
+(
+    `id`         bigint(20) NOT NULL AUTO_INCREMENT,
+    `product_id`         bigint(20) NOT NULL,
+    `created_at` datetime     NOT NULL DEFAULT current_timestamp(),
+    PRIMARY KEY (`id`)
+);
+
+
